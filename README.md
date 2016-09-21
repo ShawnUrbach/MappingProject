@@ -6,3 +6,4 @@ Screenshot 1:
 ![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot1.png?raw=true "Screenshot 1")
 
 Screenshot 2:
+![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot2.png?raw=true "Screenshot 2")
