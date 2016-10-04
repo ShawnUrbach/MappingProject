@@ -1,0 +1,66 @@
+//Iterate through geoJson layer and convert to array
+var out = '';
+layer1.eachLayer(function(layer){
+	out += ' ' + layer.feature.properties.NBHOOD + ' ';
+	out += ' ' + (layer.feature.properties.WALK_PUB)*100 + ' ';
+});
+
+var arraysplit = out.split('  ');
+
+//Converts array to dictionary
+var obj_a = {};
+arraysplit.forEach(function(val, i) {
+	if (i % 2 === 1) return; // Skip all even elements (= odd indexes)
+	obj_a[val] = arraysplit[i + 1];   // Assign the next element as a value of the object,
+							 // using the current value as key
+});
+
+//Sort items in dictionary to 2D array
+var items = Object.keys(obj_a).map(function(key) {
+	return [key, obj_a[key]];
+});
+items.sort(function(first, second) {
+	return second[1] - first[1];
+});
+
+//Converts 2D array to two 1D arrays
+var twoDArray = items;
+
+var xArray = [];
+var yArray = [];
+
+$.each(twoDArray, function(index, value) {
+	xArray.push(value[0]);
+	yArray.push(value[1]);
+});
+
+//Converts string array to integer array
+var result = yArray.map(function (x) { 
+	return parseInt(x, 10); 
+});
+
+//Insert bar graph using Chart.js
+var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+	type: 'bar',
+	data: {
+		labels: xArray,  //X Axis
+		datasets: [{
+			label: '% Commute by Walk or Public Transport ',
+			data: result,  //Y Axis
+			borderWidth: 1
+		}]
+	},
+	options: {
+		scales: {
+			xAxes: [{
+				display: false
+			}],
+			yAxes: [{
+				ticks: {
+					beginAtZero:true
+				}
+			}]
+		}
+	}
+});
