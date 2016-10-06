@@ -16,6 +16,8 @@
 		<script src="kc-tracts.geojson" type="text/javascript"></script>
 		<script src="Election2012.geojson" type="text/javascript"></script>
 		<script src="Election2008.geojson" type="text/javascript"></script>
+		<script src="census2010.geojson" type="text/javascript"></script>
+		<script src="census2000.geojson" type="text/javascript"></script>
         <style>
             html, body {
                 height: 81%;
@@ -85,7 +87,7 @@
 			}).addTo(map);
 			
 			//Loads geoJson layers
-			var layer1 =L.geoJson(election2012, {style: style}).addTo(map);
+			var layer1 =L.geoJson(census2000, {style: style}).addTo(map);
 						
 			
 
