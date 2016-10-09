@@ -18,6 +18,7 @@
 		<script src="Election2008.geojson" type="text/javascript"></script>
 		<script src="census2010.geojson" type="text/javascript"></script>
 		<script src="census2000.geojson" type="text/javascript"></script>
+		<script src="race2010.geojson" type="text/javascript"></script>
         <style>
             html, body {
                 height: 81%;
@@ -62,6 +63,7 @@
         <script type="text/javascript">
 		
 			var layer1;
+			var layer2;
 			
 			//Style properties for choropleth map
 			function style(feature) {
@@ -82,16 +84,14 @@
 			});
 			
 			//Loads background tiles for Leaflet
-			var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; OpenStreetMap contributors'
-			}).addTo(map);
+			//var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				//attribution: '&copy; OpenStreetMap contributors'
+			//}).addTo(map);
 			
 			//Loads geoJson layers
-			var layer1 =L.geoJson(census2000, {style: style}).addTo(map);
-						
+			var layer1 =L.geoJson(race2010, {style: style}).addTo(map);
+			var layer2 =L.geoJson(census2010, {style: style});
 			
-
-
         </script>
     </body>
 

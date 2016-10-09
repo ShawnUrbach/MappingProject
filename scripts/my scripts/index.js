@@ -2,16 +2,19 @@ var election2012;
 var election2008;
 var census2010;
 var census2000;
+var race2010;
+var race2000;
 var all_states;
 var chart_data;
 var chart_data2;
+var chart_data3;
 
 
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
 	return {
 		fillColor: getColor(feature.properties.PERCENT_DE),
-		weight: 2,
+		weight: 1,
 		opacity: 1,
 		color: 'white',
 		dashArray: '3',
@@ -23,13 +26,26 @@ function electionStyle(feature) {
 function censusStyle(feature) {
 	return {
 		fillColor: censusGetColor(feature.properties.Pop_Growth),
-		weight: 2,
+		weight: 1,
 		opacity: 1,
 		color: 'white',
 		dashArray: '3',
 		fillOpacity: 0.7
 	};
 }
+
+//Style properties for Race 2000/2010
+function raceStyle(feature) {
+	return {
+		fillColor: raceGetColor(feature.properties.Race_20117),
+		weight: 1,
+		opacity: 1,
+		color: 'white',
+		dashArray: '3',
+		fillOpacity: 0.7
+	};
+}
+
 
 //Style properties for state outline layer
 function outlineStyle(feature) {
@@ -66,6 +82,18 @@ function censusGetColor(w) {
 		w > -5   ? '#9999ff' : '#00008B';
 }
 
+//Colors for Race 2000/2010
+function raceGetColor(w, s) {
+	return w > 95 ? '#b30000' :
+		w > 90  ? '#e60000' :
+		w > 85  ? '#ff1a1a' :
+		w > 80  ? '#ff4d4d' :
+		w > 75   ? '#ff8080' :
+		w > 70   ? '#ffb3b3' :
+		w > 65   ? '#ffe6e6' :
+		w > 60   ? '#9999ff' : '#00008B';
+}
+
 //Highlights features on mouseover
 function highlightFeature(e) {
 	var layer = e.target;
@@ -90,6 +118,11 @@ function resetHighlightElection(e) {
 //Resets hightlight on mouseout
 function resetHighlightCensus(e) {
 	census2010.resetStyle(e.target);
+}
+
+//Resets hightlight on mouseout
+function resetHighlightRace(e) {
+	race2010.resetStyle(e.target);
 }
 
 //Zooms to feature on click
@@ -132,6 +165,27 @@ function insertLineChart(){
 					backgroundColor: [
 						'red',
 					],
+					borderColor: 'red',
+					lineTension: 0.1,
+					fill: false,
+				}]
+			},
+			options: {
+			}
+		});	
+}
+
+//Insert bar graph using Chart.js
+function insertBarChart(){
+	var ctx = document.getElementById("myChart");
+		var myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: ['White','Black or African American', 'American Indian or Alaska Native', 'Asian', 'Native Hawaiian or Other Pacific Islander', 'Multiracial or Other Race', 'Hispanic or Latino'],  //X Axis
+				datasets: [{
+					label: "Race by Percentage of Total",
+					data: chart_data3,  //Y Axis
+					borderWidth: 1,
 					borderColor: 'red',
 					lineTension: 0.1,
 					fill: false,
@@ -242,6 +296,41 @@ function census2010_onEachFeature(feature, layer) {
 	}
 }
 
+//Behavior for mousever and click- Race 2010 layer
+function race2010_onEachFeature(feature, layer) {
+	layer.on({
+		mouseover: highlightFeature,
+		mouseout: resetHighlightRace,
+		click: zoomToFeature
+	});
+	
+	//Binds data with mouseover of objects for Chart.js
+	layer.on('mouseover', function (e) {
+        chart_data3 = [feature.properties.Race_20117,feature.properties.Race_20118,feature.properties.Race_20119,feature.properties.Race_20120,feature.properties.Race_20121,(Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)),feature.properties.Race_20124];
+		insertBarChart();
+    });
+	
+	//Binds labels to Race 2010 layer
+	if (feature.properties) {
+		layer.bindTooltip("<br><b><big>" + feature.properties.Census20_1
+		+ "</br></b></big><br> <b>White:&nbsp;</b>" + feature.properties.Race_20117
+		+ "</b></big><b>%&nbsp;</b>"
+		+ "</br></b></big><br> <b>Black or African American:&nbsp;</b>" + feature.properties.Race_20118
+		+ "</b></big><b>%&nbsp;</b>"
+		+ "</br></b></big><br> <b>American Indian or Alaska Native:&nbsp;</b>" + feature.properties.Race_20119
+		+ "</b></big><b>%&nbsp;</b>"
+		+ "</br></b></big><br> <b>Asian:&nbsp;</b>" + feature.properties.Race_20120
+		+ "</b></big><b>%&nbsp;</b>"
+		+ "</br></b></big><br> <b>Native Hawaiin or Other Pacific Islander:&nbsp;</b>" + feature.properties.Race_20121
+		+ "</b></big><b>%&nbsp;</b>"
+		+ "</br></b></big><br> <b>Multiracial or Other Race:&nbsp;</b>" + (Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)).toFixed(2)
+		+ "</b></big><b>%&nbsp;</b>"
+		+ "</br></b></big><br> <b>Hispanic or Latino:&nbsp;</b>" + feature.properties.Race_20124
+		+ "</b></big><b>%&nbsp;</b>"
+		+ " <br><br>", {permanent: false});
+	}
+}
+
 //Loads Leaflet map object
 var map = L.map('map', {
 	center: [39.1,-94.5],
@@ -264,7 +353,8 @@ var election2012 =L.geoJson(election2012, {style: electionStyle, onEachFeature: 
 var election2008 =L.geoJson(election2008, {style: electionStyle, onEachFeature: election08_onEachFeature});
 var census2000 =L.geoJson(census2000, {style: censusStyle, onEachFeature: census2000_onEachFeature});
 var census2010 =L.geoJson(census2010, {style: censusStyle, onEachFeature: census2010_onEachFeature});
-
+var race2010 =L.geoJson(race2010, {style: raceStyle, onEachFeature: race2010_onEachFeature});
+var race2000 =L.geoJson(race2000, {style: raceStyle, onEachFeature: race2010_onEachFeature});
 
 //Adds layer controls to map
 var basemaps = {
@@ -272,6 +362,8 @@ var basemaps = {
 	'Election 2012': election2012,
 	'Census 2000': census2000,
 	'Census 2010': census2010,
+	'Race 2010': race2010,
+	'Race 2000': race2000,
 };
 
 var overlays = {
@@ -323,6 +415,24 @@ map.on('layeradd', function (e) {
 		return div;
 	};
   }
+  if (map.hasLayer(race2010) === true) {
+    legendtitle.addTo(map);
+	legendtitle.onAdd = function (map) {
+		var div = L.DomUtil.create('div2', 'info legend2'),
+		labels = ['<strong> 2010: RACE <BR> PERCENTAGE WHITE </strong>'];
+		div.innerHTML = labels.join('<br>');
+		return div;
+	};
+  }
+  if (map.hasLayer(race2000) === true) {
+    legendtitle.addTo(map);
+	legendtitle.onAdd = function (map) {
+		var div = L.DomUtil.create('div2', 'info legend2'),
+		labels = ['<strong> 2000: RACE <BR> PERCENTAGE WHITE </strong>'];
+		div.innerHTML = labels.join('<br>');
+		return div;
+	};
+  }
 });
 
 legendtitle.onAdd = function (map) {
@@ -342,7 +452,7 @@ legend.onAdd = function (map) {
 		grades = [0, 20, 40, 45, 50, 55, 60, 80],
 		labels = [];
 
-	//Loops through  density intervals and generate a label with a colored square for each interval
+	//Loops through density intervals and generate a label with a colored square for each interval
 	for (var i = 0; i < grades.length; i++) {
 		div.innerHTML +=
 			'<i style="background:' + getColor(grades[i] + 0.01) + '"></i> ' +
@@ -368,6 +478,23 @@ legend2.onAdd = function (map) {
 	return div;
 };
 
+//Adds legend to map - Race Layers
+var legend3 = L.control({position: 'bottomright'});
+legend3.onAdd = function (map) {
+
+	var div = L.DomUtil.create('div', 'info legend'),
+		grades = [0, 60, 65, 70, 75, 80, 85, 90, 95],
+		labels = [];
+
+	//Loops through density intervals and generate a label with a colored square for each interval
+	for (var i = 0; i < grades.length; i++) {
+		div.innerHTML +=
+			'<i style="background:' + raceGetColor(grades[i] + 0.01) + '"></i> ' +
+			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '<br>' : '+');
+	}
+	return div;
+};
+
 legend.addTo(map);
 currentLegend = legend;
 
@@ -381,6 +508,11 @@ map.on('layeradd', function (eventLayer) {
         map.removeControl(currentLegend );
         currentLegend = legend2;
         legend2.addTo(map);
+    }
+	else if ((map.hasLayer(race2010) === true) || (map.hasLayer(race2000) === true)) {
+        map.removeControl(currentLegend );
+        currentLegend = legend3;
+        legend3.addTo(map);
     }
   })
   
