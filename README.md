@@ -11,4 +11,4 @@ Census 2010:
 ![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot_Census2010.png?raw=true "Census 2010")
 
 Race 2010:
-![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Race2010.png?raw=true "Race 2010")
+![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot_Race2010.png?raw=true "Race 2010")
