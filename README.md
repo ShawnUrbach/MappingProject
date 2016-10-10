@@ -5,10 +5,10 @@ The user will have the ability to choose what dataset they want to see visualize
 As a proof of concept, below are screenshots of three maps using the following datasets: 'Election 2012', 'Census 2010', and 'Race 2010'.
 
 Election 2012:
-![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot1.png?raw=true "Election 2012")
+![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot_Election2012.png?raw=true "Election 2012")
 
 Census 2010:
-![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot2.png?raw=true "Census 2010")
+![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot_Census2010.png?raw=true "Census 2010")
 
 Race 2010:
-![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot3.png?raw=true "Race 2010")
+![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Race2010.png?raw=true "Race 2010")
