@@ -1,9 +1,14 @@
 This is the beginning of what I hope to be a complete interactive county-level mapping website covering the entire United States. Many websites contain interactive maps but few contain comprehensive data covering a variety of topics, including presidential elections and Census data (commute paterns, population demographics, etc).  This will be a one-stop shop for this type of interactive mapping data.
 
-As a proof of concept, below are screenshots of commuting patterns in the Kansas City metropolitan area only.  The page uses a combination of Leaflet.js and Chart.js.  The data is drawn from two geojson layers and the user may choose one as viewable at a time. This particular map is colored in a way so that areas where more people walk or take public transportation to work (vs. car or carpool) are shaded in darker colors of red.  The specific commuter population attributes are shown via popup labels when the user hovers over an area.  The information in the chart at the bottom draws directly from the same geojson layer as the map above.
+The user will have the ability to choose what dataset they want to see visualized (in both map and chart form). Each object on the map will have interactive elements in the form of pop-up information.
 
-Screenshot 1:
-![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot1.png?raw=true "Screenshot 1")
+As a proof of concept, below are screenshots of three maps using the following datasets: 'Election 2012', 'Census 2010', and 'Race 2010'.
 
-Screenshot 2:
-![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot2.png?raw=true "Screenshot 2")
+Election 2012:
+![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot1.png?raw=true "Election 2012")
+
+Census 2010:
+![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot2.png?raw=true "Census 2010")
+
+Race 2010:
+![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot3.png?raw=true "Race 2010")

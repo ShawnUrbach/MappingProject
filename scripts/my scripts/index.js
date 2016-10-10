@@ -1,19 +1,19 @@
+//Variable declarations
 var election2012;
 var election2008;
 var census2010;
 var census2000;
 var race2010;
 var race2000;
-var all_states;
-var chart_data;
-var chart_data2;
-var chart_data3;
-
+var election_data;
+var census_data;
+var race_data;
+var map;
 
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
 	return {
-		fillColor: getColor(feature.properties.PERCENT_DE),
+		fillColor: electionGetColor(feature.properties.PERCENT_DE),
 		weight: 1,
 		opacity: 1,
 		color: 'white',
@@ -46,20 +46,8 @@ function raceStyle(feature) {
 	};
 }
 
-
-//Style properties for state outline layer
-function outlineStyle(feature) {
-	return {
-		weight: 2,
-		opacity: 1,
-		color: 'black',
-		dashArray: '0',
-		fillOpacity: 0
-	};
-}
-
 //Colors for Election 2012/2008
-function getColor(w) {
+function electionGetColor(w) {
 	return w > 80 ? '#104896' :
 		w > 60  ? '#2d67b7' :
 		w > 55  ? '#4880ce' :
@@ -110,17 +98,17 @@ function highlightFeature(e) {
 	}
 }
 
-//Resets hightlight on mouseout
+//Resets hightlight on mouseout for Election 2008/2012
 function resetHighlightElection(e) {
 	election2012.resetStyle(e.target);
 }
 
-//Resets hightlight on mouseout
+//Resets hightlight on mouseout for Census 2000/2010
 function resetHighlightCensus(e) {
 	census2010.resetStyle(e.target);
 }
 
-//Resets hightlight on mouseout
+//Resets hightlight on mouseout for Race 2000/2010
 function resetHighlightRace(e) {
 	race2010.resetStyle(e.target);
 }
@@ -130,15 +118,15 @@ function zoomToFeature(e) {
 	map.fitBounds(e.target.getBounds());
 }
 
-//Insert pie graph using Chart.js
-function insertChart(){
+//Insert pie graph using Chart.js for Election 2008/2012
+function insertElectionChart(){
 	var ctx = document.getElementById("myChart");
 		var myChart = new Chart(ctx, {
 			type: 'pie',
 			data: {
 				labels: ['Democrat', 'Republican'],  //X Axis
 				datasets: [{
-					data: chart_data,  //Y Axis
+					data: election_data,  //Y Axis
 					borderWidth: 1,
 					backgroundColor: [
 						'blue',
@@ -151,8 +139,8 @@ function insertChart(){
 		});	
 }
 
-//Insert line graph using Chart.js
-function insertLineChart(){
+//Insert line graph using Chart.js for Census 2000/2010
+function insertCensusChart(){
 	var ctx = document.getElementById("myChart");
 		var myChart = new Chart(ctx, {
 			type: 'line',
@@ -160,7 +148,7 @@ function insertLineChart(){
 				labels: ['1990','2000'],  //X Axis
 				datasets: [{
 					label: "Population Growth",
-					data: chart_data2,  //Y Axis
+					data: census_data,  //Y Axis
 					borderWidth: 1,
 					backgroundColor: [
 						'red',
@@ -175,16 +163,17 @@ function insertLineChart(){
 		});	
 }
 
-//Insert bar graph using Chart.js
-function insertBarChart(){
+//Insert bar graph using Chart.js for Race 2000/2010
+function insertRaceChart(){
 	var ctx = document.getElementById("myChart");
 		var myChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
-				labels: ['White','Black or African American', 'American Indian or Alaska Native', 'Asian', 'Native Hawaiian or Other Pacific Islander', 'Multiracial or Other Race', 'Hispanic or Latino'],  //X Axis
+				labels: ['White','Black or African American', 'American Indian or Alaska Native', 'Asian',
+				'Native Hawaiian or Other Pacific Islander', 'Multiracial or Other Race', 'Hispanic or Latino'],  //X Axis
 				datasets: [{
 					label: "Race by Percentage of Total",
-					data: chart_data3,  //Y Axis
+					data: race_data,  //Y Axis
 					borderWidth: 1,
 					borderColor: 'red',
 					lineTension: 0.1,
@@ -206,11 +195,11 @@ function election12_onEachFeature(feature, layer) {
 	
 	//Binds data with mouseover of objects for Chart.js
 	layer.on('mouseover', function (e) {
-        chart_data = [feature.properties.PERCENT_DE,feature.properties.PCT_ROM];
-		insertChart();
+        election_data = [feature.properties.PERCENT_DE,feature.properties.PCT_ROM];
+		insertElectionChart();
     });
 
-	//Binds labels to Election 2012 layer
+	//Binds labels
 	if (feature.properties) {
 		layer.bindTooltip("<br><b><big>" + feature.properties.COUNTY 
 		+ ' County' + ", " + feature.properties.STATE
@@ -230,13 +219,13 @@ function election08_onEachFeature(feature, layer) {
 		click: zoomToFeature
 	});
 	
-	//Binds data with mouseover of objects for Chart.js
+	//Binds mouseover of objects with data for Chart.js
 	layer.on('mouseover', function (e) {
-        chart_data = [feature.properties.PERCENT_DE,feature.properties.PERCENT_RE];
-		insertChart();
+        election_data = [feature.properties.PERCENT_DE,feature.properties.PERCENT_RE];
+		insertElectionChart();
     });
 	
-	//Binds labels to Election 2008 layer
+	//Binds labels
 	if (feature.properties) {
 		layer.bindTooltip("<br><b><big>" + feature.properties.COUNTY 
 		+ ", " + feature.properties.STATE
@@ -256,13 +245,13 @@ function census2000_onEachFeature(feature, layer) {
 		click: zoomToFeature
 	});
 	
-	//Binds data with mouseover of objects for Chart.js
+	//Binds mouseover of objects with data for Chart.js
 	layer.on('mouseover', function (e) {
-        chart_data2 = [feature.properties.Total_1990,feature.properties.Total_Pop];
-		insertLineChart();
+        census_data = [feature.properties.Total_1990,feature.properties.Total_Pop];
+		insertCensusChart();
     });
 	
-	//Binds labels to Election 2000 layer
+	//Binds labels
 	if (feature.properties) {
 		layer.bindTooltip("<br><b><big>" + feature.properties.Census20_1
 		+ "</br></b></big><br> <b>Total Population:&nbsp;</b>" + feature.properties.Total_Pop
@@ -280,13 +269,13 @@ function census2010_onEachFeature(feature, layer) {
 		click: zoomToFeature
 	});
 	
-	//Binds data with mouseover of objects for Chart.js
+	//Binds mouseover of objects with data for Chart.js
 	layer.on('mouseover', function (e) {
-        chart_data2 = [Number(feature.properties.Census2000),feature.properties.Total_Pop];
-		insertLineChart();
+        census_data = [Number(feature.properties.Census2000),feature.properties.Total_Pop];
+		insertCensusChart();
     });
 	
-	//Binds labels to Election 2010 layer
+	//Binds labels
 	if (feature.properties) {
 		layer.bindTooltip("<br><b><big>" + feature.properties.Census20_1
 		+ "</br></b></big><br> <b>Total Population:&nbsp;</b>" + feature.properties.Total_Pop
@@ -296,21 +285,22 @@ function census2010_onEachFeature(feature, layer) {
 	}
 }
 
-//Behavior for mousever and click- Race 2010 layer
-function race2010_onEachFeature(feature, layer) {
+//Behavior for mousever and click- Race layers
+function race_onEachFeature(feature, layer) {
 	layer.on({
 		mouseover: highlightFeature,
 		mouseout: resetHighlightRace,
 		click: zoomToFeature
 	});
 	
-	//Binds data with mouseover of objects for Chart.js
+	//Binds mouseover of objects with data for Chart.js
 	layer.on('mouseover', function (e) {
-        chart_data3 = [feature.properties.Race_20117,feature.properties.Race_20118,feature.properties.Race_20119,feature.properties.Race_20120,feature.properties.Race_20121,(Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)),feature.properties.Race_20124];
-		insertBarChart();
+        race_data = [feature.properties.Race_20117,feature.properties.Race_20118,feature.properties.Race_20119,feature.properties.Race_20120,feature.properties.Race_20121,
+		(Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)),feature.properties.Race_20124];
+		insertRaceChart();
     });
 	
-	//Binds labels to Race 2010 layer
+	//Binds labels
 	if (feature.properties) {
 		layer.bindTooltip("<br><b><big>" + feature.properties.Census20_1
 		+ "</br></b></big><br> <b>White:&nbsp;</b>" + feature.properties.Race_20117
@@ -332,29 +322,35 @@ function race2010_onEachFeature(feature, layer) {
 }
 
 //Loads Leaflet map object
-var map = L.map('map', {
+map = L.map('map', {
 	center: [39.1,-94.5],
 	zoom: 4.5
 });
 
-//Creates custom map pane for state outline layer
+//Creates custom map pane for states outline
 map.createPane('labels');
-map.getPane('labels').style.zIndex = 700;
+map.getPane('labels').style.zIndex = 500;
 map.getPane('labels').style.pointerEvents = 'none';
 
-//Loads background tiles for Leaflet
+// Loads Mapbox API tile layer (states outline)
+var api_key = 'pk.eyJ1Ijoic3VyYmFjaDc3IiwiYSI6ImNpdTNhM3N1bzBoMXcydWxod2h2bmY5YmEifQ.Fgtr3TO0di86MEGdQm5eDg'
+var mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/surbach77/ciu3lfrhj00c42ipg1f9w4ofj/tiles/256/{z}/{x}/{y}?access_token=' + api_key, {
+    attribution: '<a href="https://www.mapbox.com/map-feedback/">Mapbox</a>',
+	pane: 'labels'
+});
+
+//Loads background OpenStreetMap tile layer
 var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
-			
+
 //Loads geoJson layers
-var all_states =L.geoJson(all_states, {style: outlineStyle, pane: 'labels'});
 var election2012 =L.geoJson(election2012, {style: electionStyle, onEachFeature: election12_onEachFeature}).addTo(map);
 var election2008 =L.geoJson(election2008, {style: electionStyle, onEachFeature: election08_onEachFeature});
 var census2000 =L.geoJson(census2000, {style: censusStyle, onEachFeature: census2000_onEachFeature});
 var census2010 =L.geoJson(census2010, {style: censusStyle, onEachFeature: census2010_onEachFeature});
-var race2010 =L.geoJson(race2010, {style: raceStyle, onEachFeature: race2010_onEachFeature});
-var race2000 =L.geoJson(race2000, {style: raceStyle, onEachFeature: race2010_onEachFeature});
+var race2010 =L.geoJson(race2010, {style: raceStyle, onEachFeature: race_onEachFeature});
+var race2000 =L.geoJson(race2000, {style: raceStyle, onEachFeature: race_onEachFeature});
 
 //Adds layer controls to map
 var basemaps = {
@@ -367,7 +363,7 @@ var basemaps = {
 };
 
 var overlays = {
-	'State Outlines': all_states,
+	'State Outlines': mapboxTiles,
 };
 
 L.control.layers(basemaps, overlays).addTo(map);
@@ -378,11 +374,12 @@ L.control.scale().addTo(map);
 //Adds legend title to map
 var legendtitle = L.control({position: 'bottomright'});
 
+//Changes legend title to match currently loaded map layer
 map.on('layeradd', function (e) {
   if (map.hasLayer(election2008) === true) {
 	legendtitle.addTo(map);
 	legendtitle.onAdd = function (map) {
-		var div = L.DomUtil.create('div2', 'info legend2'),
+		var div = L.DomUtil.create('div', 'title'),
 		labels = ['<strong> 2008: % VOTE FOR <BR> DEMOCRATIC CANDIDATE </strong>'];
 		div.innerHTML = labels.join('<br>');
 		return div;
@@ -391,7 +388,7 @@ map.on('layeradd', function (e) {
   if (map.hasLayer(election2012) === true) {
     legendtitle.addTo(map);
 	legendtitle.onAdd = function (map) {
-		var div = L.DomUtil.create('div2', 'info legend2'),
+		var div = L.DomUtil.create('div', 'title'),
 		labels = ['<strong> 2012: % VOTE FOR <BR> DEMOCRATIC CANDIDATE </strong>'];
 		div.innerHTML = labels.join('<br>');
 		return div;
@@ -400,7 +397,7 @@ map.on('layeradd', function (e) {
   if (map.hasLayer(census2000) === true) {
     legendtitle.addTo(map);
 	legendtitle.onAdd = function (map) {
-		var div = L.DomUtil.create('div2', 'info legend2'),
+		var div = L.DomUtil.create('div', 'title'),
 		labels = ['<strong> 2000: POPULATION <BR> GROWTH SINCE 1990 </strong>'];
 		div.innerHTML = labels.join('<br>');
 		return div;
@@ -409,7 +406,7 @@ map.on('layeradd', function (e) {
   if (map.hasLayer(census2010) === true) {
     legendtitle.addTo(map);
 	legendtitle.onAdd = function (map) {
-		var div = L.DomUtil.create('div2', 'info legend2'),
+		var div = L.DomUtil.create('div', 'title'),
 		labels = ['<strong> 2010: POPULATION <BR> GROWTH SINCE 2000 </strong>'];
 		div.innerHTML = labels.join('<br>');
 		return div;
@@ -418,7 +415,7 @@ map.on('layeradd', function (e) {
   if (map.hasLayer(race2010) === true) {
     legendtitle.addTo(map);
 	legendtitle.onAdd = function (map) {
-		var div = L.DomUtil.create('div2', 'info legend2'),
+		var div = L.DomUtil.create('div', 'title'),
 		labels = ['<strong> 2010: RACE <BR> PERCENTAGE WHITE </strong>'];
 		div.innerHTML = labels.join('<br>');
 		return div;
@@ -427,7 +424,7 @@ map.on('layeradd', function (e) {
   if (map.hasLayer(race2000) === true) {
     legendtitle.addTo(map);
 	legendtitle.onAdd = function (map) {
-		var div = L.DomUtil.create('div2', 'info legend2'),
+		var div = L.DomUtil.create('div', 'title'),
 		labels = ['<strong> 2000: RACE <BR> PERCENTAGE WHITE </strong>'];
 		div.innerHTML = labels.join('<br>');
 		return div;
@@ -436,7 +433,7 @@ map.on('layeradd', function (e) {
 });
 
 legendtitle.onAdd = function (map) {
-	var div = L.DomUtil.create('div2', 'info legend2'),
+	var div = L.DomUtil.create('div', 'title'),
 	labels = ['<strong> 2012: % VOTE FOR <BR> DEMOCRATIC CANDIDATE </strong>'];
 	div.innerHTML = labels.join('<br>');
 	return div;
@@ -448,14 +445,14 @@ legendtitle.addTo(map);
 var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
 
-	var div = L.DomUtil.create('div', 'info legend'),
+	var div = L.DomUtil.create('div', 'legend'),
 		grades = [0, 20, 40, 45, 50, 55, 60, 80],
 		labels = [];
 
 	//Loops through density intervals and generate a label with a colored square for each interval
 	for (var i = 0; i < grades.length; i++) {
 		div.innerHTML +=
-			'<i style="background:' + getColor(grades[i] + 0.01) + '"></i> ' +
+			'<i style="background:' + electionGetColor(grades[i] + 0.01) + '"></i> ' +
 			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '<br>' : '+');
 	}
 	return div;
@@ -464,17 +461,17 @@ legend.onAdd = function (map) {
 //Adds legend to map - Census Layers
 var legend2 = L.control({position: 'bottomright'});
 legend2.onAdd = function (map) {
-	var div = L.DomUtil.create('div', 'info legend');
+	var div = L.DomUtil.create('div', 'legend');
 	div.innerHTML +=
-		'<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="colorlegend1"></td><td class="legendLabel" id="legend10text">30%+</td>' +
-		'</tr><tr><td class="color" id="colorlegend2"></td><td class="legendLabel" id="legend9text">25-30%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend3"></td><td class="legendLabel" id="legend9text">20-25%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend4"></td><td class="legendLabel" id="legend9text">15-20%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend5"></td><td class="legendLabel" id="legend9text">10-15%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend6"></td><td class="legendLabel" id="legend9text">5-10%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend7"></td><td class="legendLabel" id="legend9text">0-5%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend8"></td><td class="legendLabel" id="legend9text">-5-0%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend9"></td><td class="legendLabel" id="legend9text"><-5%</td></tr>'
+		'<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="colorlegend1"></td><td>30%+</td>' +
+		'</tr><tr><td class="color" id="colorlegend2"></td><td>25-30%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend3"></td><td>20-25%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend4"></td><td>15-20%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend5"></td><td>10-15%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend6"></td><td>5-10%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend7"></td><td>0-5%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend8"></td><td>-5-0%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend9"></td><td><-5%</td></tr>'
 	return div;
 };
 
@@ -482,7 +479,7 @@ legend2.onAdd = function (map) {
 var legend3 = L.control({position: 'bottomright'});
 legend3.onAdd = function (map) {
 
-	var div = L.DomUtil.create('div', 'info legend'),
+	var div = L.DomUtil.create('div', 'legend'),
 		grades = [0, 60, 65, 70, 75, 80, 85, 90, 95],
 		labels = [];
 
@@ -495,6 +492,8 @@ legend3.onAdd = function (map) {
 	return div;
 };
 
+
+//Changes legend to match currently loaded map layer
 legend.addTo(map);
 currentLegend = legend;
 
@@ -516,5 +515,3 @@ map.on('layeradd', function (eventLayer) {
     }
   })
   
-
-map.fitBounds=(neighborhoods.getBounds());
