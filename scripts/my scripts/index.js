@@ -16,7 +16,8 @@ map = L.map('map', {
 	center: [39.1,-94.5],
 	zoom: 4.5
 });
-
+map.invalidateSize();
+setTimeout(function(){ map.invalidateSize()}, 400);
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
 	return {
@@ -182,8 +183,8 @@ function insertDemoChart(){
 		var myChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
-				labels: ['White','Black or African American', 'American Indian or Alaska Native', 'Asian',
-				'Native Hawaiian or Other Pacific Islander', 'Multiracial or Other Race', 'Hispanic or Latino'],  //X Axis
+				labels: ['White',['Black or', 'African American'], ['American Indian or', 'Alaska Native'], 'Asian',
+				['Native Hawaiian or', 'Other Pacific Islander'], ['Multiracial or', 'Other Race'], ['Hispanic or', 'Latino']],  //X Axis
 				datasets: [{
 					label: "Race by Percentage of Total",
 					data: demo_data,  //Y Axis
@@ -213,6 +214,7 @@ function election_onEachFeature(feature, layer) {
 	layer.on('mouseover', function (e) {
         election_data = [feature.properties.PERCENT_DE,feature.properties.PERCENT_RE];
 		insertElectionChart();
+		document.getElementById("chart").className = "row row-centered show";
     });
 	
 	//Binds labels
@@ -246,6 +248,7 @@ function census_onEachFeature(feature, layer) {
 			labels = ['1980','1990','2000','2010'];
 		}
 		insertCensusChart();
+		document.getElementById("chart").className = "row row-centered show";
     });
 	
 	//Binds labels
@@ -271,6 +274,7 @@ function demo_onEachFeature(feature, layer) {
         demo_data = [feature.properties.Race_20117,feature.properties.Race_20118,feature.properties.Race_20119,feature.properties.Race_20120,feature.properties.Race_20121,
 		(Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)),feature.properties.Race_20124];
 		insertDemoChart();
+		document.getElementById("chart").className = "row row-centered show";
     });
 	
 	//Binds labels
@@ -318,22 +322,6 @@ var census2000 =L.geoJson(census2000, {style: censusStyle, onEachFeature: census
 var census2010 =L.geoJson(census2010, {style: censusStyle, onEachFeature: census_onEachFeature});
 var demo2010 =L.geoJson(demo2010, {style: demoStyle, onEachFeature: demo_onEachFeature});
 var demo2000 =L.geoJson(demo2000, {style: demoStyle, onEachFeature: demo_onEachFeature});
-
-//Adds layer controls to map
-var basemaps = {
-	'Election 2008': election2008,
-	'Election 2012': election2012,
-	'Census 2000': census2000,
-	'Census 2010': census2010,
-	'Demographics 2000': demo2000,
-	'Demographics 2010': demo2010,
-};
-
-var overlays = {
-	'State Outlines': mapboxTiles,
-};
-
-L.control.layers(basemaps, overlays).addTo(map);
 
 //Adds scale to map
 L.control.scale().addTo(map);
@@ -389,47 +377,100 @@ demoLegend.onAdd = function (map) {
 	return div;
 };
 
-//Changes legend to match currently loaded map layer
+//Adds legend
 electionLegend.addTo(map);
-currentLegend = electionLegend;
-
-map.on('layeradd', function (eventLayer) {
-    if ((map.hasLayer(election2008) === true) || (map.hasLayer(election2012) === true)) {
-        map.removeControl(currentLegend);
-        currentLegend = electionLegend;
-        electionLegend.addTo(map);
-    }
-    else if ((map.hasLayer(census2000) === true) || (map.hasLayer(census2010) === true)) {
-        map.removeControl(currentLegend);
-        currentLegend = censusLegend;
-        censusLegend.addTo(map);
-    }
-	else if ((map.hasLayer(demo2010) === true) || (map.hasLayer(demo2000) === true)) {
-        map.removeControl(currentLegend);
-        currentLegend = demoLegend;
-        demoLegend.addTo(map);
-    }
+var currentLegend = electionLegend;
+//Layer controls via drop down menu, dynamically change map title and legend
+var currentMap = election2012;
+document.getElementById('mapTitleplus').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+document.getElementById('election_08').addEventListener("click", function(){
+	map.addLayer(election2008);
+	map.removeLayer(currentMap);
+	currentMap = election2008;
+	document.getElementById('mapTitleplus').innerHTML = '<center>2008: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+	map.removeControl(currentLegend);
+    currentLegend = electionLegend;
+    electionLegend.addTo(map);
+	document.getElementById("chart").className = "row row-centered hidden";
+});
+document.getElementById('election_12').addEventListener("click", function(){
+	map.addLayer(election2012);
+	map.removeLayer(currentMap);
+	currentMap = election2012;
+	document.getElementById('mapTitleplus').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+	map.removeControl(currentLegend);
+    currentLegend = electionLegend;
+    electionLegend.addTo(map);
+	document.getElementById("chart").className = "row row-centered hidden";
+});
+document.getElementById('census_00').addEventListener("click", function(){
+	map.addLayer(census2000);
+	map.removeLayer(currentMap);
+	currentMap = census2000;
+	document.getElementById('mapTitleplus').innerHTML = '<center>2000: POPULATION GROWTH SINCE 1990 </center>';
+	map.removeControl(currentLegend);
+    currentLegend = censusLegend;
+    censusLegend.addTo(map);
+	document.getElementById("chart").className = "row row-centered hidden";
+});
+document.getElementById('census_10').addEventListener("click", function(){
+	map.addLayer(census2010);
+	map.removeLayer(currentMap);
+	currentMap = census2010;
+	document.getElementById('mapTitleplus').innerHTML = '<center>2010: POPULATION GROWTH SINCE 2000 </center>';
+	map.removeControl(currentLegend);
+    currentLegend = censusLegend;
+    censusLegend.addTo(map);
+	document.getElementById("chart").className = "row row-centered hidden";
+});
+document.getElementById('demo_00').addEventListener("click", function(){
+	map.addLayer(demo2000);
+	map.removeLayer(currentMap);
+	currentMap = demo2000;
+	document.getElementById('mapTitleplus').innerHTML = '<center>2000: PERCENT WHITE </center>';
+	map.removeControl(currentLegend);
+    currentLegend = demoLegend;
+    demoLegend.addTo(map);
+	document.getElementById("chart").className = "row row-centered hidden";
+});
+document.getElementById('demo_10').addEventListener("click", function(){
+	map.addLayer(demo2010);
+	map.removeLayer(currentMap);
+	currentMap = demo2010;
+	document.getElementById('mapTitleplus').innerHTML = '<center>2010: PERCENT WHITE </center>';
+	map.removeControl(currentLegend);
+    currentLegend = demoLegend;
+    demoLegend.addTo(map);
+	document.getElementById("chart").className = "row row-centered hidden";
+});
+document.getElementById('state_outlines').addEventListener("click", function(){
+	if (map.hasLayer(mapboxTiles) === false) {
+		map.addLayer(mapboxTiles);
+	}
+	else
+		map.removeLayer(mapboxTiles);
 });
 
-//Dynamically add legend titles to map
-document.getElementById('chart').innerHTML = '<center><h2><strong>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE </h2></strong><p>Hover over a county for more information.</p></center>';
-map.on('layeradd', function (e) {
-  if (map.hasLayer(election2008) === true) {
-	document.getElementById('chart').innerHTML = '<center><h2><strong>2008: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE </h2></strong><p>Hover over a county for more information.</p></center>';
-  } 
-  if (map.hasLayer(election2012) === true) {
-	document.getElementById('chart').innerHTML = '<center><h2><strong>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE </h2></strong><p>Hover over a county for more information.</p></center>';
-  } 
-  if (map.hasLayer(census2000) === true) {
-	document.getElementById('chart').innerHTML = '<center><h2><strong>2000: POPULATION GROWTH SINCE 1990 </h2></strong><p>Hover over a county for more information.</p></center>';
-  } 
-  if (map.hasLayer(census2010) === true) {
-	document.getElementById('chart').innerHTML = '<center><h2><strong>2010: POPULATION GROWTH SINCE 2000 </h2></strong><p>Hover over a county for more information.</p></center>';
-  } 
-  if (map.hasLayer(demo2000) === true) {
-	document.getElementById('chart').innerHTML = '<center><h2><strong>2000: PERCENT WHITE </h2></strong><p>Hover over a county for more information.</p></center>';
-  } 
-  if (map.hasLayer(demo2010) === true) {
-	document.getElementById('chart').innerHTML = '<center><h2><strong>2010: PERCENT WHITE </h2></strong><p>Hover over a county for more information.</p></center>';
-  } 
+//Toggles map size via hamburger button
+document.getElementById('togthis').addEventListener("click", function(){
+	if (document.getElementById("map").style.height == "775px"){
+		document.getElementById("map").style.height = "65%";
+	}
+	else {
+		document.getElementById("map").style.height = "775px";
+		map.invalidateSize();
+	}
 });
+
+
+
+
+
+
+	
+	
+
+
+
+
+
