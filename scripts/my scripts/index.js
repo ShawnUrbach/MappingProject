@@ -144,7 +144,7 @@ function insertElectionChart(){
 			},
 			options: {
 				animation: {
-					duration: 3000
+					duration: false,
 				}
 			}
 		});	
@@ -382,12 +382,12 @@ electionLegend.addTo(map);
 var currentLegend = electionLegend;
 //Layer controls via drop down menu, dynamically change map title and legend
 var currentMap = election2012;
-document.getElementById('mapTitleplus').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
 document.getElementById('election_08').addEventListener("click", function(){
 	map.addLayer(election2008);
 	map.removeLayer(currentMap);
 	currentMap = election2008;
-	document.getElementById('mapTitleplus').innerHTML = '<center>2008: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2008: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
 	map.removeControl(currentLegend);
     currentLegend = electionLegend;
     electionLegend.addTo(map);
@@ -397,7 +397,7 @@ document.getElementById('election_12').addEventListener("click", function(){
 	map.addLayer(election2012);
 	map.removeLayer(currentMap);
 	currentMap = election2012;
-	document.getElementById('mapTitleplus').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
 	map.removeControl(currentLegend);
     currentLegend = electionLegend;
     electionLegend.addTo(map);
@@ -407,7 +407,7 @@ document.getElementById('census_00').addEventListener("click", function(){
 	map.addLayer(census2000);
 	map.removeLayer(currentMap);
 	currentMap = census2000;
-	document.getElementById('mapTitleplus').innerHTML = '<center>2000: POPULATION GROWTH SINCE 1990 </center>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2000: POPULATION GROWTH SINCE 1990 </center>';
 	map.removeControl(currentLegend);
     currentLegend = censusLegend;
     censusLegend.addTo(map);
@@ -417,7 +417,7 @@ document.getElementById('census_10').addEventListener("click", function(){
 	map.addLayer(census2010);
 	map.removeLayer(currentMap);
 	currentMap = census2010;
-	document.getElementById('mapTitleplus').innerHTML = '<center>2010: POPULATION GROWTH SINCE 2000 </center>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2010: POPULATION GROWTH SINCE 2000 </center>';
 	map.removeControl(currentLegend);
     currentLegend = censusLegend;
     censusLegend.addTo(map);
@@ -427,7 +427,7 @@ document.getElementById('demo_00').addEventListener("click", function(){
 	map.addLayer(demo2000);
 	map.removeLayer(currentMap);
 	currentMap = demo2000;
-	document.getElementById('mapTitleplus').innerHTML = '<center>2000: PERCENT WHITE </center>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT WHITE </center>';
 	map.removeControl(currentLegend);
     currentLegend = demoLegend;
     demoLegend.addTo(map);
@@ -437,7 +437,7 @@ document.getElementById('demo_10').addEventListener("click", function(){
 	map.addLayer(demo2010);
 	map.removeLayer(currentMap);
 	currentMap = demo2010;
-	document.getElementById('mapTitleplus').innerHTML = '<center>2010: PERCENT WHITE </center>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT WHITE </center>';
 	map.removeControl(currentLegend);
     currentLegend = demoLegend;
     demoLegend.addTo(map);
@@ -452,7 +452,7 @@ document.getElementById('state_outlines').addEventListener("click", function(){
 });
 
 //Toggles map size via hamburger button
-document.getElementById('togthis').addEventListener("click", function(){
+document.getElementById('userMessage').addEventListener("click", function(){
 	if (document.getElementById("map").style.height == "775px"){
 		document.getElementById("map").style.height = "65%";
 	}
