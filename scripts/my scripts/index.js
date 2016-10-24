@@ -16,8 +16,7 @@ map = L.map('map', {
 	center: [39.1,-94.5],
 	zoom: 4.5
 });
-map.invalidateSize();
-setTimeout(function(){ map.invalidateSize()}, 400);
+
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
 	return {
@@ -144,7 +143,8 @@ function insertElectionChart(){
 			},
 			options: {
 				animation: {
-					duration: false,
+					duration: 1000,
+					easing: 'easeInExpo',
 				}
 			}
 		});	
@@ -171,7 +171,8 @@ function insertCensusChart(){
 			},
 			options: {
 				animation: {
-					duration: 1500
+					duration: 1000,
+					easing: 'easeInExpo',
 				}
 			}
 		});	
@@ -196,7 +197,8 @@ function insertDemoChart(){
 			},
 			options: {
 				animation: {
-					duration: 2000
+					duration: 1000,
+					easing: 'easeInExpo',
 				}
 			}
 		});	
@@ -451,23 +453,53 @@ document.getElementById('state_outlines').addEventListener("click", function(){
 		map.removeLayer(mapboxTiles);
 });
 
-//Toggles map size via hamburger button
-document.getElementById('userMessage').addEventListener("click", function(){
-	if (document.getElementById("map").style.height == "775px"){
-		document.getElementById("map").style.height = "65%";
+//Toggles map size via button for larger screens
+function toggleMap_LargeScreen (){
+	document.getElementById('userMessage').addEventListener("click", function(){
+		if (document.getElementById("map").style.height == "99%"){
+			document.getElementById("map").style.height = "60%";
+		}
+		else {
+			document.getElementById("map").style.height = "99%";
+			map.invalidateSize();
+		}
+	});
+}
+
+//Toggles map size via button for smaller screens
+function toggleMap_SmallScreen (){
+	document.getElementById('userMessage').addEventListener("click", function(){
+		if (document.getElementById("map").style.height == "90%"){
+			document.getElementById("map").style.height = "60%";
+		}
+		else {
+			document.getElementById("map").style.height = "90%";
+			map.invalidateSize();
+		}
+	});
+}
+
+//Toggled size dependent on window size
+var window_height = $(window).height();
+var window_width = $(window).width();
+var window_ratio = (window_height / window_width);
+if ((window_height < 500) || (window_width < 500)) {
+	toggleMap_SmallScreen();
+}
+else {
+	toggleMap_LargeScreen();
+}
+
+//Changes chart dimensions for smaller screens or window sizes
+function responsiveChart(){
+	window_height = $(window).height();
+	window_width = $(window).width();
+	if ((window_height < 500) || (window_width < 500)) {
+		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="200px"></canvas>';
 	}
-	else {
-		document.getElementById("map").style.height = "775px";
-		map.invalidateSize();
-	}
-});
+}
+responsiveChart();
 
-
-
-
-
-
-	
 	
 
 
