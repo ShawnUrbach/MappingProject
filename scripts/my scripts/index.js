@@ -281,22 +281,15 @@ function demo_onEachFeature(feature, layer) {
 	
 	//Binds labels
 	if (feature.properties) {
-		layer.bindTooltip("<br><b><big>" + feature.properties.Census20_1
+		layer.bindTooltip("<b><big>" + feature.properties.Census20_1
 		+ "</br></b></big><br> <b>White:&nbsp;</b>" + feature.properties.Race_20117
-		+ "</b></big><b>%&nbsp;</b>"
-		+ "</br></b></big><br> <b>Black or African American:&nbsp;</b>" + feature.properties.Race_20118
-		+ "</b></big><b>%&nbsp;</b>"
-		+ "</br></b></big><br> <b>American Indian or Alaska Native:&nbsp;</b>" + feature.properties.Race_20119
-		+ "</b></big><b>%&nbsp;</b>"
-		+ "</br></b></big><br> <b>Asian:&nbsp;</b>" + feature.properties.Race_20120
-		+ "</b></big><b>%&nbsp;</b>"
-		+ "</br></b></big><br> <b>Native Hawaiin or Other Pacific Islander:&nbsp;</b>" + feature.properties.Race_20121
-		+ "</b></big><b>%&nbsp;</b>"
-		+ "</br></b></big><br> <b>Multiracial or Other Race:&nbsp;</b>" + (Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)).toFixed(2)
-		+ "</b></big><b>%&nbsp;</b>"
-		+ "</br></b></big><br> <b>Hispanic or Latino:&nbsp;</b>" + feature.properties.Race_20124
-		+ "</b></big><b>%&nbsp;</b>"
-		+ " <br><br>", {permanent: false});
+		+ "<br> <b>Black or African American:&nbsp;</b>" + feature.properties.Race_20118
+		+ "<br> <b>American Indian or Alaska Native:&nbsp;</b>" + feature.properties.Race_20119
+		+ "<br> <b>Asian:&nbsp;</b>" + feature.properties.Race_20120
+		+ "<br> <b>Native Hawaiin or Other Pacific Islander:&nbsp;</b>" + feature.properties.Race_20121
+		+ "<br> <b>Multiracial or Other Race:&nbsp;</b>" + (Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)).toFixed(2)
+		+ "<br> <b>Hispanic or Latino:&nbsp;</b>" + feature.properties.Race_20124
+		, {permanent: false});
 	}
 }
 

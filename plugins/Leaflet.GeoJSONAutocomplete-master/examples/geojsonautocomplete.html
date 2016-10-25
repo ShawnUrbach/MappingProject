@@ -40,7 +40,8 @@
                 }).addTo(map);
 
                 var options = {
-                    geojsonServiceAddress: "./testgeojsondata.json"
+					drawColor: 'green',
+                    geojsonServiceAddress: "./florida.geojson"
                 };
                 $("#searchContainer").GeoJsonAutocomplete(options);
             };
