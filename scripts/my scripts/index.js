@@ -1,3 +1,5 @@
+
+
 //Variable declarations
 var election2012;
 var election2008;
@@ -493,7 +495,28 @@ function responsiveChart(){
 }
 responsiveChart();
 
-	
+
+var options = {
+	data: tryit,
+
+	getValue: "County",
+
+	list: {
+		maxNumberOfElements: 10,
+		match: {
+			enabled: true
+		},
+		onSelectItemEvent: function() {
+			var latitude = $("#provider-file").getSelectedItemData().Latitude;
+			var longitude = $("#provider-file").getSelectedItemData().Longitude;
+			map.setView([latitude,longitude]);
+			map.setZoom(9);
+
+		}
+	}
+};
+
+$("#provider-file").easyAutocomplete(options);	
 
 
 
