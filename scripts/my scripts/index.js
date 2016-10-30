@@ -1,5 +1,3 @@
-
-
 //Variable declarations
 var election2012;
 var election2008;
@@ -223,13 +221,11 @@ function election_onEachFeature(feature, layer) {
 	
 	//Binds labels
 	if (feature.properties) {
-		layer.bindTooltip("<br><b><big>" + feature.properties.COUNTY 
+		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY 
 		+ ", " + feature.properties.STATE
-		+ "</br></b></big><br> <b>Democrat:&nbsp;</b>" + Number(feature.properties.PERCENT_DE).toFixed(2)
-		+ "</b></big><b>%&nbsp;</b>"
-		+ "</br></b></big><br> <b>Republican:&nbsp;</b>" + Number(feature.properties.PERCENT_RE).toFixed(2)
-		+ "</b></big><b>%&nbsp;</b>"
-		+ " <br><br>", {permanent: false});
+		+ "</b></u></big><br><div class = 'popup_body'> <b>Democrat:&nbsp;</b>" + Number(feature.properties.PERCENT_DE).toFixed(2) + "%"
+		+ "<br> <b>Republican:&nbsp;</b>" + Number(feature.properties.PERCENT_RE).toFixed(2) + "%</div>"
+		, {permanent: false});
 	}
 }
 
@@ -248,7 +244,7 @@ function census_onEachFeature(feature, layer) {
 			labels = ['1980','1990','2000'];
 		}
 		if (map.hasLayer(census2010) === true) {
-			census_data = [Number(feature.properties.Census1980),Number(feature.properties.Census1990),Number(feature.properties.Census2000),feature.properties.Total_Pop];
+			census_data = [Number(feature.properties.Census1980),Number(feature.properties.Census1990),Number(feature.properties.Census200),feature.properties.Total_Pop];
 			labels = ['1980','1990','2000','2010'];
 		}
 		insertCensusChart();
@@ -257,11 +253,11 @@ function census_onEachFeature(feature, layer) {
 	
 	//Binds labels
 	if (feature.properties) {
-		layer.bindTooltip("<br><b><big>" + feature.properties.Census20_1
-		+ "</br></b></big><br> <b>Total Population:&nbsp;</b>" + feature.properties.Total_Pop
-		+ "</br></b></big><br> <b>Growth Over Decade:&nbsp;</b>" + feature.properties.Pop_Growth
-		+ "</b></big><b>%&nbsp;</b>"
-		+ " <br><br>", {permanent: false});
+		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.Census2000
+		+ ", " + feature.properties.STATE
+		+ "</b></u></big><div class='popup_body'> <b>Total Population:&nbsp;</b>" + feature.properties.Total_Pop.toLocaleString()
+		+ "<br> <b>Growth Over Decade:&nbsp;</b>" + feature.properties.Pop_Growth + "%</div>"
+		, {permanent: false});
 	}
 }
 
@@ -283,14 +279,15 @@ function demo_onEachFeature(feature, layer) {
 	
 	//Binds labels
 	if (feature.properties) {
-		layer.bindTooltip("<b><big>" + feature.properties.Census20_1
-		+ "</br></b></big><br> <b>White:&nbsp;</b>" + feature.properties.Race_20117
-		+ "<br> <b>Black or African American:&nbsp;</b>" + feature.properties.Race_20118
-		+ "<br> <b>American Indian or Alaska Native:&nbsp;</b>" + feature.properties.Race_20119
-		+ "<br> <b>Asian:&nbsp;</b>" + feature.properties.Race_20120
-		+ "<br> <b>Native Hawaiin or Other Pacific Islander:&nbsp;</b>" + feature.properties.Race_20121
-		+ "<br> <b>Multiracial or Other Race:&nbsp;</b>" + (Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)).toFixed(2)
-		+ "<br> <b>Hispanic or Latino:&nbsp;</b>" + feature.properties.Race_20124
+		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.Census2000
+		+ ", " + feature.properties.STATE
+		+ "</b></u></big><div class = 'popup_body'> <b>White:&nbsp;</b>" + feature.properties.Race_20117 + "%"
+		+ "<br> <b>Black or African American:&nbsp;</b>" + feature.properties.Race_20118 + "%"
+		+ "<br> <b>American Indian or Alaska Native:&nbsp;</b>" + feature.properties.Race_20119 + "%"
+		+ "<br> <b>Asian:&nbsp;</b>" + feature.properties.Race_20120 + "%"
+		+ "<br> <b>Native Hawaiin or Other Pacific Islander:&nbsp;</b>" + feature.properties.Race_20121 + "%"
+		+ "<br> <b>Multiracial or Other Race:&nbsp;</b>" + (Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)).toFixed(2) + "%"
+		+ "<br> <b>Hispanic or Latino:&nbsp;</b>" + feature.properties.Race_20124 + "%</div>"
 		, {permanent: false});
 	}
 }
@@ -496,27 +493,28 @@ function responsiveChart(){
 responsiveChart();
 
 
+//Behavior of autocomplete search form
 var options = {
 	data: tryit,
 
 	getValue: "County",
 
 	list: {
-		maxNumberOfElements: 10,
+		maxNumberOfElements: 6,
 		match: {
 			enabled: true
 		},
-		onSelectItemEvent: function() {
-			var latitude = $("#provider-file").getSelectedItemData().Latitude;
-			var longitude = $("#provider-file").getSelectedItemData().Longitude;
-			map.setView([latitude,longitude]);
-			map.setZoom(9);
+		onClickEvent: function() {
+			var latitude = $("#county_search").getSelectedItemData().Latitude;
+			var longitude = $("#county_search").getSelectedItemData().Longitude;
+			map.setView([latitude,longitude], 9);
 
 		}
 	}
 };
 
-$("#provider-file").easyAutocomplete(options);	
+//Inserts autocomplete search form
+$("#county_search").easyAutocomplete(options);	
 
 
 
