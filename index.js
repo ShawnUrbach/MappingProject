@@ -455,7 +455,7 @@ document.getElementById('state_outlines').addEventListener("click", function(){
 
 //Behavior of autocomplete search form
 var options = {
-	data: tryit,
+	data: coordinates,
 
 	getValue: "County",
 

@@ -12,3 +12,8 @@ Census 2010:
 
 Race 2010:
 ![Alt text](https://github.com/ShawnUrbach/MappingProject/blob/master/Screenshot_Race2010.png?raw=true "Race 2010")
+
+Other features include:
+- Jquery autocomplete search tool loaded from geojson data.
+- Collapsable sidebar for user viewing of charts, tables, downloads, and map settings.
+- Dynamically changing map elements (legends, titles, etc.).

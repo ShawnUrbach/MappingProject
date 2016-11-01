@@ -1,4 +1,4 @@
-var tryit = [
+var coordinates = [
 { "County": "Autauga, AL", "Latitude": 32.54, "Longitude": "-86.64" }, 
 { "County": "Baldwin, AL", "Latitude": 30.66, "Longitude": "-87.74" }, 
 { "County": "Barbour, AL", "Latitude": 31.87, "Longitude": "-85.40" }, 
