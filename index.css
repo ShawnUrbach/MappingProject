@@ -1,7 +1,7 @@
 /*BASIC ELEMENT STYLES*/
 			
 html, body {
-	height: 90%;
+	height: 94%;
 }
 
 body {
@@ -133,27 +133,98 @@ td {
 	box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
 
-/*PAGE ELEMENT STYLES*/
+/*SIDEBAR STYLES*/
+
+.sidebar {
+	background-color: white;
+	height: 400px;
+	margin: 60px 50px 0 2%;
+	position: fixed;
+	width: 24%;
+	z-index: 1029;
+}
+
+.sidebar-header {
+	background-color: #777;
+}
+
+.sidebar-tabs>li.active, .sidebar-tabs>ul>li.active {
+	background-color: #777;
+}
+
+@media screen and (max-width: 1681px) {
+	.sidebar {
+		width: 30%;
+	}
+}
+
+@media screen and (max-width: 1367px) {
+	.sidebar {
+		width: 35%;
+	}
+}
+
+@media screen and (max-width: 1281px) {
+	.sidebar {
+		width: 40%;
+	}
+}
+
+@media screen and (max-width: 1025px) {
+	.sidebar {
+		width: 45%;
+	}
+}
+
+@media screen and (max-width: 870px) {
+	.sidebar {
+		margin-top: 130px;
+	}
+}
+
+@media screen and (max-width: 801px) {
+	.sidebar {
+		width: 50%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.sidebar {
+		width: 85%;
+	}
+}
+
+
+#myChart {
+	border: 1px solid;
+	border-color: #C0C0C0;
+	background-color: #f8f8f8;
+	margin: 10px;
+	pointer-events: none;
+}
+
+/*MAP AREA STYLES*/
 
 #map {
-	height: 60%;
+	height: 100%;
 	margin: -10px 0px 0 0px;
 	border: 1px solid;
 	border-color: #C0C0C0;
-	box-shadow: 2px 2px 1px #888888;
+	box-shadow: 10px 10px 10px -6px rgba(0,0,0,0.23);
 }
 
-@media screen and (max-width: 395px) {
+@media screen and (max-width: 870px) {
 	#map {
 		margin: 50px 0px 0 0px;
 	}
 }
 
+/*MAP TITLE STYLES*/
+
 #mapTitleArea {
 	margin-top: 10px;
 	border-style: none;
 	background-color: white;
-	border-bottom-style: dashed;
 	border-color: #C0C0C0;
 }
 
@@ -174,12 +245,5 @@ td {
 	padding-bottom: 10px;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	color: #555;
-}
-
-#myChart {
-	border: 1px solid;
-	border-color: #C0C0C0;
-	box-shadow: 2px 2px 1px #888888;
-	background-color: #f8f8f8;
 }
 			

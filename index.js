@@ -14,8 +14,12 @@ var map;
 //Loads Leaflet map object
 map = L.map('map', {
 	center: [39.1,-94.5],
-	zoom: 4.5
+	zoom: 4.5,
+	zoomControl: false
 });
+
+//Adds sidebar
+var sidebar = L.control.sidebar('sidebar').addTo(map);
 
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
@@ -171,7 +175,7 @@ function insertCensusChart(){
 			},
 			options: {
 				animation: {
-					duration: 1000,
+					duration: 500,
 					easing: 'easeInExpo',
 				}
 			}
@@ -213,10 +217,11 @@ function election_onEachFeature(feature, layer) {
 	});
 	
 	//Binds data with mouseover of objects for Chart.js
-	layer.on('mouseover', function (e) {
+	layer.on('click', function (e) {
         election_data = [feature.properties.PERCENT_DE,feature.properties.PERCENT_RE];
 		insertElectionChart();
-		document.getElementById("chart").className = "row row-centered show";
+		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';	
     });
 	
 	//Binds labels
@@ -238,7 +243,7 @@ function census_onEachFeature(feature, layer) {
 	});
 	
 	//Binds mouseover of objects with data for Chart.js
-	layer.on('mouseover', function (e) {
+	layer.on('click', function (e) {
         census_data = [Number(feature.properties.Total_1980),Number(feature.properties.Total_1990),feature.properties.Total_Pop];
 		if (map.hasLayer(census2000) === true) {
 			labels = ['1980','1990','2000'];
@@ -248,7 +253,8 @@ function census_onEachFeature(feature, layer) {
 			labels = ['1980','1990','2000','2010'];
 		}
 		insertCensusChart();
-		document.getElementById("chart").className = "row row-centered show";
+		document.getElementById('sbar-header').innerHTML = feature.properties.Census2000 + ", " + feature.properties.STATE +
+		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';
     });
 	
 	//Binds labels
@@ -270,11 +276,12 @@ function demo_onEachFeature(feature, layer) {
 	});
 	
 	//Binds mouseover of objects with data for Chart.js
-	layer.on('mouseover', function (e) {
+	layer.on('click', function (e) {
         demo_data = [feature.properties.Race_20117,feature.properties.Race_20118,feature.properties.Race_20119,feature.properties.Race_20120,feature.properties.Race_20121,
 		(Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)),feature.properties.Race_20124];
 		insertDemoChart();
-		document.getElementById("chart").className = "row row-centered show";
+		document.getElementById('sbar-header').innerHTML = feature.properties.Census2000 + ", " + feature.properties.STATE +
+		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';
     });
 	
 	//Binds labels
@@ -319,6 +326,7 @@ var demo2000 =L.geoJson(demo2000, {style: demoStyle, onEachFeature: demo_onEachF
 
 //Adds scale to map
 L.control.scale().addTo(map);
+new L.Control.Zoom({ position: 'topright' }).addTo(map);
 
 //Adds legend to map - Election Layers
 var electionLegend = L.control({position: 'bottomright'});
@@ -445,54 +453,6 @@ document.getElementById('state_outlines').addEventListener("click", function(){
 		map.removeLayer(mapboxTiles);
 });
 
-//Toggles map size via button for larger screens
-function toggleMap_LargeScreen (){
-	document.getElementById('userMessage').addEventListener("click", function(){
-		if (document.getElementById("map").style.height == "99%"){
-			document.getElementById("map").style.height = "60%";
-		}
-		else {
-			document.getElementById("map").style.height = "99%";
-			map.invalidateSize();
-		}
-	});
-}
-
-//Toggles map size via button for smaller screens
-function toggleMap_SmallScreen (){
-	document.getElementById('userMessage').addEventListener("click", function(){
-		if (document.getElementById("map").style.height == "90%"){
-			document.getElementById("map").style.height = "60%";
-		}
-		else {
-			document.getElementById("map").style.height = "90%";
-			map.invalidateSize();
-		}
-	});
-}
-
-//Toggled size dependent on window size
-var window_height = $(window).height();
-var window_width = $(window).width();
-var window_ratio = (window_height / window_width);
-if ((window_height < 500) || (window_width < 500)) {
-	toggleMap_SmallScreen();
-}
-else {
-	toggleMap_LargeScreen();
-}
-
-//Changes chart dimensions for smaller screens or window sizes
-function responsiveChart(){
-	window_height = $(window).height();
-	window_width = $(window).width();
-	if ((window_height < 500) || (window_width < 500)) {
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="200px"></canvas>';
-	}
-}
-responsiveChart();
-
-
 //Behavior of autocomplete search form
 var options = {
 	data: tryit,
@@ -516,7 +476,12 @@ var options = {
 //Inserts autocomplete search form
 $("#county_search").easyAutocomplete(options);	
 
-
-
-
-
+//Map options - toggles legend
+document.getElementById('disable_hover').addEventListener("click", function(){
+	if (document.getElementById('disable_hover').checked) {
+        map.removeControl(currentLegend);
+    } 
+	else {
+        map.addControl(currentLegend);
+    }
+});
