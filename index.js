@@ -1,15 +1,40 @@
-//Variable declarations
+//-------------------------------------------------VARIABLE DECLARATIONS--------------------------------------------------//
+
+
+//Variables: GeoJsons
 var election2012;
 var election2008;
 var census2010;
 var census2000;
 var demo2010;
 var demo2000;
+
+//Variables: Chart Data
 var election_data;
 var census_data;
 var demo_data;
+
+//Variables: Map Elements
 var labels;
 var map;
+var sidebar;
+var MBky;
+var mapboxTiles;
+var osm;
+
+//Variables: Legend Elements
+var electionLegend;
+var censusLegend;
+var demoLegend;
+var currentLegend;
+
+//Variables: Other
+var currentMap;
+var options; //<--Variable for autocomplete search
+
+
+//-------------------------------------------------FUNCTIONS--------------------------------------------------//
+
 
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
@@ -289,21 +314,15 @@ function demo_onEachFeature(feature, layer) {
 	}
 }
 
+
+//-------------------------------------------------MAP LAYERS--------------------------------------------------//
+
+
 //Loads Leaflet map object
 map = L.map('map', {
 	center: [39.1,-94.5],
 	zoom: 4.5,
 	zoomControl: false
-});
-
-//Adds sidebar
-var sidebar = L.control.sidebar('sidebar').addTo(map);
-
-//Collapses sidebar when user clicks header
-document.getElementById('sbar-header').addEventListener("click", function(){
-	document.getElementById("sidebar").className = "sidebar sidebar-left collapsed";
-	collapsethis.style.display = "none";
-	
 });
 
 //Creates custom map pane for states outline
@@ -312,31 +331,59 @@ map.getPane('labels').style.zIndex = 500;
 map.getPane('labels').style.pointerEvents = 'none';
 
 // Loads Mapbox API tile layer (states outline)
-var MBky = 'pk.eyJ1Ijoic3VyYmFjaDc3IiwiYSI6ImNpdTNhM3N1bzBoMXcydWxod2h2bmY5YmEifQ.Fgtr3TO0di86MEGdQm5eDg'
-var mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/surbach77/ciu3lfrhj00c42ipg1f9w4ofj/tiles/256/{z}/{x}/{y}?access_token=' + MBky, {
+MBky = 'pk.eyJ1Ijoic3VyYmFjaDc3IiwiYSI6ImNpdTNhM3N1bzBoMXcydWxod2h2bmY5YmEifQ.Fgtr3TO0di86MEGdQm5eDg'
+mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/surbach77/ciu3lfrhj00c42ipg1f9w4ofj/tiles/256/{z}/{x}/{y}?access_token=' + MBky, {
     attribution: '<a href="https://www.mapbox.com/map-feedback/">Mapbox</a>',
 	pane: 'labels'
 });
 
 //Loads background OpenStreetMap tile layer
-var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
 //Loads geoJson layers
-var election2012 =L.geoJson(election2012, {style: electionStyle, onEachFeature: election_onEachFeature}).addTo(map);
-var election2008 =L.geoJson(election2008, {style: electionStyle, onEachFeature: election_onEachFeature});
-var census2000 =L.geoJson(census2000, {style: censusStyle, onEachFeature: census_onEachFeature});
-var census2010 =L.geoJson(census2010, {style: censusStyle, onEachFeature: census_onEachFeature});
-var demo2010 =L.geoJson(demo2010, {style: demoStyle, onEachFeature: demo_onEachFeature});
-var demo2000 =L.geoJson(demo2000, {style: demoStyle, onEachFeature: demo_onEachFeature});
+election2012 =L.geoJson(election2012, {style: electionStyle, onEachFeature: election_onEachFeature}).addTo(map);
+election2008 =L.geoJson(election2008, {style: electionStyle, onEachFeature: election_onEachFeature});
+census2000 =L.geoJson(census2000, {style: censusStyle, onEachFeature: census_onEachFeature});
+census2010 =L.geoJson(census2010, {style: censusStyle, onEachFeature: census_onEachFeature});
+demo2010 =L.geoJson(demo2010, {style: demoStyle, onEachFeature: demo_onEachFeature});
+demo2000 =L.geoJson(demo2000, {style: demoStyle, onEachFeature: demo_onEachFeature});
+
+
+//-------------------------------------------------SIDEBAR--------------------------------------------------//
+
+
+//Adds sidebar
+sidebar = L.control.sidebar('sidebar').addTo(map);
+
+//Collapses sidebar when user clicks header
+document.getElementById('sbar-header').addEventListener("click", function(){
+	document.getElementById("sidebar").className = "sidebar sidebar-left collapsed";
+	collapsethis.style.display = "none";
+	
+});
+
+//Map options - toggles legend
+document.getElementById('disable_legend').addEventListener("click", function(){
+	if (document.getElementById('disable_legend').checked) {
+        map.removeControl(currentLegend);
+    } 
+	else {
+        map.addControl(currentLegend);
+    }
+});
+
+
+//-------------------------------------------------MAP ELEMENTS--------------------------------------------------//
+
 
 //Adds scale to map
 L.control.scale().addTo(map);
 new L.Control.Zoom({ position: 'topright' }).addTo(map);
 
 //Adds legend to map - Election Layers
-var electionLegend = L.control({position: 'bottomright'});
+electionLegend = L.control({position: 'bottomright'});
 electionLegend.onAdd = function (map) {
 
 	var div = L.DomUtil.create('div', 'legend'),
@@ -353,7 +400,7 @@ electionLegend.onAdd = function (map) {
 };
 
 //Adds legend to map - Census Layers
-var censusLegend = L.control({position: 'bottomright'});
+censusLegend = L.control({position: 'bottomright'});
 censusLegend.onAdd = function (map) {
 	var div = L.DomUtil.create('div', 'legend');
 	div.innerHTML +=
@@ -370,7 +417,7 @@ censusLegend.onAdd = function (map) {
 };
 
 //Adds legend to map - Demographics Layers
-var demoLegend = L.control({position: 'bottomright'});
+demoLegend = L.control({position: 'bottomright'});
 demoLegend.onAdd = function (map) {
 
 	var div = L.DomUtil.create('div', 'legend'),
@@ -388,9 +435,14 @@ demoLegend.onAdd = function (map) {
 
 //Adds legend
 electionLegend.addTo(map);
-var currentLegend = electionLegend;
+currentLegend = electionLegend;
+
+
+//-------------------------------------------------LAYER CONTROLS--------------------------------------------------//
+
+
 //Layer controls via drop down menu, dynamically change map title and legend
-var currentMap = election2012;
+currentMap = election2012;
 document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
 document.getElementById('election_08').addEventListener("click", function(){
 	map.addLayer(election2008);
@@ -454,8 +506,12 @@ document.getElementById('state_outlines').addEventListener("click", function(){
 		map.removeLayer(mapboxTiles);
 });
 
+
+//-------------------------------------------------SEARCH BAR--------------------------------------------------//
+
+
 //Behavior of autocomplete search form
-var options = {
+options = {
 	data: coordinates,
 
 	getValue: "County",
@@ -477,13 +533,5 @@ var options = {
 //Inserts autocomplete search form
 $("#county_search").easyAutocomplete(options);	
 
-//Map options - toggles legend
-document.getElementById('disable_legend').addEventListener("click", function(){
-	if (document.getElementById('disable_legend').checked) {
-        map.removeControl(currentLegend);
-    } 
-	else {
-        map.addControl(currentLegend);
-    }
-});
+
 
