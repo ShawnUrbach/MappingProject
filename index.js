@@ -11,16 +11,6 @@ var demo_data;
 var labels;
 var map;
 
-//Loads Leaflet map object
-map = L.map('map', {
-	center: [39.1,-94.5],
-	zoom: 4.5,
-	zoomControl: false
-});
-
-//Adds sidebar
-var sidebar = L.control.sidebar('sidebar').addTo(map);
-
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
 	return {
@@ -299,6 +289,23 @@ function demo_onEachFeature(feature, layer) {
 	}
 }
 
+//Loads Leaflet map object
+map = L.map('map', {
+	center: [39.1,-94.5],
+	zoom: 4.5,
+	zoomControl: false
+});
+
+//Adds sidebar
+var sidebar = L.control.sidebar('sidebar').addTo(map);
+
+//Collapses sidebar when user clicks header
+document.getElementById('sbar-header').addEventListener("click", function(){
+	document.getElementById("sidebar").className = "sidebar sidebar-left collapsed";
+	collapsethis.style.display = "none";
+	
+});
+
 //Creates custom map pane for states outline
 map.createPane('labels');
 map.getPane('labels').style.zIndex = 500;
@@ -340,7 +347,7 @@ electionLegend.onAdd = function (map) {
 	for (var i = 0; i < grades.length; i++) {
 		div.innerHTML +=
 			'<i style="background:' + electionGetColor(grades[i] + 0.01) + '"></i> ' +
-			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '<br>' : '+');
+			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
 	}
 	return div;
 };
@@ -374,7 +381,7 @@ demoLegend.onAdd = function (map) {
 	for (var i = 0; i < grades.length; i++) {
 		div.innerHTML +=
 			'<i style="background:' + demoGetColor(grades[i] + 0.01) + '"></i> ' +
-			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '<br>' : '+');
+			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
 	}
 	return div;
 };
@@ -393,7 +400,6 @@ document.getElementById('election_08').addEventListener("click", function(){
 	map.removeControl(currentLegend);
     currentLegend = electionLegend;
     electionLegend.addTo(map);
-	document.getElementById("chart").className = "row row-centered hidden";
 });
 document.getElementById('election_12').addEventListener("click", function(){
 	map.addLayer(election2012);
@@ -403,7 +409,6 @@ document.getElementById('election_12').addEventListener("click", function(){
 	map.removeControl(currentLegend);
     currentLegend = electionLegend;
     electionLegend.addTo(map);
-	document.getElementById("chart").className = "row row-centered hidden";
 });
 document.getElementById('census_00').addEventListener("click", function(){
 	map.addLayer(census2000);
@@ -413,7 +418,6 @@ document.getElementById('census_00').addEventListener("click", function(){
 	map.removeControl(currentLegend);
     currentLegend = censusLegend;
     censusLegend.addTo(map);
-	document.getElementById("chart").className = "row row-centered hidden";
 });
 document.getElementById('census_10').addEventListener("click", function(){
 	map.addLayer(census2010);
@@ -423,7 +427,6 @@ document.getElementById('census_10').addEventListener("click", function(){
 	map.removeControl(currentLegend);
     currentLegend = censusLegend;
     censusLegend.addTo(map);
-	document.getElementById("chart").className = "row row-centered hidden";
 });
 document.getElementById('demo_00').addEventListener("click", function(){
 	map.addLayer(demo2000);
@@ -433,7 +436,6 @@ document.getElementById('demo_00').addEventListener("click", function(){
 	map.removeControl(currentLegend);
     currentLegend = demoLegend;
     demoLegend.addTo(map);
-	document.getElementById("chart").className = "row row-centered hidden";
 });
 document.getElementById('demo_10').addEventListener("click", function(){
 	map.addLayer(demo2010);
@@ -443,7 +445,6 @@ document.getElementById('demo_10').addEventListener("click", function(){
 	map.removeControl(currentLegend);
     currentLegend = demoLegend;
     demoLegend.addTo(map);
-	document.getElementById("chart").className = "row row-centered hidden";
 });
 document.getElementById('state_outlines').addEventListener("click", function(){
 	if (map.hasLayer(mapboxTiles) === false) {
@@ -477,11 +478,12 @@ var options = {
 $("#county_search").easyAutocomplete(options);	
 
 //Map options - toggles legend
-document.getElementById('disable_hover').addEventListener("click", function(){
-	if (document.getElementById('disable_hover').checked) {
+document.getElementById('disable_legend').addEventListener("click", function(){
+	if (document.getElementById('disable_legend').checked) {
         map.removeControl(currentLegend);
     } 
 	else {
         map.addControl(currentLegend);
     }
 });
+
