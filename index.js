@@ -521,7 +521,7 @@ options = {
 		match: {
 			enabled: true
 		},
-		onClickEvent: function() {
+		onChooseEvent: function() {
 			var latitude = $("#county_search").getSelectedItemData().Latitude;
 			var longitude = $("#county_search").getSelectedItemData().Longitude;
 			map.setView([latitude,longitude], 9);
