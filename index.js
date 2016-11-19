@@ -8,6 +8,7 @@ var census2010;
 var census2000;
 var demo2010;
 var demo2000;
+var states;
 
 //Variables: Chart Data
 var election_data;
@@ -18,8 +19,6 @@ var demo_data;
 var labels;
 var map;
 var sidebar;
-var MBky;
-var mapboxTiles;
 var osm;
 
 //Variables: Legend Elements
@@ -39,7 +38,7 @@ var options; //<--Variable for autocomplete search
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
 	return {
-		fillColor: electionGetColor(feature.properties.PERCENT_DE), 
+		fillColor: electionGetColor(feature.properties.PER_DEM), 
 		weight: 1,
 		opacity: 1,
 		color: 'white',
@@ -51,7 +50,7 @@ function electionStyle(feature) {
 //Style properties for Census 2000/2010
 function censusStyle(feature) {
 	return {
-		fillColor: censusGetColor(feature.properties.Pop_Growth),
+		fillColor: censusGetColor(feature.properties.PER_CHA),
 		weight: 1,
 		opacity: 1,
 		color: 'white',
@@ -63,10 +62,21 @@ function censusStyle(feature) {
 //Style properties for Demographics 2000/2010
 function demoStyle(feature) {
 	return {
-		fillColor: demoGetColor(feature.properties.Race_20117),
+		fillColor: demoGetColor(feature.properties.PER_WHITE),
 		weight: 1,
 		opacity: 1,
 		color: 'white',
+		dashArray: '3',
+		fillOpacity: 0.7
+	};
+}
+
+//Style properties for State Outlines
+function statesStyle(feature) {
+	return {
+		weight: 3,
+		opacity: 1,
+		color: 'black',
 		dashArray: '3',
 		fillOpacity: 0.7
 	};
@@ -113,10 +123,10 @@ function highlightFeature(e) {
 	var layer = e.target;
 
 	layer.setStyle({
-		weight: 3,
+		weight: 4,
 		color: 'black',
 		dashArray: '',
-		fillOpacity: 0.7
+		fillOpacity: 0.7,
 	});
 
 	if (!L.Browser.ie && !L.Browser.opera) {
@@ -204,7 +214,7 @@ function insertDemoChart(){
 			type: 'bar',
 			data: {
 				labels: ['White',['Black or', 'African American'], ['American Indian or', 'Alaska Native'], 'Asian',
-				['Native Hawaiian or', 'Other Pacific Islander'], ['Multiracial or', 'Other Race'], ['Hispanic or', 'Latino']],  //X Axis
+				['Native Hawaiian or', 'Other Pacific Islander'], ['Multiracial'], ['Hispanic or', 'Latino']],  //X Axis
 				datasets: [{
 					label: "Race by Percentage of Total",
 					data: demo_data,  //Y Axis
@@ -233,7 +243,7 @@ function election_onEachFeature(feature, layer) {
 	
 	//Binds data with mouseover of objects for Chart.js
 	layer.on('click', function (e) {
-        election_data = [feature.properties.PERCENT_DE,feature.properties.PERCENT_RE];
+        election_data = [feature.properties.PER_DEM,feature.properties.PER_REP];
 		insertElectionChart();
 		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
 		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';	
@@ -243,8 +253,8 @@ function election_onEachFeature(feature, layer) {
 	if (feature.properties) {
 		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY 
 		+ ", " + feature.properties.STATE
-		+ "</b></u></big><br><div class = 'popup_body'> <b>Democrat:&nbsp;</b>" + Number(feature.properties.PERCENT_DE).toFixed(2) + "%"
-		+ "<br> <b>Republican:&nbsp;</b>" + Number(feature.properties.PERCENT_RE).toFixed(2) + "%</div>"
+		+ "</b></u></big><br><div class = 'popup_body'> <b>Democrat:&nbsp;</b>" + Number(feature.properties.PER_DEM).toFixed(2) + "%"
+		+ "<br> <b>Republican:&nbsp;</b>" + Number(feature.properties.PER_REP).toFixed(2) + "%</div>"
 		, {permanent: false});
 	}
 }
@@ -259,25 +269,25 @@ function census_onEachFeature(feature, layer) {
 	
 	//Binds mouseover of objects with data for Chart.js
 	layer.on('click', function (e) {
-        census_data = [Number(feature.properties.Total_1980),Number(feature.properties.Total_1990),feature.properties.Total_Pop];
+        census_data = [Number(feature.properties.TOT_1980),Number(feature.properties.TOT_1990),feature.properties.TOT_CUR];
 		if (map.hasLayer(census2000) === true) {
 			labels = ['1980','1990','2000'];
 		}
 		if (map.hasLayer(census2010) === true) {
-			census_data = [Number(feature.properties.Census1980),Number(feature.properties.Census1990),Number(feature.properties.Census200),feature.properties.Total_Pop];
+			census_data = [Number(feature.properties.TOT_1980),Number(feature.properties.TOT_1990),Number(feature.properties.TOT_2000),feature.properties.TOT_CUR];
 			labels = ['1980','1990','2000','2010'];
 		}
 		insertCensusChart();
-		document.getElementById('sbar-header').innerHTML = feature.properties.Census2000 + ", " + feature.properties.STATE +
+		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
 		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';
     });
 	
 	//Binds labels
 	if (feature.properties) {
-		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.Census2000
+		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY
 		+ ", " + feature.properties.STATE
-		+ "</b></u></big><div class='popup_body'> <b>Total Population:&nbsp;</b>" + feature.properties.Total_Pop.toLocaleString()
-		+ "<br> <b>Growth Over Decade:&nbsp;</b>" + feature.properties.Pop_Growth + "%</div>"
+		+ "</b></u></big><div class='popup_body'> <b>Total Population:&nbsp;</b>" + parseInt(feature.properties.TOT_CUR).toLocaleString()
+		+ "<br> <b>Growth Over Decade:&nbsp;</b>" + feature.properties.PER_CHA + "%</div>"
 		, {permanent: false});
 	}
 }
@@ -292,24 +302,24 @@ function demo_onEachFeature(feature, layer) {
 	
 	//Binds mouseover of objects with data for Chart.js
 	layer.on('click', function (e) {
-        demo_data = [feature.properties.Race_20117,feature.properties.Race_20118,feature.properties.Race_20119,feature.properties.Race_20120,feature.properties.Race_20121,
-		(Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)),feature.properties.Race_20124];
+        demo_data = [feature.properties.PER_WHITE,feature.properties.PER_BLACK,feature.properties.PER_HAW,feature.properties.PER_ASIAN,feature.properties.PER_NAT,
+		feature.properties.PER_MULTI,feature.properties.PER_LAT];
 		insertDemoChart();
-		document.getElementById('sbar-header').innerHTML = feature.properties.Census2000 + ", " + feature.properties.STATE +
+		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
 		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';
     });
 	
 	//Binds labels
 	if (feature.properties) {
-		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.Census2000
+		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY
 		+ ", " + feature.properties.STATE
-		+ "</b></u></big><div class = 'popup_body'> <b>White:&nbsp;</b>" + feature.properties.Race_20117 + "%"
-		+ "<br> <b>Black or African American:&nbsp;</b>" + feature.properties.Race_20118 + "%"
-		+ "<br> <b>American Indian or Alaska Native:&nbsp;</b>" + feature.properties.Race_20119 + "%"
-		+ "<br> <b>Asian:&nbsp;</b>" + feature.properties.Race_20120 + "%"
-		+ "<br> <b>Native Hawaiin or Other Pacific Islander:&nbsp;</b>" + feature.properties.Race_20121 + "%"
-		+ "<br> <b>Multiracial or Other Race:&nbsp;</b>" + (Number(feature.properties.Race_20122) + Number(feature.properties.Race_20123)).toFixed(2) + "%"
-		+ "<br> <b>Hispanic or Latino:&nbsp;</b>" + feature.properties.Race_20124 + "%</div>"
+		+ "</b></u></big><div class = 'popup_body'> <b>White:&nbsp;</b>" + feature.properties.PER_WHITE + "%"
+		+ "<br> <b>Black or African American:&nbsp;</b>" + feature.properties.PER_BLACK + "%"
+		+ "<br> <b>American Indian or Alaska Native:&nbsp;</b>" + feature.properties.PER_HAW + "%"
+		+ "<br> <b>Asian:&nbsp;</b>" + feature.properties.PER_ASIAN + "%"
+		+ "<br> <b>Native Hawaiin or Other Pacific Islander:&nbsp;</b>" + feature.properties.PER_NAT + "%"
+		+ "<br> <b>Multiracial:&nbsp;</b>" + feature.properties.PER_MULTI + "%"
+		+ "<br> <b>Hispanic or Latino:&nbsp;</b>" + feature.properties.PER_LAT + "%</div>"
 		, {permanent: false});
 	}
 }
@@ -330,12 +340,6 @@ map.createPane('labels');
 map.getPane('labels').style.zIndex = 500;
 map.getPane('labels').style.pointerEvents = 'none';
 
-// Loads Mapbox API tile layer (states outline)
-MBky = 'pk.eyJ1Ijoic3VyYmFjaDc3IiwiYSI6ImNpdTNhM3N1bzBoMXcydWxod2h2bmY5YmEifQ.Fgtr3TO0di86MEGdQm5eDg'
-mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/surbach77/ciu3lfrhj00c42ipg1f9w4ofj/tiles/256/{z}/{x}/{y}?access_token=' + MBky, {
-    attribution: '<a href="https://www.mapbox.com/map-feedback/">Mapbox</a>',
-	pane: 'labels'
-});
 
 //Loads background OpenStreetMap tile layer
 osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -349,6 +353,7 @@ census2000 =L.geoJson(census2000, {style: censusStyle, onEachFeature: census_onE
 census2010 =L.geoJson(census2010, {style: censusStyle, onEachFeature: census_onEachFeature});
 demo2010 =L.geoJson(demo2010, {style: demoStyle, onEachFeature: demo_onEachFeature});
 demo2000 =L.geoJson(demo2000, {style: demoStyle, onEachFeature: demo_onEachFeature});
+states =L.geoJson(states, {style: statesStyle, pane: 'labels'}).addTo(map);
 
 
 //-------------------------------------------------SIDEBAR--------------------------------------------------//
@@ -499,12 +504,20 @@ document.getElementById('demo_10').addEventListener("click", function(){
     demoLegend.addTo(map);
 });
 document.getElementById('state_outlines').addEventListener("click", function(){
-	if (map.hasLayer(mapboxTiles) === false) {
-		map.addLayer(mapboxTiles);
+	if (map.hasLayer(states) === false) {
+		map.addLayer(states);
 	}
 	else
-		map.removeLayer(mapboxTiles);
+		map.removeLayer(states);
 });
+document.getElementById('base_map').addEventListener("click", function(){
+	if (map.hasLayer(osm) === false) {
+		map.addLayer(osm);
+	}
+	else
+		map.removeLayer(osm);
+});
+
 
 
 //-------------------------------------------------SEARCH BAR--------------------------------------------------//
