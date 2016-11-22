@@ -152,6 +152,10 @@ td {
 	background-color: #777;
 }
 
+#settings_list {
+	margin-top: 10px;
+}
+
 @media screen and (max-width: 1681px) {
 	.sidebar {
 		width: 30%;
@@ -194,12 +198,32 @@ td {
 	}
 }
 
+#census_table{
+	display: none;
+}
+
+#election_table{
+	display: inline;
+}
+
+#demo_table{
+	display: none;
+}
+
+#info_chart {
+	min-height: 100%;
+	padding: 10px 20px 0px 0px;
+	overflow: hidden;
+}
+
 #myChart {
 	border: 1px solid;
 	border-color: #C0C0C0;
 	background-color: #f8f8f8;
 	margin: 10px;
 	pointer-events: none;
+	height: 90px;
+	width: 100px;
 }
 
 /*MAP AREA STYLES*/

@@ -9,6 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/sidebar-v2-master/css/leaflet-sidebar.min.css"> 		
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+	
 		<link rel="stylesheet" type="text/css" href="index.css"/>
 		
 		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -91,20 +92,121 @@
 					<h1 class="sidebar-header" id='sbar-header'>Click a county for more information
 						<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
 					</h1>
-				<canvas id="myChart" height="125px" width="150px"></canvas>  
+					<div class = "container-fluid" id="special">
+						<canvas id="myChart" height="90px" width="100px"></canvas>
+					</div>
 				</div>
 				<div class="sidebar-pane" id="table">
-					<h1 class="sidebar-header">Table<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+					<h1 class="sidebar-header" id='sbar-table'>Table<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+
+					
+						<div id = "election_table">
+						  <table class="table table-hover">
+							  <tr>
+								<th>Dem %</th>
+								<td id="democrat"></td>
+							  </tr>
+							  <tr>
+								<th>Rep %</th>
+								<td id="republican"></td>
+							  </tr>
+							  <tr>
+								<th>Other %</th>
+								<td id="independent"></td>
+							  </tr>
+							  <tr>
+								<th>Dem Tot.</th>
+								<td id="democratTotal"></td>
+							  </tr>
+							  <tr>
+								<th>Rep Tot.</th>
+								<td id="republicanTotal"></td>
+							  </tr>
+							  <tr>
+								<th>Oth Tot.</th>
+								<td id="independentTotal"></td>
+							  </tr>
+						  </table>
+						</div>
+						
+						<div id = "census_table">
+						  <table class="table table-hover">
+						  </table>
+						</div>
+						
+						<div id = "demo_table">
+						  <table class="table table-hover">
+							  <tr>
+								<th>White %</th>
+								<td id="white"></td>
+							  </tr>
+							  <tr>
+								<th>Black %</th>
+								<td id="black"></td>
+							  </tr>
+							  <tr>
+								<th>Native Am %</th>
+								<td id="native"></td>
+							  </tr>
+							  <tr>
+								<th>Asian %</th>
+								<td id="asian"></td>
+							  </tr>
+							  <tr>
+								<th>Pacific Isl %</th>
+								<td id="pacific"></td>
+							  </tr>
+							  <tr>
+								<th>Multiracial %</th>
+								<td id="multiracial"></td>
+							  </tr>
+							  <tr>
+								<th>Hispanic %</th>
+								<td id="hispanic"></td>
+							  </tr>
+							  <tr>
+								<th>White Tot.</th>
+								<td id="whiteTotal"></td>
+							  </tr>
+							  <tr>
+								<th>Black Tot.</th>
+								<td id="blackTotal"></td>
+							  </tr>
+							  <tr>
+								<th>Native Am Tot.</th>
+								<td id="nativeTotal"></td>
+							  </tr>
+							  <tr>
+								<th>Asian Tot.</th>
+								<td id="asianTotal"></td>
+							  </tr>
+							  <tr>
+								<th>Pacific Isl Tot.</th>
+								<td id="pacificTotal"></td>
+							  </tr>
+							  <tr>
+								<th>Multiracial Tot.</th>
+								<td id="multiracialTotal"></td>
+							  </tr>
+							  <tr>
+								<th>Hispanic Tot.</th>
+								<td id="hispanicTotal"></td>
+							  </tr>
+						  </table>
+						</div>
+						
+					
 				</div>
 
 				<div class="sidebar-pane" id="download">
-					<h1 class="sidebar-header">Download data<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+					<h1 class="sidebar-header">Download data (coming soon)<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
 				</div>
 
 				<div class="sidebar-pane" id="settings">
 					<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-					<div class="checkbox">
-						<label><input id="disable_legend" type="checkbox" value="">Remove legend from current layer</label>
+					<div class="checkbox" id="settings_list">
+						<p><label><input id="disable_legend" type="checkbox" value="">Remove legend from current layer</label></p>
+						<p><label><input id="bigMapMode" type="checkbox" value="">Big Map Mode</label></p>
 					</div>
 				</div>
 			</div>
