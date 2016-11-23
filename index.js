@@ -252,9 +252,9 @@ function election_onEachFeature(feature, layer) {
         election_data = [feature.properties.PER_DEM,feature.properties.PER_REP];
 		insertElectionChart();
 		document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
-		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';
+		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
-		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';	
+		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';	
 		
 		//Binds data to Bootstrap table in sidebar
 		document.getElementById('democrat').innerHTML = parseFloat(feature.properties.PER_DEM).toFixed(2) + "%";
@@ -322,9 +322,9 @@ function census_onEachFeature(feature, layer) {
 		}
 		insertCensusChart();
 		document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
-		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';
+		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
-		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';		
+		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';		
     });
 	
 	//Binds labels
@@ -352,9 +352,9 @@ function demo_onEachFeature(feature, layer) {
 		feature.properties.PER_MULTI,feature.properties.PER_LAT];
 		insertDemoChart();
 		document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
-		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';
+		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
-		'<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>';
+		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		
 		//Binds data to Bootstrap table in sidebar
 		document.getElementById('white').innerHTML = parseFloat(feature.properties.PER_WHITE).toFixed(2) + "%";
@@ -391,8 +391,7 @@ function demo_onEachFeature(feature, layer) {
 //Collapses sidebar when user clicks header
 function collapse_sidebar(id_name){
 	document.getElementById(id_name).addEventListener("click", function(){
-		document.getElementById("sidebar").className = "sidebar sidebar-left collapsed";
-		collapsethis.style.display = "none";	
+		document.getElementById("sidebar").className = "sidebar sidebar-left collapsed";	
 	});	
 }
 
@@ -449,7 +448,7 @@ document.getElementById('disable_legend').addEventListener("click", function(){
     }
 });
 
-//Map options - toggles Big Map Mode
+//Map options - toggles Big Map Mode (enlarge map)
 document.getElementById('bigMapMode').addEventListener("click", function(){
 	if (document.getElementById('bigMapMode').checked) {
 		var body = document.getElementsByTagName("body")[0];
@@ -468,6 +467,12 @@ document.getElementById('bigMapMode').addEventListener("click", function(){
 		map.invalidateSize();
     }
 });
+
+//Draggable sidebar
+$('#sidebar')
+	.draggable();
+	
+$( "#sidebar" ).draggable( "option", "handle", "h1, #info_chart, #table, #settings, #sbar-tabs" );
 
 
 //-------------------------------------------------MAP ELEMENTS--------------------------------------------------//
@@ -708,6 +713,3 @@ options = {
 
 //Inserts autocomplete search form
 $("#county_search").easyAutocomplete(options);	
-
-
-

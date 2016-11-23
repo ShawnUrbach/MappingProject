@@ -3,16 +3,18 @@
 
     <head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<link rel="icon" href="data:;base64,iVBORw0KGgo="> <!--Remove favicon error-->
         <link rel="stylesheet" type="text/css" href="lib/leaflet/leaflet.css"/>
 		<link rel="stylesheet" type="text/css" href="lib/Leaflet.label-master/dist/leaflet.label.css"/>
 		<link rel="stylesheet" type="text/css" href="lib/EasyAutocomplete-1.3.5/easy-autocomplete.min.css">
 		<link rel="stylesheet" type="text/css" href="lib/sidebar-v2-master/css/leaflet-sidebar.min.css"> 		
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-	
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 		<link rel="stylesheet" type="text/css" href="index.css"/>
 		
 		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
         <script src="lib/leaflet/leaflet.js" type="text/javascript"></script>
@@ -74,8 +76,8 @@
         <div id="map"></div>
 		
         <!-- Sidebar -->
-		<div id="sidebar" class="sidebar collapsed">
-			<div class="sidebar-tabs">
+		<div id="sidebar" class="sidebar collapsed" title ="Click and drag to move sidebar">
+			<div class="sidebar-tabs" id="sbar-tabs">
 				<ul role="tablist">
 					<li><a href="#info_chart" role="tab" title="View chart"><i class="fa fa-bar-chart-o"></i></a></li>
 					<li><a href="#table" role="tab" title="View table"><i class="fa fa-table"></i></a></li>
@@ -90,16 +92,15 @@
 			<div class="sidebar-content">
 				<div class="sidebar-pane" id="info_chart">
 					<h1 class="sidebar-header" id='sbar-header'>Click a county for more information
-						<span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+						<span class="sidebar-close" id="sbar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>
 					</h1>
 					<div class = "container-fluid" id="special">
 						<canvas id="myChart" height="90px" width="100px"></canvas>
 					</div>
 				</div>
 				<div class="sidebar-pane" id="table">
-					<h1 class="sidebar-header" id='sbar-table'>Table<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+					<h1 class="sidebar-header" id='sbar-table'>Table<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
 
-					
 						<div id = "election_table">
 						  <table class="table table-hover">
 							  <tr>
@@ -194,19 +195,18 @@
 							  </tr>
 						  </table>
 						</div>
-						
-					
+		
 				</div>
 
 				<div class="sidebar-pane" id="download">
-					<h1 class="sidebar-header">Download data (coming soon)<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+					<h1 class="sidebar-header">Download data (coming soon)<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
 				</div>
 
 				<div class="sidebar-pane" id="settings">
-					<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+					<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
 					<div class="checkbox" id="settings_list">
 						<p><label><input id="disable_legend" type="checkbox" value="">Remove legend from current layer</label></p>
-						<p><label><input id="bigMapMode" type="checkbox" value="">Big Map Mode</label></p>
+						<p><label><input id="bigMapMode" type="checkbox" value="">Enlarge map</label></p>
 					</div>
 				</div>
 			</div>

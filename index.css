@@ -156,27 +156,21 @@ td {
 	margin-top: 10px;
 }
 
-@media screen and (max-width: 1681px) {
+@media screen and (max-width: 1700px) {
 	.sidebar {
 		width: 30%;
 	}
 }
 
-@media screen and (max-width: 1367px) {
+@media screen and (max-width: 1400px) {
 	.sidebar {
-		width: 35%;
+		width: 32%;
 	}
 }
 
 @media screen and (max-width: 1281px) {
 	.sidebar {
 		width: 40%;
-	}
-}
-
-@media screen and (max-width: 1025px) {
-	.sidebar {
-		width: 45%;
 	}
 }
 
@@ -220,7 +214,7 @@ td {
 	border: 1px solid;
 	border-color: #C0C0C0;
 	background-color: #f8f8f8;
-	margin: 10px;
+	margin-top: 1%;
 	pointer-events: none;
 	height: 90px;
 	width: 100px;
