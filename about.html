@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<link rel="icon" href="data:;base64,iVBORw0KGgo="> <!--Remove favicon error-->		
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="index.css"/>
+		
+		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+        <title>United States Mapping Project</title>
+    </head>
+    <body>
+	
+	<!-- Navbar -->
+		<div class = "container-fluid">
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Interactive Mapping Project</a>
+				</div>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="maps.html">Maps <span class="sr-only">(current)</span></a></li>
+						<li><a href="#">Blog</a></li>
+						<li class="active"><a href="about.html">About</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		</div>
+		
+		<!-- About Text -->
+		<div class = "container-fluid">
+			<div class = "about_txt">
+				<h2>About this site</h2>
+				<p>Ever try to extract information from the U.S. Census website (or any other government website for that matter) and just give up because it is too damn hard and time consuming to get what you need?
+				Do you just want to know what percentage of people voted for Obama in (insert-your-county-here) in 2008 without having to parse through a couple different news websites to find it?  Do you just LOVE maps...echart_containerly INTERACTIVE maps,
+				and have a couple hours of time to waste at work?  Interested in reading about socioeconomic patterns affecting the U.S. over time?  Just want to look at tons of cool maps and public data without paying a giant subscription fee?  
+				These are some of the problems I've run into and this is why I've created this site.  
+				As it is my personal data playground, I hope you, dear reader, enjoy playing around in it as much as I do.  Thanks for visiting.
+				</p>
+				<h2>How to use this site</h2>
+				<p>There are four main components (with many more features and datasets I hope to add over time):</p>
+				<ul>
+				<li><b>The Map</b></li>
+				<p>The map area is where layers chosen by the user will be displayed.  I'm guessing you've seen a map before.  You know the drill: legend, map title, zoom buttons, and map scale are all here.  Hover over the map for more information.<p>
+				<li><b>Layer Controls/Search</b>
+				<p>At the top right of the page, you will find the layer controls and search bar.  Click "Select a layer" to change the dataset/layer currently displayed on the map. The underlying base map may also be toggled on or off.  
+				To the right of the layer controls is the search bar, where you may search for a specific geography (currently only counties) and the map will zoom to the selected location.
+				<li><b>The Sidebar</b>
+				<p>This is where the data geeks will have a lot of fun.  Clicking on a geography on the map will automatically turn on an associated chart and table to further extend the amount of data for the viewer.
+				Click the "Chart" button to open the chart view.  You may see a pie graph, bar chart, or line graph, depending on the dataset you are viewing.
+				Click the "Table" button to see the same data in table view, much like an Excel spreadsheet.
+				Click the "Downloads" button for data downloads (coming soon).
+				Click the "Settings" button for optional ways to change the map.
+				<li><b>The Blog</b>
+				<p> Visit my blog for detailed analysis of the data you will find on the maps.  
+				</ul>
+				<h2>About me</h2>
+				<p><img src="me.jpg" alt="Shawn Urbach" id="about_me_img">Hello.  My name is Shawn Urbach and I'm an urban planner, computer programmer, and self-described data nerd.
+				Maps and data have always been my obsession and I hope I'm not the only one who finds these kinds of interactive maps fascinating.  I've always found it annoying to find
+				this type of content all under one roof and not behind a massive paywall, so I decided to build it myself.  My educational and career background is in urban planning.  
+				I'm relatively new to web development and computer programming - so please bear with me!
+				Although I'm originally from the Orlando, Florida area, I currently live in Kansas City, Missouri.
+				</p>
+				<p> For questions, comments, or other inquiries, I can be reached at <a href="mailto:surbach77@gmail.com">surbach77@gmail.com</a>.
+			</div>
+		</div>
+		
+   </body>
+</html>

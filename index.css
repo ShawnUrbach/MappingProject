@@ -211,9 +211,6 @@ td {
 }
 
 #myChart {
-	border: 1px solid;
-	border-color: #C0C0C0;
-	background-color: #f8f8f8;
 	margin-top: 1%;
 	pointer-events: none;
 	height: 90px;
@@ -263,4 +260,118 @@ td {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	color: #555;
 }
-			
+		
+/*ABOUT PAGE STYLES*/		
+		
+.about_txt {
+	margin-left: 20%;
+	margin-right: 20%;	
+}		
+
+#about_me_img {
+	display: inline-block;
+	float: left;
+	height: 200px;
+	width: 200px;
+	margin-right: 10px;
+}
+
+/*LANDING PAGE STYLES*/  
+#jumboMain {
+	padding-left: 0px;
+	margin-left: 0px;
+	padding-top: 0px;
+	padding-bottom: 30px;
+	width: 100%;
+	margin-bottom: 0px;
+	margin-top: -20px;
+}
+
+.jumbotron {
+	background-color: white;
+	margin-bottom: 0px;
+}
+
+.jumboimage {
+	width:	2000px;
+	min-height: 1050px;
+}
+
+@media screen and (max-height: 1149px) {
+	.jumboimage {
+		min-height: 950px;
+	}
+}
+
+@media screen and (max-height: 1049px) {
+	.jumboimage {
+		min-height: 850px;
+	}
+}
+
+@media screen and (max-height: 949px) {
+	.jumboimage {
+		min-height: 750px;
+	}
+}
+
+@media screen and (max-height: 849px) {
+	.jumboimage {
+		min-height: 650px;
+	}
+}
+
+@media screen and (max-height: 749px) {
+	.jumboimage {
+		min-height: 550px;
+	}
+}
+
+@media screen and (max-height: 649px) {
+	.jumboimage {
+		min-height: 450px;
+	}
+}
+
+@media screen and (max-width: 750px) {
+	.jumboimage {
+		max-height: 300px;
+		min-height: 300px;
+	}
+}
+
+#jumboText {
+	position: absolute;
+    bottom: 10%;
+    left: 5%;
+    z-index: 20;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+
+.carousel-caption {
+	position: absolute;
+    bottom: 5%;
+    left: -40%;
+    z-index: 20;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+
+@media screen and (max-width: 1400px) {
+	.carousel-caption {
+		bottom: 3%;
+	}
+}
+
+@media screen and (max-width: 1000px) {
+	.carousel-caption {
+		bottom: 1%;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.carousel-caption {
+		bottom: 0%;
+	}
+}

@@ -248,7 +248,7 @@ function election_onEachFeature(feature, layer) {
 	
 	//Binds data with mouseover of objects for Chart.js
 	layer.on('click', function (e) {
-		document.getElementById('special').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
         election_data = [feature.properties.PER_DEM,feature.properties.PER_REP];
 		insertElectionChart();
 		document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
@@ -285,7 +285,7 @@ function census_onEachFeature(feature, layer) {
 	
 	//Binds mouseover of objects with data for Chart.js
 	layer.on('click', function (e) {
-		document.getElementById('special').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
         census_data = [Number(feature.properties.TOT_1980),Number(feature.properties.TOT_1990),feature.properties.TOT_CUR];
 		if (map.hasLayer(census2000) === true) {
 			labels = ['1980','1990','2000'];
@@ -347,7 +347,7 @@ function demo_onEachFeature(feature, layer) {
 	
 	//Binds mouseover of objects with data for Chart.js
 	layer.on('click', function (e) {
-		document.getElementById('special').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
         demo_data = [feature.properties.PER_WHITE,feature.properties.PER_BLACK,feature.properties.PER_NAT,feature.properties.PER_ASIAN,feature.properties.PER_HAW,
 		feature.properties.PER_MULTI,feature.properties.PER_LAT];
 		insertDemoChart();
@@ -553,7 +553,7 @@ document.getElementById('election_08').addEventListener("click", function(){
 	currentMap = election2008;
 	
 	//Change title
-	document.getElementById('special').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
 	document.getElementById('mapTitleText').innerHTML = '<center>2008: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
 	
 	//Change legend
@@ -573,7 +573,7 @@ document.getElementById('election_12').addEventListener("click", function(){
 	currentMap = election2012;
 	
 	//Change title
-	document.getElementById('special').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
 	document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
 	
 	//Change legend
@@ -594,7 +594,7 @@ document.getElementById('census_00').addEventListener("click", function(){
 	currentMap = census2000;
 	
 	//Change title
-	document.getElementById('special').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
 	document.getElementById('mapTitleText').innerHTML = '<center>2000: POPULATION GROWTH SINCE 1990 </center>';
 	
 	//Change legend
@@ -614,7 +614,7 @@ document.getElementById('census_10').addEventListener("click", function(){
 	currentMap = census2010;
 	
 	//Change title
-	document.getElementById('special').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
 	document.getElementById('mapTitleText').innerHTML = '<center>2010: POPULATION GROWTH SINCE 2000 </center>';
 	
 	//Change legend
@@ -634,7 +634,7 @@ document.getElementById('demo_00').addEventListener("click", function(){
 	currentMap = demo2000;
 	
 	//Change title
-	document.getElementById('special').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
 	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT WHITE </center>';
 	
 	//Change legend
@@ -654,7 +654,7 @@ document.getElementById('demo_10').addEventListener("click", function(){
 	currentMap = demo2010;
 	
 	//Change title
-	document.getElementById('special').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
 	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT WHITE </center>';
 	
 	//Change legend
@@ -687,7 +687,6 @@ document.getElementById('base_map').addEventListener("click", function(){
 });
 
 
-
 //-------------------------------------------------SEARCH BAR--------------------------------------------------//
 
 
@@ -713,3 +712,4 @@ options = {
 
 //Inserts autocomplete search form
 $("#county_search").easyAutocomplete(options);	
+
