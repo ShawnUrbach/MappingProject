@@ -386,3 +386,49 @@ td {
 		bottom: 0%;
 	}
 }
+
+
+
+
+
+
+@media screen and (max-width: 425px) {
+  #navbuttons{
+	  display: inline;
+  }
+  #image1 {
+	  content:url("img/elections-little.jpg");
+  }
+  #image2 {
+	  content:url("img/census-little.jpg");
+  }
+  #image3 {
+	  content:url("img/demo-little.jpg");
+  }
+}
+
+@media screen and (min-width: 426px) {
+	#navbuttons{
+	  display: none;
+	}
+}
+
+#navbuttons{
+	text-align: center;
+}
+
+.btn{
+	background-color: rgba(209,209,209,1);
+	border-width: 0px;
+	text-decoration: none;
+	color: white;
+}
+
+.btn:focus, .btn:active, .btn:hover{
+	background-color: grey;
+}
+
+#navbuttons > a {
+	text-decoration: none;
+	color: white;
+}
