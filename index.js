@@ -411,20 +411,19 @@ map.createPane('labels');
 map.getPane('labels').style.zIndex = 500;
 map.getPane('labels').style.pointerEvents = 'none';
 
-
 //Loads background OpenStreetMap tile layer
 osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
 //Loads geoJson layers
-election2012 =L.geoJson(election2012, {style: electionStyle, onEachFeature: election_onEachFeature}).addTo(map);
-election2008 =L.geoJson(election2008, {style: electionStyle, onEachFeature: election_onEachFeature});
-census2000 =L.geoJson(census2000, {style: censusStyle, onEachFeature: census_onEachFeature});
-census2010 =L.geoJson(census2010, {style: censusStyle, onEachFeature: census_onEachFeature});
-demo2010 =L.geoJson(demo2010, {style: demoStyle, onEachFeature: demo_onEachFeature});
-demo2000 =L.geoJson(demo2000, {style: demoStyle, onEachFeature: demo_onEachFeature});
-states =L.geoJson(states, {style: statesStyle, pane: 'labels'}).addTo(map);
+election2012 = new L.GeoJSON.AJAX("geography/election2012-min.geojson", {style: electionStyle, onEachFeature: election_onEachFeature}).addTo(map);
+election2008 = new L.GeoJSON.AJAX("geography/election2008-min.geojson", {style: electionStyle, onEachFeature: election_onEachFeature});
+census2000 = new L.GeoJSON.AJAX("geography/census2000-min.geojson", {style: censusStyle, onEachFeature: census_onEachFeature});
+census2010 = new L.GeoJSON.AJAX("geography/census2010-min.geojson", {style: censusStyle, onEachFeature: census_onEachFeature});
+demo2000 = new L.GeoJSON.AJAX("geography/race2000-min.geojson", {style: demoStyle, onEachFeature: demo_onEachFeature});
+demo2010 = new L.GeoJSON.AJAX("geography/race2010-min.geojson", {style: demoStyle, onEachFeature: demo_onEachFeature});
+states = new L.GeoJSON.AJAX("geography/states-min.geojson", {style: statesStyle, pane: 'labels'}).addTo(map);
 
 
 //-------------------------------------------------SIDEBAR--------------------------------------------------//
@@ -712,4 +711,9 @@ options = {
 
 //Inserts autocomplete search form
 $("#county_search").easyAutocomplete(options);	
+
+//Loading GIF displays on page load
+$(window).load(function() {
+	$(".loader").fadeOut("slow");
+})
 
