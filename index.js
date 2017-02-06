@@ -211,14 +211,22 @@ function insertCensusChart(){
 		});	
 }
 
+if ($(window).width() > 450) {
+	var demolabels = ['White',['Black or', 'African American'], ['American Indian or', 'Alaska Native'], 'Asian',
+			['Native Hawaiian or', 'Other Pacific Islander'], ['Multiracial'], ['Hispanic or', 'Latino']];
+}
+else {
+	var demolabels = ['White',['Black'], ['Nat. Am/Nat. AK.'], 'Asian',
+			['Nat. HI/Pac-Isl'], ['Multiracial'], ['Hisp/Lat']];
+}
+
 //Insert bar graph using Chart.js for Demographics 2000/2010
 function insertDemoChart(){
 	var ctx = document.getElementById("myChart");
 		var myChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
-				labels: ['White',['Black or', 'African American'], ['American Indian or', 'Alaska Native'], 'Asian',
-				['Native Hawaiian or', 'Other Pacific Islander'], ['Multiracial'], ['Hispanic or', 'Latino']],  //X Axis
+				labels: demolabels,  //X Axis
 				datasets: [{
 					label: "Race by Percentage of Total",
 					data: demo_data,  //Y Axis
@@ -375,16 +383,31 @@ function demo_onEachFeature(feature, layer) {
 	
 	//Binds labels
 	if (feature.properties) {
-		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY
-		+ ", " + feature.properties.STATE
-		+ "</b></u></big><div class = 'popup_body'> <b>White:&nbsp;</b>" + feature.properties.PER_WHITE + "%"
-		+ "<br> <b>Black or African American:&nbsp;</b>" + feature.properties.PER_BLACK + "%"
-		+ "<br> <b>American Indian or Alaska Native:&nbsp;</b>" + feature.properties.PER_NAT + "%"
-		+ "<br> <b>Asian:&nbsp;</b>" + feature.properties.PER_ASIAN + "%"
-		+ "<br> <b>Native Hawaiin or Other Pacific Islander:&nbsp;</b>" + feature.properties.PER_HAW + "%"
-		+ "<br> <b>Multiracial:&nbsp;</b>" + feature.properties.PER_MULTI + "%"
-		+ "<br> <b>Hispanic or Latino:&nbsp;</b>" + feature.properties.PER_LAT + "%</div>"
-		, {permanent: false});
+		if ($(window).width() < 450) {
+			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY
+			+ ", " + feature.properties.STATE
+			+ "</b></u></big><div class = 'popup_body'> <b>White:&nbsp;</b>" + feature.properties.PER_WHITE + "%"
+			+ "<br> <b>Black:&nbsp;</b>" + feature.properties.PER_BLACK + "%"
+			+ "<br> <b>Nat. Am/Nat. AK:&nbsp;</b>" + feature.properties.PER_NAT + "%"
+			+ "<br> <b>Asian:&nbsp;</b>" + feature.properties.PER_ASIAN + "%"
+			+ "<br> <b>Nat. HI/Pac-Isl:&nbsp;</b>" + feature.properties.PER_HAW + "%"
+			+ "<br> <b>Multiracial:&nbsp;</b>" + feature.properties.PER_MULTI + "%"
+			+ "<br> <b>Hispanic/Lat:&nbsp;</b>" + feature.properties.PER_LAT + "%</div>"
+			, {permanent: false});
+		}
+		
+		else {
+			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY
+			+ ", " + feature.properties.STATE
+			+ "</b></u></big><div class = 'popup_body'> <b>White:&nbsp;</b>" + feature.properties.PER_WHITE + "%"
+			+ "<br> <b>Black or African American:&nbsp;</b>" + feature.properties.PER_BLACK + "%"
+			+ "<br> <b>American Indian or Alaska Native:&nbsp;</b>" + feature.properties.PER_NAT + "%"
+			+ "<br> <b>Asian:&nbsp;</b>" + feature.properties.PER_ASIAN + "%"
+			+ "<br> <b>Native Hawaiin or Other Pacific Islander:&nbsp;</b>" + feature.properties.PER_HAW + "%"
+			+ "<br> <b>Multiracial:&nbsp;</b>" + feature.properties.PER_MULTI + "%"
+			+ "<br> <b>Hispanic or Latino:&nbsp;</b>" + feature.properties.PER_LAT + "%</div>"
+			, {permanent: false});
+		}
 	}
 }
 
@@ -713,7 +736,15 @@ options = {
 $("#county_search").easyAutocomplete(options);	
 
 //Loading GIF displays on page load
-$(window).load(function() {
-	$(".loader").fadeOut("slow");
-})
 
+election2012.on('data:loaded', function() {
+  $(".loader").fadeOut("slow");
+});
+
+
+if ($(window).width() < 450) {
+	document.getElementById("sidebar").className = "sidebar sidebar-left";
+	document.getElementById("infotab").className = "active";
+	document.getElementById("info_chart").className = "sidebar-pane ui-draggable-handle active";
+	document.getElementById("userMessage").innerHTML = "Scroll down for info charts and map options.";
+} 

@@ -3,14 +3,14 @@
 
     <head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-		<link rel="icon" href="data:;base64,iVBORw0KGgo="> <!--Remove favicon error-->
+		<link rel="shortcut icon" href="favicon.ico" />	
         <link rel="stylesheet" type="text/css" href="lib/leaflet/leaflet-min.css"/>
 		<link rel="stylesheet" type="text/css" href="lib/Leaflet.label-master/dist/leaflet.label-min.css"/>
 		<link rel="stylesheet" type="text/css" href="lib/EasyAutocomplete-1.3.5/easy-autocomplete.min.css">
 		<link rel="stylesheet" type="text/css" href="lib/sidebar-v2-master/css/leaflet-sidebar.min.css"> 		
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="index-min.css"/>
+		<link rel="stylesheet" type="text/css" href="index.css"/>
 		
 		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -41,13 +41,13 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.html"><img src="img/vizmapperlogo.png" alt="Logo" height="25px" width="150px"></a>
+					<a class="navbar-brand" href="http://www.vizmapper.com"><img src="img/vizmapperlogo.png" alt="Logo" height="25px" width="150px"></a>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="maps.html">Maps <span class="sr-only">(current)</span></a></li>
-						<li><a href="http://www.vizmapper.com/blog/">Blog</a></li>
-						<li><a href="about.html">About</a></li>
+						<li class="active"><a href="maps">Maps <span class="sr-only">(current)</span></a></li>
+						<li><a href="http://www.vizmapper.com/blog">Blog</a></li>
+						<li><a href="about">About</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
@@ -82,7 +82,7 @@
 		<div id="sidebar" class="sidebar collapsed" title ="Click and drag to move sidebar">
 			<div class="sidebar-tabs" id="sbar-tabs">
 				<ul role="tablist">
-					<li><a href="#info_chart" role="tab" title="View chart"><i class="fa fa-bar-chart-o"></i></a></li>
+					<li id = "infotab"><a href="#info_chart" role="tab" title="View chart"><i class="fa fa-bar-chart-o"></i></a></li>
 					<li><a href="#table" role="tab" title="View table"><i class="fa fa-table"></i></a></li>
 					<li><a href="#download" role="tab" title="Download data"><i class="fa fa-download"></i></a></li>
 				</ul>
