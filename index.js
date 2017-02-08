@@ -560,157 +560,26 @@ electionLegend.addTo(map);
 currentLegend = electionLegend;
 
 
-//-------------------------------------------------LAYER CONTROLS--------------------------------------------------//
-
-
-//Layer controls via drop down menu, dynamically change map title, legend, and table type
-currentMap = election2012;
-currentTable = document.getElementById("election_table");
-document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
-
-document.getElementById('election_08').addEventListener("click", function(){
-	//Change layer
-	map.addLayer(election2008);
-	map.removeLayer(currentMap);
-	currentMap = election2008;
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2008: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = electionLegend;
-    electionLegend.addTo(map);
-	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("election_table");
-	currentTable.style.display = "inline";	
-});
-document.getElementById('election_12').addEventListener("click", function(){
-	//Change layer
-	map.addLayer(election2012);
-	map.removeLayer(currentMap);
-	currentMap = election2012;
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = electionLegend;
-    electionLegend.addTo(map);
-	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("election_table");
-	currentTable.style.display = "inline";
-	
-});
-document.getElementById('census_00').addEventListener("click", function(){
-	//Change layer
-	map.addLayer(census2000);
-	map.removeLayer(currentMap);
-	currentMap = census2000;
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2000: POPULATION GROWTH SINCE 1990 </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = censusLegend;
-    censusLegend.addTo(map);
-	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("census_table");
-	currentTable.style.display = "inline";
-});
-document.getElementById('census_10').addEventListener("click", function(){
-	//Change layer
-	map.addLayer(census2010);
-	map.removeLayer(currentMap);
-	currentMap = census2010;
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2010: POPULATION GROWTH SINCE 2000 </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = censusLegend;
-    censusLegend.addTo(map);
-	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("census_table");
-	currentTable.style.display = "inline";
-});
-document.getElementById('demo_00').addEventListener("click", function(){
-	//Change layer
-	map.addLayer(demo2000);
-	map.removeLayer(currentMap);
-	currentMap = demo2000;
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT WHITE </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
-	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("demo_table");
-	currentTable.style.display = "inline";
-});
-document.getElementById('demo_10').addEventListener("click", function(){
-	//Change layer
-	map.addLayer(demo2010);
-	map.removeLayer(currentMap);
-	currentMap = demo2010;
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT WHITE </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
-	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("demo_table");
-	currentTable.style.display = "inline";
-});
-
-//State outline toggle
-document.getElementById('state_outlines').addEventListener("click", function(){
-	if (map.hasLayer(states) === false) {
-		map.addLayer(states);
-	}
-	else
-		map.removeLayer(states);
-});
-
-//Base map toggle
-document.getElementById('base_map').addEventListener("click", function(){
-	if (map.hasLayer(osm) === false) {
-		map.addLayer(osm);
-	}
-	else
-		map.removeLayer(osm);
-});
-
-
 //-------------------------------------------------SEARCH BAR--------------------------------------------------//
 
+
+	
+
+//Loading GIF displays on page load
+
+election2012.on('data:loaded', function() {
+  $(".loader").fadeOut("slow");
+});
+
+
+if ($(window).width() < 450) {
+	document.getElementById("sidebar").className = "sidebar sidebar-left";
+	document.getElementById("infotab").className = "active";
+	document.getElementById("info_chart").className = "sidebar-pane ui-draggable-handle active";
+	document.getElementById("userMessage").innerHTML = "Scroll down for info charts and map options.";
+	document.getElementById("countySearch").innerHTML = "<input type='text' id='county_search' class='form-control' placeholder='Find a county'/>";
+	document.getElementById("searchDiv").innerHTML = '';
+} 
 
 //Behavior of autocomplete search form
 options = {
@@ -733,18 +602,155 @@ options = {
 };
 
 //Inserts autocomplete search form
-$("#county_search").easyAutocomplete(options);	
+$("#county_search").easyAutocomplete(options);
 
-//Loading GIF displays on page load
 
-election2012.on('data:loaded', function() {
-  $(".loader").fadeOut("slow");
+//-------------------------------------------------LAYER CONTROLS--------------------------------------------------//
+
+
+//Layer controls via drop down menu, dynamically change map title, legend, and table type
+currentMap = election2012;
+currentTable = document.getElementById("election_table");
+document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+
+$('.election_08').click(function(){
+	//Change layer
+	map.addLayer(election2008);
+	map.removeLayer(currentMap);
+	currentMap = election2008;
+	
+	//Change title
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2008: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+	
+	//Change legend
+	map.removeControl(currentLegend);
+    currentLegend = electionLegend;
+    electionLegend.addTo(map);
+	
+	//Change table
+	currentTable.style.display = "none";
+	currentTable = document.getElementById("election_table");
+	currentTable.style.display = "inline";	
+});
+$('.election_12').click(function(){
+	//Change layer
+	map.addLayer(election2012);
+	map.removeLayer(currentMap);
+	currentMap = election2012;
+	
+	//Change title
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+	
+	//Change legend
+	map.removeControl(currentLegend);
+    currentLegend = electionLegend;
+    electionLegend.addTo(map);
+	
+	//Change table
+	currentTable.style.display = "none";
+	currentTable = document.getElementById("election_table");
+	currentTable.style.display = "inline";
+	
+});
+$('.census_00').click(function(){
+	//Change layer
+	map.addLayer(census2000);
+	map.removeLayer(currentMap);
+	currentMap = census2000;
+	
+	//Change title
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2000: POPULATION GROWTH SINCE 1990 </center>';
+	
+	//Change legend
+	map.removeControl(currentLegend);
+    currentLegend = censusLegend;
+    censusLegend.addTo(map);
+	
+	//Change table
+	currentTable.style.display = "none";
+	currentTable = document.getElementById("census_table");
+	currentTable.style.display = "inline";
+});
+$('.census_10').click(function(){
+	//Change layer
+	map.addLayer(census2010);
+	map.removeLayer(currentMap);
+	currentMap = census2010;
+	
+	//Change title
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2010: POPULATION GROWTH SINCE 2000 </center>';
+	
+	//Change legend
+	map.removeControl(currentLegend);
+    currentLegend = censusLegend;
+    censusLegend.addTo(map);
+	
+	//Change table
+	currentTable.style.display = "none";
+	currentTable = document.getElementById("census_table");
+	currentTable.style.display = "inline";
+});
+$('.demo_00').click(function(){
+	//Change layer
+	map.addLayer(demo2000);
+	map.removeLayer(currentMap);
+	currentMap = demo2000;
+	
+	//Change title
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT WHITE </center>';
+	
+	//Change legend
+	map.removeControl(currentLegend);
+    currentLegend = demoLegend;
+    demoLegend.addTo(map);
+	
+	//Change table
+	currentTable.style.display = "none";
+	currentTable = document.getElementById("demo_table");
+	currentTable.style.display = "inline";
+});
+$('.demo_10').click(function(){
+	//Change layer
+	map.addLayer(demo2010);
+	map.removeLayer(currentMap);
+	currentMap = demo2010;
+	
+	//Change title
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT WHITE </center>';
+	
+	//Change legend
+	map.removeControl(currentLegend);
+    currentLegend = demoLegend;
+    demoLegend.addTo(map);
+	
+	//Change table
+	currentTable.style.display = "none";
+	currentTable = document.getElementById("demo_table");
+	currentTable.style.display = "inline";
+});
+
+//State outline toggle
+$('.state_outlines').click(function(){
+	if (map.hasLayer(states) === false) {
+		map.addLayer(states);
+	}
+	else
+		map.removeLayer(states);
+});
+
+//Base map toggle
+$('.base_map').click(function(){
+	if (map.hasLayer(osm) === false) {
+		map.addLayer(osm);
+	}
+	else
+		map.removeLayer(osm);
 });
 
 
-if ($(window).width() < 450) {
-	document.getElementById("sidebar").className = "sidebar sidebar-left";
-	document.getElementById("infotab").className = "active";
-	document.getElementById("info_chart").className = "sidebar-pane ui-draggable-handle active";
-	document.getElementById("userMessage").innerHTML = "Scroll down for info charts and map options.";
-} 

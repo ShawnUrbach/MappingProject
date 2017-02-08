@@ -49,22 +49,22 @@
 						<li><a href="http://www.vizmapper.com/blog">Blog</a></li>
 						<li><a href="about">About</a></li>
 					</ul>
-					<ul class="nav navbar-nav navbar-right">
+					<ul class="nav navbar-nav navbar-right" id = "selectDiv">
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select a layer <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li id = "election_08"><a href="#">Election 2008</a></li>
-								<li id = "election_12"><a href="#">Election 2012</a></li>
-								<li id = "census_00"><a href="#">Census 2000</a></li>
-								<li id = "census_10"><a href="#">Census 2010</a></li>
-								<li id = "demo_00"><a href="#">Demographics 2000</a></li>
-								<li id = "demo_10"><a href="#">Demographics 2010</a></li>
+								<li id = "election_08" class = "election_08"><a href="#">Election 2008</a></li>
+								<li id = "election_12" class = "election_12"><a href="#">Election 2012</a></li>
+								<li id = "census_00" class = "census_00"><a href="#">Census 2000</a></li>
+								<li id = "census_10" class = "census_10"><a href="#">Census 2010</a></li>
+								<li id = "demo_00" class = "demo_00"><a href="#">Demographics 2000</a></li>
+								<li id = "demo_10" class = "demo_10"><a href="#">Demographics 2010</a></li>
 								<li role="separator" class="divider"></li>
-								<li><a href="#"><div class = "checkbox"><input id ="state_outlines" type="checkbox" checked>State Outlines</input></div></a></li>
-								<li><a href="#"><div class = "checkbox"><input id ="base_map" type="checkbox" checked>Base Map</input></div></a></li>
+								<li><a href="#"><div class = "checkbox"><input id ="state_outlines" class = "state_outlines" type="checkbox" checked>State Outlines</input></div></a></li>
+								<li><a href="#"><div class = "checkbox"><input id ="base_map" class = "base_map" type="checkbox" checked>Base Map</input></div></a></li>
 							</ul>
 						</li>
-					<form class="navbar-form navbar-left">
+					<form class="navbar-form navbar-left" id = "searchDiv">
 					<div class="form-group">
 					<input type="text" id="county_search" class="form-control" placeholder="Find a county">
 					</div>
@@ -74,6 +74,22 @@
 			</div>
 		</nav>
 		</div>
+		<div id = "countySearch"></div>
+		<div class="dropdown btn-default" id="layerSelect">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select a layer <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li id = "election_08" class = "election_08"><a href="#">Election 2008</a></li>
+								<li id = "election_12" class = "election_12"><a href="#">Election 2012</a></li>
+								<li id = "census_00" class = "census_00"><a href="#">Census 2000</a></li>
+								<li id = "census_10" class = "census_10"><a href="#">Census 2010</a></li>
+								<li id = "demo_00" class = "demo_00"><a href="#">Demographics 2000</a></li>
+								<li id = "demo_10" class = "demo_10"><a href="#">Demographics 2010</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#"><div class = "checkbox"><input id ="state_outlines" class ="state_outlines" type="checkbox" checked>State Outlines</input></div></a></li>
+								<li><a href="#"><div class = "checkbox"><input id ="base_map" class = "base_map" type="checkbox" checked>Base Map</input></div></a></li>
+							</ul>
+						</div>
+					
 		
 		<!-- Map -->
         <div id="map"></div>

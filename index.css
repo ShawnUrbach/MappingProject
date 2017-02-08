@@ -426,12 +426,41 @@ td {
 	border: 1px solid;
 	border-color: #C0C0C0;
 	box-shadow: none;
+	z-index: 1;
+ }
+ .about_txt {
+	margin-left: 5%;
+	margin-right: 5%;
+ }
+ #about_me_img {
+	display: block;
+	margin-right: 50%;
+	margin-bottom: 5%;
+ }
+ #countySearch {
+	 width: 48%;
+	 display: inline-block;
+	 float: left;
+ }
+ #layerSelect{
+	 width: 48%;
+	 display: inline-block;
+	 float: right;
+	 text-align: center;
+	 padding: 5px 5px 8px 5px;
+	 margin-bottom: 5px;
+ }
+ #searchDiv, #selectDiv {
+	 display: none;
  }
 }
 
 @media screen and (min-width: 426px) {
 	#navbuttons{
 	  display: none;
+	}
+	#layerSelect{
+		display: none;
 	}
 }
 
