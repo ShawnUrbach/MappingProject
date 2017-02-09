@@ -55,58 +55,63 @@ td {
 	opacity: 0.7;
 }
 
-#colorlegend1 {
-	background-color: #b30000;
+#colorlegend1, #colorlegend2, #colorlegend3, #colorlegend4, #colorlegend5, #colorlegend6, #colorlegend7, #colorlegend8, #colorlegend9 {
 	height: 18px;
 	width: 18px;
+}
+
+#colorlegend1 {
+	background-color: #b30000;
 }
 
 #colorlegend2 {
 	background-color: #e60000;
-	height: 18px;
-	width: 18px;
 }
 
 #colorlegend3 {
 	background-color: #ff1a1a;
-	height: 18px;
-	width: 18px;
 }
 
 #colorlegend4 {
 	background-color: #ff4d4d;
-	height: 18px;
-	width: 18px;
 }
 
 #colorlegend5 {
 	background-color: #ff8080;
-	height: 18px;
-	width: 18px;
 }
 
 #colorlegend6 {
 	background-color: #ffb3b3;
-	height: 18px;
-	width: 18px;
 }
 
 #colorlegend7 {
 	background-color: #ffe6e6;
-	height: 18px;
-	width: 18px;
 }
 
 #colorlegend8 {
 	background-color: #9999ff;
-	height: 18px;
-	width: 18px;
 }
 
 #colorlegend9 {
 	background-color: #00008B;
-	height: 18px;
-	width: 18px;
+}
+
+@media screen and (max-width: 425px) {
+	.legend {
+		line-height: 10px;
+		padding: 8px;
+		height: 100px;
+	}
+	
+	#colorlegend1,#colorlegend2,#colorlegend3,#colorlegend4,#colorlegend5,#colorlegend6,#colorlegend7,#colorlegend8,#colorlegend9{
+		height: 10px;
+		width: 10px;	
+	}
+	
+	.legend i {
+		width: 10px;
+		height: 10px;
+	}
 }
 
 /*NAVBAR STYLES*/
@@ -141,6 +146,27 @@ td {
 
 #eac-container-provider-file {
 	box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+@media screen and (max-width: 425px) {
+	#countySearch {
+		width: 48%;
+		display: inline-block;
+		float: left;
+	}
+	
+	#layerSelect{
+		width: 48%;
+		display: inline-block;
+		float: right;
+		text-align: center;
+		padding: 5px 5px 8px 5px;
+		margin-bottom: 5px;
+	}
+	
+	#searchDiv, #selectDiv {
+		display: none;
+	}
 }
 
 /*SIDEBAR STYLES*/
@@ -227,6 +253,17 @@ td {
 	width: 100px;
 }
 
+@media screen and (max-width: 425px) {
+	.sidebar {
+		height: 400px;
+		margin: 205% 0 0 0;
+		position: absolute;
+		width: 100%;
+		clear: both;
+		top: -100px;
+	}
+}
+
 /*MAP AREA STYLES*/
 
 #map {
@@ -235,6 +272,18 @@ td {
 	border: 1px solid;
 	border-color: #C0C0C0;
 	box-shadow: 10px 10px 10px -6px rgba(0,0,0,0.23);
+}
+
+@media screen and (max-width: 425px) {
+	#map {
+		height: 80%;
+		width: 100%;
+		margin: 0px;
+		border: 1px solid;
+		border-color: #C0C0C0;
+		box-shadow: none;
+		z-index: 1;
+	}
 }
 
 /*MAP TITLE STYLES*/
@@ -278,6 +327,19 @@ td {
 	height: 200px;
 	width: 200px;
 	margin-right: 10px;
+}
+
+@media screen and (max-width: 425px) {
+	.about_txt {
+		margin-left: 5%;
+		margin-right: 5%;
+	}
+	
+	#about_me_img {
+		display: block;
+		margin-right: 50%;
+		margin-bottom: 5%;
+	}	
 }
 
 /*LANDING PAGE STYLES*/  
@@ -380,84 +442,27 @@ td {
 	}
 }
 
-
-
-
-
-
 @media screen and (max-width: 425px) {
-  #navbuttons{
-	  display: inline;
-  }
-  #image1 {
-	  content:url("img/elections-little.jpg");
-  }
-  #image2 {
-	  content:url("img/census-little.jpg");
-  }
-  #image3 {
-	  content:url("img/demo-little.jpg");
-  }
-  .sidebar {
-	height: 400px;
-	margin: 205% 0 0 0;
-	position: absolute;
-	width: 100%;
-	clear: both;
-	top: -100px;
-  }
-  .legend {
-	line-height: 10px;
-	padding: 8px;
-	height: 100px;
-  }
-  #colorlegend1,#colorlegend2,#colorlegend3,#colorlegend4,#colorlegend5,#colorlegend6,#colorlegend7,#colorlegend8,#colorlegend9{
-	height: 10px;
-    width: 10px;	
-  }
- .legend i {
-	width: 10px;
-	height: 10px;
- }
- #map {
-	height: 80%;
-	width: 100%;
-	margin: 0px;
-	border: 1px solid;
-	border-color: #C0C0C0;
-	box-shadow: none;
-	z-index: 1;
- }
- .about_txt {
-	margin-left: 5%;
-	margin-right: 5%;
- }
- #about_me_img {
-	display: block;
-	margin-right: 50%;
-	margin-bottom: 5%;
- }
- #countySearch {
-	 width: 48%;
-	 display: inline-block;
-	 float: left;
- }
- #layerSelect{
-	 width: 48%;
-	 display: inline-block;
-	 float: right;
-	 text-align: center;
-	 padding: 5px 5px 8px 5px;
-	 margin-bottom: 5px;
- }
- #searchDiv, #selectDiv {
-	 display: none;
- }
+	#navbuttons{
+		display: inline;
+	}
+	
+	#electionImg {
+		content:url("img/MainMapElection_small.jpg");
+	}
+	
+	#populationImg {
+		content:url("img/MainMapPopulation_small.jpg");
+	}
+	
+	#demographicsImg {
+		content:url("img/MainMapDemographics_small.jpg");
+	}
 }
 
 @media screen and (min-width: 426px) {
 	#navbuttons{
-	  display: none;
+		display: none;
 	}
 	#layerSelect{
 		display: none;

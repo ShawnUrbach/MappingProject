@@ -211,6 +211,7 @@ function insertCensusChart(){
 		});	
 }
 
+//Changes Demographics 2000/2010 layer labels for smaller screen sizes
 if ($(window).width() > 450) {
 	var demolabels = ['White',['Black or', 'African American'], ['American Indian or', 'Alaska Native'], 'Asian',
 			['Native Hawaiian or', 'Other Pacific Islander'], ['Multiracial'], ['Hispanic or', 'Latino']];
@@ -560,18 +561,15 @@ electionLegend.addTo(map);
 currentLegend = electionLegend;
 
 
-//-------------------------------------------------SEARCH BAR--------------------------------------------------//
+//-------------------------------------------------OTHER--------------------------------------------------//
 
-
-	
 
 //Loading GIF displays on page load
-
 election2012.on('data:loaded', function() {
   $(".loader").fadeOut("slow");
 });
 
-
+//Change map page elements for smaller screen sizes
 if ($(window).width() < 450) {
 	document.getElementById("sidebar").className = "sidebar sidebar-left";
 	document.getElementById("infotab").className = "active";
@@ -580,6 +578,10 @@ if ($(window).width() < 450) {
 	document.getElementById("countySearch").innerHTML = "<input type='text' id='county_search' class='form-control' placeholder='Find a county'/>";
 	document.getElementById("searchDiv").innerHTML = '';
 } 
+
+
+//-------------------------------------------------SEARCH BAR--------------------------------------------------//
+
 
 //Behavior of autocomplete search form
 options = {
@@ -752,5 +754,6 @@ $('.base_map').click(function(){
 	else
 		map.removeLayer(osm);
 });
+
 
 
