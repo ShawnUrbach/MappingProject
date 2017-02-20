@@ -96,6 +96,44 @@ td {
 	background-color: #00008B;
 }
 
+#electionlegend1, #electionlegend2, #electionlegend3, #electionlegend4, #electionlegend5, #electionlegend6, #electionlegend7, #electionlegend8 {
+	height: 18px;
+	width: 18px;
+}
+
+#electionlegend1 {
+	background-color: #104896;
+}
+
+#electionlegend2 {
+	background-color: #2d67b7;
+}
+
+#electionlegend3 {
+	background-color: #4880ce;
+}
+
+#electionlegend4 {
+	background-color: #87b9ff;
+}
+
+#electionlegend5 {
+	background-color: #f7d4d4;
+}
+
+#electionlegend6 {
+	background-color: #ff9696;
+}
+
+#electionlegend7 {
+	background-color: #ff6d6d;
+}
+
+#electionlegend8 {
+	background-color: #ff2b2b;
+}
+
+
 @media screen and (max-width: 425px) {
 	.legend {
 		line-height: 10px;
@@ -103,7 +141,8 @@ td {
 		height: 100px;
 	}
 	
-	#colorlegend1,#colorlegend2,#colorlegend3,#colorlegend4,#colorlegend5,#colorlegend6,#colorlegend7,#colorlegend8,#colorlegend9{
+	#colorlegend1,#colorlegend2,#colorlegend3,#colorlegend4,#colorlegend5,#colorlegend6,#colorlegend7,#colorlegend8,#colorlegend9,
+	#electionlegend1, #electionlegend2, #electionlegend3, #electionlegend4, #electionlegend5, #electionlegend6, #electionlegend7, #electionlegend8 {
 		height: 10px;
 		width: 10px;	
 	}

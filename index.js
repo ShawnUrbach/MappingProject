@@ -39,7 +39,7 @@ var options; //<--Variable for autocomplete search
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
 	return {
-		fillColor: electionGetColor(feature.properties.PER_DEM), 
+		fillColor: electionGetColor(feature.properties.DIF), 
 		weight: 1,
 		opacity: 1,
 		color: 'white',
@@ -85,14 +85,14 @@ function statesStyle(feature) {
 
 //Colors for Election 2012/2008
 function electionGetColor(w) {
-	return w > 80 ? '#104896' :
-		w > 60  ? '#2d67b7' :
-		w > 55  ? '#4880ce' :
-		w > 50  ? '#87b9ff' :
-		w > 45   ? '#f7d4d4' :
-		w > 40   ? '#ff9696' :
-		w > 20   ? '#ff6d6d' :
-		w > 0   ? '#ff2b2b' : '#01347c';
+	return w > 30 ? '#104896' :
+		w > 20  ? '#2d67b7' :
+		w > 10  ? '#4880ce' :
+		w > 0  ? '#87b9ff' :
+		w > -10   ? '#f7d4d4' :
+		w > -20   ? '#ff9696' :
+		w > -30   ? '#ff6d6d' :
+		w > -100   ? '#ff2b2b' : '#01347c';
 }
 
 //Colors for Census 2000/2010
@@ -441,7 +441,8 @@ osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 //Loads geoJson layers
-election2012 = new L.GeoJSON.AJAX("geography/election2012-min.geojson", {style: electionStyle, onEachFeature: election_onEachFeature}).addTo(map);
+election2016 = new L.GeoJSON.AJAX("geography/election2016-min.geojson", {style: electionStyle, onEachFeature: election_onEachFeature}).addTo(map);
+election2012 = new L.GeoJSON.AJAX("geography/election2012-min.geojson", {style: electionStyle, onEachFeature: election_onEachFeature});
 election2008 = new L.GeoJSON.AJAX("geography/election2008-min.geojson", {style: electionStyle, onEachFeature: election_onEachFeature});
 census2000 = new L.GeoJSON.AJAX("geography/census2000-min.geojson", {style: censusStyle, onEachFeature: census_onEachFeature});
 census2010 = new L.GeoJSON.AJAX("geography/census2010-min.geojson", {style: censusStyle, onEachFeature: census_onEachFeature});
@@ -508,17 +509,16 @@ new L.Control.Zoom({ position: 'topright' }).addTo(map);
 //Adds legend to map - Election Layers
 electionLegend = L.control({position: 'bottomright'});
 electionLegend.onAdd = function (map) {
-
-	var div = L.DomUtil.create('div', 'legend'),
-		grades = [0, 20, 40, 45, 50, 55, 60, 80],
-		labels = [];
-
-	//Loops through density intervals and generate a label with a colored square for each interval
-	for (var i = 0; i < grades.length; i++) {
-		div.innerHTML +=
-			'<i style="background:' + electionGetColor(grades[i] + 0.01) + '"></i> ' +
-			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
-	}
+	var div = L.DomUtil.create('div', 'legend');
+	div.innerHTML +=
+		'<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="electionlegend1"></td><td>30%+ D</td>' +
+		'</tr><tr><td class="color" id="electionlegend2"></td><td>20-30% D</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend3"></td><td>10-20% D</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend4"></td><td>0-10% D</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend5"></td><td>0-10% R</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend6"></td><td>10-20% R</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend7"></td><td>20-30% R</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend8"></td><td>30%+ R</td></tr>'
 	return div;
 };
 
@@ -611,9 +611,9 @@ $("#county_search").easyAutocomplete(options);
 
 
 //Layer controls via drop down menu, dynamically change map title, legend, and table type
-currentMap = election2012;
+currentMap = election2016;
 currentTable = document.getElementById("election_table");
-document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+document.getElementById('mapTitleText').innerHTML = '<center>2016: PRESIDENTIAL ELECTION RESULTS</center>';
 
 $('.election_08').click(function(){
 	//Change layer
@@ -623,7 +623,7 @@ $('.election_08').click(function(){
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2008: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2008: PRESIDENTIAL ELECTION RESULTS</center>';
 	
 	//Change legend
 	map.removeControl(currentLegend);
@@ -643,7 +643,28 @@ $('.election_12').click(function(){
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT VOTE FOR PRESIDENTIAL DEMOCRATIC CANDIDATE</center>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2012: PRESIDENTIAL ELECTION RESULTS</center>';
+	
+	//Change legend
+	map.removeControl(currentLegend);
+    currentLegend = electionLegend;
+    electionLegend.addTo(map);
+	
+	//Change table
+	currentTable.style.display = "none";
+	currentTable = document.getElementById("election_table");
+	currentTable.style.display = "inline";
+	
+});
+$('.election_16').click(function(){
+	//Change layer
+	map.addLayer(election2016);
+	map.removeLayer(currentMap);
+	currentMap = election2016;
+	
+	//Change title
+	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2016: PRESIDENTIAL ELECTION RESULTS</center>';
 	
 	//Change legend
 	map.removeControl(currentLegend);
