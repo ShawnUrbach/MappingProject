@@ -17,3 +17,8 @@ Other features include:
 - Jquery autocomplete search tool loaded from geojson data.
 - Collapsable sidebar for user viewing of charts, tables, downloads, and map settings.
 - Dynamically changing map elements (legends, titles, etc.).
+- Responsive layout for mobile devices.
+
+# License:
+
+Note that I am not offering this code under any open-source license.  By default, this code cannot be used, copied, distributed, or modified without my express written consent.

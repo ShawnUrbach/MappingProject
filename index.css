@@ -9,6 +9,21 @@ body {
 	margin: 0;
 }
 
+footer {
+	text-align: center;
+	font-size: 0.8em;
+}
+
+@media screen and (max-width: 425px) {
+	#mapsFooter {
+		display: none;
+	}
+}
+
+#mapsFooter {
+	margin-top: -20px;
+}
+
 td {
 	padding: 0 0 0 10px;
 }
@@ -189,13 +204,13 @@ td {
 
 @media screen and (max-width: 425px) {
 	#countySearch {
-		width: 48%;
+		width: 45%;
 		display: inline-block;
 		float: left;
 	}
 	
 	#layerSelect{
-		width: 48%;
+		width: 45%;
 		display: inline-block;
 		float: right;
 		text-align: center;
@@ -303,6 +318,12 @@ td {
 	}
 }
 
+@media screen and (min-width: 425px) {
+	#License {
+		display: none;
+	}
+}
+
 /*MAP AREA STYLES*/
 
 #map {
@@ -348,7 +369,7 @@ td {
 
 #userMessage {
 	text-align: center;
-	padding-bottom: 10px;
+	padding-bottom: 0px;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	color: #555;
 }
@@ -386,7 +407,7 @@ td {
 	padding-left: 0px;
 	margin-left: 0px;
 	padding-top: 0px;
-	padding-bottom: 30px;
+	padding-bottom: 10px;
 	width: 100%;
 	margin-bottom: 0px;
 	margin-top: -20px;
@@ -482,7 +503,7 @@ td {
 }
 
 @media screen and (max-width: 425px) {
-	#navbuttons{
+	#navbuttons {
 		display: inline;
 	}
 	
@@ -496,6 +517,11 @@ td {
 	
 	#demographicsImg {
 		content:url("img/MainMapDemographics_small.jpg");
+	}
+
+	footer {
+		font-size: 0.8em;
+		margin-top: 20px;
 	}
 }
 
