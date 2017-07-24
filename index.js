@@ -32,8 +32,20 @@ var currentMap;
 var currentTable;
 var options; //<--Variable for autocomplete search
 
+var demTot = 0;
+var repTot = 0;
+var othTot = 0;
+var demPer;
+var repPer;
+var othPer;
+var selectMode = true;
+var selectList = [];
+var selectList2 = [];
+var selected = false;
+
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
+
 
 
 //Style properties for Election 2012/2008
@@ -121,23 +133,40 @@ function demoGetColor(w) {
 
 //Highlights features on mouseover
 function highlightFeature(e) {
-	var layer = e.target;
+	
+	if (selectMode == false){
+		var layer = e.target;
 
-	layer.setStyle({
-		weight: 4,
-		color: 'black',
-		dashArray: '',
-		fillOpacity: 0.7,
-	});
+		layer.setStyle({
+			weight: 4,
+			color: 'black',
+			dashArray: '',
+			fillOpacity: 0.7,
+		});
 
-	if (!L.Browser.ie && !L.Browser.opera) {
-		layer.bringToFront();
+		if (!L.Browser.ie && !L.Browser.opera) {
+			layer.bringToFront();
+		}
 	}
 }
 
 //Resets hightlight on mouseout for Election 2008/2012
 function resetHighlightElection(e) {
-	election2012.resetStyle(e.target);
+	if (selectMode == false){
+		election2012.resetStyle(e.target);
+	}
+}
+
+function resetHighlightElection2(e) {
+	if (selectMode == true){
+		var layer = e.target;
+		if (layer.options.weight == 4){
+		selected = true;
+		election2012.resetStyle(e.target);
+		} else {
+			selected = false;
+		}
+	}
 }
 
 //Resets hightlight on mouseout for Census 2000/2010
@@ -152,7 +181,33 @@ function resetHighlightDemo(e) {
 
 //Zooms to feature on click
 function zoomToFeature(e) {
-	map.fitBounds(e.target.getBounds());
+
+	
+	if (selectMode == false){
+		map.fitBounds(e.target.getBounds());
+	}
+
+	var layer = e.target;
+	if (layer.options.weight == 4){
+		selected = true;
+	} else {
+		selected = false;
+	}
+	
+
+	
+
+	layer.setStyle({
+		weight: 4,
+		color: 'black',
+		dashArray: '',
+		fillOpacity: 0.7,
+	});
+	
+
+	if (!L.Browser.ie && !L.Browser.opera) {
+		layer.bringToFront();
+	}
 }
 
 //Insert pie graph using Chart.js for Election 2008/2012
@@ -161,13 +216,14 @@ function insertElectionChart(){
 		var myChart = new Chart(ctx, {
 			type: 'pie',
 			data: {
-				labels: ['Democrat', 'Republican'],  //X Axis
+				labels: ['Democrat', 'Republican', 'Other'],  //X Axis
 				datasets: [{
 					data: election_data,  //Y Axis
 					borderWidth: 1,
 					backgroundColor: [
 						'blue',
-						'red'
+						'red',
+						'yellow'
 					],
 				}]
 			},
@@ -249,16 +305,22 @@ function insertDemoChart(){
 
 //Behavior for mousever and click- Election layers
 function election_onEachFeature(feature, layer) {
+	
+
+	
+	
 	layer.on({
 		mouseover: highlightFeature,
 		mouseout: resetHighlightElection,
-		click: zoomToFeature
+		click: zoomToFeature,
+		contextmenu: resetHighlightElection2
 	});
+
 	
 	//Binds data with mouseover of objects for Chart.js
 	layer.on('click', function (e) {
 		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-        election_data = [feature.properties.PER_DEM,feature.properties.PER_REP];
+        election_data = [feature.properties.PER_DEM, feature.properties.PER_REP, feature.properties.PER_OTH];
 		insertElectionChart();
 		document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
@@ -272,6 +334,101 @@ function election_onEachFeature(feature, layer) {
 		document.getElementById('democratTotal').innerHTML = parseInt(feature.properties.TOT_DEM).toLocaleString();
 		document.getElementById('republicanTotal').innerHTML = parseInt(feature.properties.TOT_REP).toLocaleString();
 		document.getElementById('independentTotal').innerHTML = parseInt(feature.properties.TOT_OTH).toLocaleString();
+		
+		selectList.push(feature.properties.COUNTY);
+		selectList2.push(feature.properties.STATE);
+		console.log(selectList);
+		console.log(selectList2);
+		
+		$('#electionTest tr:last').after('<tr><td>'+selectList.slice(-1)[0]+'</td><td>'+selectList2.slice(-1)[0]+'</td></tr>');
+
+		if (selected == false){
+		demTot2 = (feature.properties.TOT_DEM);
+		demTot += demTot2;
+		console.log(demTot);
+		
+		repTot2 = (feature.properties.TOT_REP);
+		repTot += repTot2;
+		
+		othTot2 = (feature.properties.TOT_OTH);
+		othTot += othTot2;
+		}
+		
+		demPer = ((demTot / (demTot + repTot + othTot))*100);
+		repPer = ((repTot / (demTot + repTot + othTot))*100);
+		othPer = ((othTot / (demTot + repTot + othTot))*100);
+		
+
+		
+		if (selectMode === true) {
+			
+			document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+		election_data = [demPer,repPer, othPer];
+		insertElectionChart();
+		document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+		
+		document.getElementById('democrat').innerHTML = parseFloat(demPer).toFixed(2) + "%";
+		document.getElementById('republican').innerHTML = parseFloat(repPer).toFixed(2) + "%";
+		document.getElementById('independent').innerHTML = parseFloat(othPer).toFixed(2) + "%";
+		document.getElementById('democratTotal').innerHTML = parseInt(demTot).toLocaleString();
+		document.getElementById('republicanTotal').innerHTML = parseInt(repTot).toLocaleString();
+		document.getElementById('independentTotal').innerHTML = parseInt(othTot).toLocaleString();
+		
+		
+		
+		}
+		
+    });
+	
+	
+		layer.on('contextmenu', function (e) {
+			
+		
+	
+		if (selected == true){
+		demTot2 = (feature.properties.TOT_DEM);
+		demTot -= demTot2;
+		console.log(demTot);
+		
+		repTot2 = (feature.properties.TOT_REP);
+		repTot -= repTot2;
+		
+		othTot2 = (feature.properties.TOT_OTH);
+		othTot -= othTot2;
+		
+		}
+		
+		demPer = ((demTot / (demTot + repTot + othTot))*100);
+		repPer = ((repTot / (demTot + repTot + othTot))*100);
+		othPer = ((othTot / (demTot + repTot + othTot))*100);
+		
+		if (selectMode === true) {
+			
+				document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+		election_data = [demPer,repPer, othPer];
+		insertElectionChart();
+		document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+		
+		document.getElementById('democrat').innerHTML = parseFloat(demPer).toFixed(2) + "%";
+		document.getElementById('republican').innerHTML = parseFloat(repPer).toFixed(2) + "%";
+		document.getElementById('independent').innerHTML = parseFloat(othPer).toFixed(2) + "%";
+		document.getElementById('democratTotal').innerHTML = parseInt(demTot).toLocaleString();
+		document.getElementById('republicanTotal').innerHTML = parseInt(repTot).toLocaleString();
+		document.getElementById('independentTotal').innerHTML = parseInt(othTot).toLocaleString();
+		
+		
+		
+		}
+
+
+		
+		
     });
 
 	//Binds labels
@@ -774,6 +931,15 @@ $('.base_map').click(function(){
 	}
 	else
 		map.removeLayer(osm);
+});
+
+//Selection Toggle
+$('.selectMode').click(function(){
+	if (selectMode === false) {
+		selectMode = true;
+	}
+	else
+		selectMode = false;
 });
 
 

@@ -3,13 +3,14 @@
 
     <head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<meta name="description" content="Find interactive maps for a variety of layers including presidential elections, decennial census, and more. Alternatively view data with charts and graphs."/>
 		<link rel="shortcut icon" href="favicon.ico" />	
         <link rel="stylesheet" type="text/css" href="lib/leaflet/leaflet-min.css"/>
 		<link rel="stylesheet" type="text/css" href="lib/Leaflet.label-master/dist/leaflet.label-min.css"/>
 		<link rel="stylesheet" type="text/css" href="lib/EasyAutocomplete-1.3.5/easy-autocomplete.min.css">
 		<link rel="stylesheet" type="text/css" href="lib/sidebar-v2-master/css/leaflet-sidebar.min.css"> 		
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="index-min.css"/>
 		
 		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -23,7 +24,7 @@
 		<script src="lib/sidebar-v2-master/js/leaflet-sidebar.min.js" type="text/javascript"></script>
 		<script src="lib/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js" type="text/javascript"></script>
 		
-        <title>VizMapper/Maps</title>
+        <title>Maps - VizMapper</title>
     </head>
     <body>
 	
@@ -50,8 +51,14 @@
 							<li><a href="about">About</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right" id = "selectDiv">
+						<li class="dropdown2">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Multi-Select <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="#"><div class = "checkbox"><input id ="selectMode" class = "selectMode" type="checkbox" checked>On/Off</input></div></a></li>
+								</ul>
+							</li>
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select a layer <span class="caret"></span></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Layers <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li id = "election_08" class = "election_08"><a href="#">Election 2008</a></li>
 									<li id = "election_12" class = "election_12"><a href="#">Election 2012</a></li>
@@ -103,7 +110,9 @@
 				<ul role="tablist">
 					<li id = "infotab"><a href="#info_chart" role="tab" title="View chart"><i class="fa fa-bar-chart-o"></i></a></li>
 					<li><a href="#table" role="tab" title="View table"><i class="fa fa-table"></i></a></li>
+					<li><a href="#selections" role="tab" title="Selections"><i class="fa fa-object-group" aria-hidden="true"></i></a></li>
 					<li><a href="#download" role="tab" title="Download data"><i class="fa fa-download"></i></a></li>
+					
 				</ul>
 
 				<ul role="tablist">
@@ -220,6 +229,27 @@
 		
 				</div>
 
+				<div class="sidebar-pane" id="selections">
+					<h1 class="sidebar-header">Selection<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
+					
+					
+					<div id = "election_table2">
+						  <table class="table table-hover" id="electionTest">
+							  <tr>
+								<th>County</th>
+								<th>State</td>
+							  </tr>
+						  </table>
+						</div>
+					
+
+
+					
+					
+			
+					
+				</div>
+				
 				<div class="sidebar-pane" id="download">
 					<h1 class="sidebar-header">Download data (coming soon)<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
 				</div>
@@ -254,8 +284,7 @@
 
 	<!-- Javascript -->
 	<script src="geography/counties_latlong-min.js" type="text/javascript"></script>
-	<script src="index-min.js" type="text/javascript"></script>
-	
+	<script src="index.js" type="text/javascript"></script>
     </body>
 </html>
 
