@@ -335,14 +335,15 @@ function election_onEachFeature(feature, layer) {
 		document.getElementById('republicanTotal').innerHTML = parseInt(feature.properties.TOT_REP).toLocaleString();
 		document.getElementById('independentTotal').innerHTML = parseInt(feature.properties.TOT_OTH).toLocaleString();
 		
-		selectList.push(feature.properties.COUNTY);
-		selectList2.push(feature.properties.STATE);
-		console.log(selectList);
-		console.log(selectList2);
 		
-		$('#electionTest tr:last').after('<tr><td>'+selectList.slice(-1)[0]+'</td><td>'+selectList2.slice(-1)[0]+'</td></tr>');
 
 		if (selected == false){
+			
+		selectList.push(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
+		selectList2.push(feature.properties.STATE);
+	
+		$('#electionTest').html(selectList);
+		
 		demTot2 = (feature.properties.TOT_DEM);
 		demTot += demTot2;
 		console.log(demTot);
@@ -365,9 +366,9 @@ function election_onEachFeature(feature, layer) {
 			document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
 		election_data = [demPer,repPer, othPer];
 		insertElectionChart();
-		document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		
 		document.getElementById('democrat').innerHTML = parseFloat(demPer).toFixed(2) + "%";
@@ -386,8 +387,14 @@ function election_onEachFeature(feature, layer) {
 	
 		layer.on('contextmenu', function (e) {
 			
+		var indextest = selectList.indexOf(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
 		
+		if (indextest > -1) {
+			selectList.splice(indextest, 1);
+		}
 	
+		$('#electionTest').html(selectList);
+		
 		if (selected == true){
 		demTot2 = (feature.properties.TOT_DEM);
 		demTot -= demTot2;
@@ -410,9 +417,9 @@ function election_onEachFeature(feature, layer) {
 				document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
 		election_data = [demPer,repPer, othPer];
 		insertElectionChart();
-		document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		
 		document.getElementById('democrat').innerHTML = parseFloat(demPer).toFixed(2) + "%";
@@ -940,6 +947,10 @@ $('.selectMode').click(function(){
 	}
 	else
 		selectMode = false;
+		selectList = [];
+		$('#electionTest').html(selectList);
+
+		
 });
 
 
