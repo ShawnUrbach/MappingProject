@@ -748,7 +748,32 @@ function demo_onEachFeature(feature, layer) {
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		
 		//Binds data to Bootstrap table in sidebar
-		document.getElementById('white').innerHTML = parseFloat(feature.properties.PER_WHITE).toFixed(2) + "%";
+		
+		
+				whiteTot2 = parseInt(feature.properties.TOT_WHITE);
+
+		blackTot2 = parseInt(feature.properties.TOT_BLACK);
+
+		nativeTot2 = parseInt(feature.properties.TOT_NAT);
+
+		asianTot2 = parseInt(feature.properties.TOT_ASIAN);
+		
+		pacificTot2 = parseInt(feature.properties.TOT_HAW);
+		
+		multiracialTot2 = parseInt(feature.properties.TOT_MULTI);
+
+		hispanicTot2 = parseInt(feature.properties.TOT_LAT);
+		
+		whitePer = ((whiteTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
+		blackPer = ((blackTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
+		nativePer = ((nativeTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
+		asianPer = ((asianTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
+		pacificPer = ((pacificTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
+		multiracialPer = ((multiracialTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
+		hispanicPer = ((hispanicTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
+		
+		
+		document.getElementById('white').innerHTML = parseFloat(whitePer).toFixed(2) + "%";
 		document.getElementById('black').innerHTML = parseFloat(feature.properties.PER_BLACK).toFixed(2) + "%";
 		document.getElementById('native').innerHTML = parseFloat(feature.properties.PER_NAT).toFixed(2) + "%";
 		document.getElementById('asian').innerHTML = parseFloat(feature.properties.PER_ASIAN).toFixed(2) + "%";
@@ -768,53 +793,47 @@ function demo_onEachFeature(feature, layer) {
 		selectList.push(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
 		$('#electionTest').html(selectList);
 		
-		whiteTot2 = parseInt(feature.properties.TOT_WHITE);
+		
 		whiteTot += whiteTot2;
 		
-		blackTot2 = parseInt(feature.properties.TOT_BLACK)
 		blackTot += blackTot2;
 		
-		nativeTot2 = parseInt(feature.properties.TOT_NAT)
 		nativeTot += nativeTot2;
 		
-		asianTot2 = parseInt(feature.properties.TOT_ASIAN)
 		asianTot += asianTot2;
 		
-		pacificTot2 = parseInt(feature.properties.TOT_HAW)
 		pacificTot += pacificTot2;
 		
-		multiracialTot2 = parseInt(feature.properties.TOT_MULTI)
 		multiracialTot += multiracialTot2;
 		
-		hispanicTot2 = parseInt(feature.properties.TOT_LAT)
 		hispanicTot += hispanicTot2;
 		
 		}
 	
-		whitePer = ((whiteTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		blackPer = ((blackTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		nativePer = ((nativeTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		asianPer = ((asianTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		pacificPer = ((pacificTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		multiracialPer = ((multiracialTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		hispanicPer = ((hispanicTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		whitePer2 = ((whiteTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		blackPer2 = ((blackTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		nativePer2 = ((nativeTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		asianPer2 = ((asianTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		pacificPer2 = ((pacificTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		multiracialPer2 = ((multiracialTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		hispanicPer2 = ((hispanicTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
 	
 		if (selectMode === true) {
 			document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-        demo_data = [whitePer, blackPer, nativePer, asianPer, pacificPer, multiracialPer, hispanicPer];
+        demo_data = [whitePer2, blackPer2, nativePer2, asianPer2, pacificPer2, multiracialPer2, hispanicPer2];
 		insertDemoChart();
 		document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		
-		document.getElementById('white').innerHTML = parseFloat(whitePer).toFixed(2) + "%";
-		document.getElementById('black').innerHTML = parseFloat(blackPer).toFixed(2) + "%";
-		document.getElementById('native').innerHTML = parseFloat(nativePer).toFixed(2) + "%";
-		document.getElementById('asian').innerHTML = parseFloat(asianPer).toFixed(2) + "%";
-		document.getElementById('pacific').innerHTML = parseFloat(pacificPer).toFixed(2) + "%";
-		document.getElementById('multiracial').innerHTML = parseFloat(multiracialPer).toFixed(2) + "%";
-		document.getElementById('hispanic').innerHTML = parseFloat(hispanicPer).toFixed(2) + "%";
+		document.getElementById('white').innerHTML = parseFloat(whitePer2).toFixed(2) + "%";
+		document.getElementById('black').innerHTML = parseFloat(blackPer2).toFixed(2) + "%";
+		document.getElementById('native').innerHTML = parseFloat(nativePer2).toFixed(2) + "%";
+		document.getElementById('asian').innerHTML = parseFloat(asianPer2).toFixed(2) + "%";
+		document.getElementById('pacific').innerHTML = parseFloat(pacificPer2).toFixed(2) + "%";
+		document.getElementById('multiracial').innerHTML = parseFloat(multiracialPer2).toFixed(2) + "%";
+		document.getElementById('hispanic').innerHTML = parseFloat(hispanicPer2).toFixed(2) + "%";
 		document.getElementById('whiteTotal').innerHTML = parseInt(whiteTot).toLocaleString();
 		document.getElementById('blackTotal').innerHTML = parseInt(blackTot).toLocaleString();
 		document.getElementById('nativeTotal').innerHTML = parseInt(nativeTot).toLocaleString();
@@ -838,54 +857,63 @@ function demo_onEachFeature(feature, layer) {
 		$('#electionTest').html(selectList);
 		
 		if (selected == true){
+		
+
 		whiteTot2 = parseInt(feature.properties.TOT_WHITE);
+
+		blackTot2 = parseInt(feature.properties.TOT_BLACK);
+
+		nativeTot2 = parseInt(feature.properties.TOT_NAT);
+
+		asianTot2 = parseInt(feature.properties.TOT_ASIAN);
+		
+		pacificTot2 = parseInt(feature.properties.TOT_HAW);
+		
+		multiracialTot2 = parseInt(feature.properties.TOT_MULTI);
+
+		hispanicTot2 = parseInt(feature.properties.TOT_LAT);
+		
 		whiteTot -= whiteTot2;
 		
-		blackTot2 = parseInt(feature.properties.TOT_BLACK)
 		blackTot -= blackTot2;
 		
-		nativeTot2 = parseInt(feature.properties.TOT_NAT)
 		nativeTot -= nativeTot2;
 		
-		asianTot2 = parseInt(feature.properties.TOT_ASIAN)
 		asianTot -= asianTot2;
 		
-		pacificTot2 = parseInt(feature.properties.TOT_HAW)
 		pacificTot -= pacificTot2;
 		
-		multiracialTot2 = parseInt(feature.properties.TOT_MULTI)
 		multiracialTot -= multiracialTot2;
 		
-		hispanicTot2 = parseInt(feature.properties.TOT_LAT)
 		hispanicTot -= hispanicTot2;
 		
 		}
 		
-		whitePer = ((whiteTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		blackPer = ((blackTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		nativePer = ((nativeTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		asianPer = ((asianTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		pacificPer = ((pacificTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		multiracialPer = ((multiracialTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
-		hispanicPer = ((hispanicTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+				whitePer2 = ((whiteTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		blackPer2 = ((blackTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		nativePer2 = ((nativeTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		asianPer2 = ((asianTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		pacificPer2 = ((pacificTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		multiracialPer2 = ((multiracialTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		hispanicPer2 = ((hispanicTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
 		
 		if (selectMode === true) {
 			
 		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-		demo_data = [whitePer, blackPer, nativePer, asianPer, pacificPer, multiracialPer, hispanicPer];
+		demo_data = [whitePer2, blackPer2, nativePer2, asianPer2, pacificPer2, multiracialPer2, hispanicPer2];
 		insertDemoChart();
 		document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		
-		document.getElementById('white').innerHTML = parseFloat(whitePer).toFixed(2) + "%";
-		document.getElementById('black').innerHTML = parseFloat(blackPer).toFixed(2) + "%";
-		document.getElementById('native').innerHTML = parseFloat(nativePer).toFixed(2) + "%";
-		document.getElementById('asian').innerHTML = parseFloat(asianPer).toFixed(2) + "%";
-		document.getElementById('pacific').innerHTML = parseFloat(pacificPer).toFixed(2) + "%";
-		document.getElementById('multiracial').innerHTML = parseFloat(multiracialPer).toFixed(2) + "%";
-		document.getElementById('hispanic').innerHTML = parseFloat(hispanicPer).toFixed(2) + "%";
+		document.getElementById('white').innerHTML = parseFloat(whitePer2).toFixed(2) + "%";
+		document.getElementById('black').innerHTML = parseFloat(blackPer2).toFixed(2) + "%";
+		document.getElementById('native').innerHTML = parseFloat(nativePer2).toFixed(2) + "%";
+		document.getElementById('asian').innerHTML = parseFloat(asianPer2).toFixed(2) + "%";
+		document.getElementById('pacific').innerHTML = parseFloat(pacificPer2).toFixed(2) + "%";
+		document.getElementById('multiracial').innerHTML = parseFloat(multiracialPer2).toFixed(2) + "%";
+		document.getElementById('hispanic').innerHTML = parseFloat(hispanicPer2).toFixed(2) + "%";
 		document.getElementById('whiteTotal').innerHTML = parseInt(whiteTot).toLocaleString();
 		document.getElementById('blackTotal').innerHTML = parseInt(blackTot).toLocaleString();
 		document.getElementById('nativeTotal').innerHTML = parseInt(nativeTot).toLocaleString();
