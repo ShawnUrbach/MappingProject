@@ -87,16 +87,20 @@
 		
 		<!-- Lower Navbar (Mobile Only) -->
 		<div id = "countySearch"></div>
+
 		<div class="dropdown btn-default" id="layerSelect">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Layers <span class="caret"></span></a>
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select a layer<span class="caret"></span></a>
 			<ul class="dropdown-menu">
-				<li id = "election_08" class = "layercontrol"><a href="#">Election 2008</a></li>
-				<li id = "election_12" class = "layercontrol"><a href="#">Election 2012</a></li>
-				<li id = "election_16" class = "layercontrol"><a href="#">Election 2016</a></li>
-				<li id = "census_00" class = "layercontrol"><a href="#">Census 2000</a></li>
-				<li id = "census_10" class = "layercontrol"><a href="#">Census 2010</a></li>
-				<li id = "demo_00" class = "layercontrol"><a href="#">Demographics 2000</a></li>
-				<li id = "demo_10" class = "layercontrol"><a href="#">Demographics 2010</a></li>
+			<li><a href="#"><div class = "checkbox"><input id ="selectMode" class = "selectMode" type="checkbox">Multi-Select</input></div></a></li>
+				<li id = "clearSelection" class = "clearSelection"><a href="#">Clear Selection</a></li>
+				<li role="separator" class="divider"></li>
+				<li id = "election_08s" class = "layercontrol"><a href="#">Election 2008</a></li>
+				<li id = "election_12s" class = "layercontrol"><a href="#">Election 2012</a></li>
+				<li id = "election_16s" class = "layercontrol"><a href="#">Election 2016</a></li>
+				<li id = "census_00s" class = "layercontrol"><a href="#">Census 2000</a></li>
+				<li id = "census_10s" class = "layercontrol"><a href="#">Census 2010</a></li>
+				<li id = "demo_00s" class = "layercontrol"><a href="#">Demographics 2000</a></li>
+				<li id = "demo_10s" class = "layercontrol"><a href="#">Demographics 2010</a></li>
 				<li role="separator" class="divider"></li>
 				<li><a href="#"><div class = "checkbox"><input id ="state_outlines" class ="state_outlines" type="checkbox" checked>State Outlines</input></div></a></li>
 				<li><a href="#"><div class = "checkbox"><input id ="base_map" class = "base_map" type="checkbox" checked>Base Map</input></div></a></li>

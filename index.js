@@ -1159,7 +1159,7 @@ currentMap = election2016;
 currentTable = document.getElementById("election_table");
 document.getElementById('mapTitleText').innerHTML = '<center>2016: PRESIDENTIAL ELECTION RESULTS</center>';
 
-$('#election_08').click(function(){
+$('#election_08, #election_08s').click(function(){
 	//Change layer
 	map.addLayer(election2008);
 	map.removeLayer(currentMap);
@@ -1179,7 +1179,7 @@ $('#election_08').click(function(){
 	currentTable = document.getElementById("election_table");
 	currentTable.style.display = "inline";	
 });
-$('#election_12').click(function(){
+$('#election_12, #election_12s').click(function(){
 	//Change layer
 	map.addLayer(election2012);
 	map.removeLayer(currentMap);
@@ -1200,7 +1200,7 @@ $('#election_12').click(function(){
 	currentTable.style.display = "inline";
 	
 });
-$('#election_16').click(function(){
+$('#election_16, #election_16s').click(function(){
 	//Change layer
 	map.addLayer(election2016);
 	map.removeLayer(currentMap);
@@ -1221,7 +1221,7 @@ $('#election_16').click(function(){
 	currentTable.style.display = "inline";
 	
 });
-$('#census_00').click(function(){
+$('#census_00, #census_00s').click(function(){
 	//Change layer
 	map.addLayer(census2000);
 	map.removeLayer(currentMap);
@@ -1241,7 +1241,7 @@ $('#census_00').click(function(){
 	currentTable = document.getElementById("census_table");
 	currentTable.style.display = "inline";
 });
-$('#census_10').click(function(){
+$('#census_10, #census_10s').click(function(){
 	//Change layer
 	map.addLayer(census2010);
 	map.removeLayer(currentMap);
@@ -1261,7 +1261,7 @@ $('#census_10').click(function(){
 	currentTable = document.getElementById("census_table");
 	currentTable.style.display = "inline";
 });
-$('#demo_00').click(function(){
+$('#demo_00, #demo_00s').click(function(){
 	//Change layer
 	map.addLayer(demo2000);
 	map.removeLayer(currentMap);
@@ -1281,7 +1281,7 @@ $('#demo_00').click(function(){
 	currentTable = document.getElementById("demo_table");
 	currentTable.style.display = "inline";
 });
-$('#demo_10').click(function(){
+$('#demo_10, #demo_10s').click(function(){
 	//Change layer
 	map.addLayer(demo2010);
 	map.removeLayer(currentMap);
