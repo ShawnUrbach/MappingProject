@@ -11,7 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/sidebar-v2-master/css/leaflet-sidebar.min.css"> 		
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="index-min.css"/>
+		<link rel="stylesheet" type="text/css" href="index.css"/>
 		
 		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -52,7 +52,7 @@
 						</ul>
 						<ul class="nav navbar-nav navbar-right" id = "selectDiv">
 						<li class="dropdown2">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Multi-Select <span class="caret"></span></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="Turn on to select multiple counties">Multi-Select <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="#"><div class = "checkbox"><input id ="selectMode" class = "selectMode" type="checkbox">On/Off</input></div></a></li>
 									<li id = "clearSelection" class = "clearSelection"><a href="#">Clear Selection</a></li>
@@ -60,7 +60,7 @@
 								</ul>
 							</li>
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Layers <span class="caret"></span></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="Select a layer to display on the map">Layers <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li id = "election_08" class = "layercontrol"><a href="#">Election 2008</a></li>
 									<li id = "election_12" class = "layercontrol"><a href="#">Election 2012</a></li>
@@ -279,7 +279,7 @@
 		<div id="mapTitleArea" class="navbar navbar-default">
 			<div id="mapTitleText">
 			</div>
-		<div id = "userMessage">Hover over map for more information.</div>
+		<div id = "userMessage">Click a county and open data charts/tables on left for more information. For "Multi-Select": left click to add to selection, right click to remove from selection. </div>
 		</div>
 		
 		<!-- Footer -->

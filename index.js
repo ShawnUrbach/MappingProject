@@ -72,7 +72,9 @@ var selected = false;
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
 
-
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
 
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
