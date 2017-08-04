@@ -72,6 +72,8 @@ var selected = false;
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
 
+
+//Activate CSS tooltips
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();   
 });
@@ -160,84 +162,58 @@ function demoGetColor(w) {
 }
 
 //Highlights features on mouseover
-function highlightFeature(e) {
-	
+function highlightFeature(e) {	
 	if (selectMode == false){
 		var layer = e.target;
-
 		layer.setStyle({
 			weight: 4,
 			color: 'black',
 			dashArray: '',
 			fillOpacity: 0.7,
 		});
-
 		if (!L.Browser.ie && !L.Browser.opera) {
 			layer.bringToFront();
 		}
 	}
 }
 
-//Resets hightlight on mouseout for Election 2008/2012
-function resetHighlightElection(e) {
+//Resets highlight on mouseout
+function resetHighlight(e) {
 	if (selectMode == false){
 		currentMap.resetStyle(e.target);
 	}
 }
 
-function resetHighlightElection2(e) {
+//Resets highlight on right click if already highlighted
+function resetHighlightContext(e) {
 	if (selectMode == true){
 		var layer = e.target;
 		if (layer.options.weight == 4){
-		selected = true;
-		currentMap.resetStyle(e.target);
+			selected = true;
+			currentMap.resetStyle(e.target);
 		} else {
 			selected = false;
 		}
 	}
 }
 
-//Resets hightlight on mouseout for Census 2000/2010
-function resetHighlightCensus(e) {
-	if (selectMode == false){
-	currentMap.resetStyle(e.target);
-	}
-}
-
-//Resets hightlight on mouseout for Demographics 2000/2010
-function resetHighlightDemo(e) {
-	if (selectMode == false){
-		currentMap.resetStyle(e.target);
-	}
-}
-
-
-//Zooms to feature on click
+//Zooms to feature on click if not selectMode, otherwise style on click.
 function zoomToFeature(e) {
-
-	
 	if (selectMode == false){
 		map.fitBounds(e.target.getBounds());
 	}
-
 	var layer = e.target;
 	if (layer.options.weight == 4){
 		selected = true;
 	} else {
 		selected = false;
 	}
-	
-
-	
-
 	layer.setStyle({
 		weight: 4,
 		color: 'black',
 		dashArray: '',
 		fillOpacity: 0.7,
 	});
-	
-
 	if (!L.Browser.ie && !L.Browser.opera) {
 		layer.bringToFront();
 	}
@@ -303,11 +279,11 @@ function insertCensusChart(){
 //Changes Demographics 2000/2010 layer labels for smaller screen sizes
 if ($(window).width() > 450) {
 	var demolabels = ['White',['Black or', 'African American'], ['American Indian or', 'Alaska Native'], 'Asian',
-			['Native Hawaiian or', 'Other Pacific Islander'], ['Multiracial'], ['Hispanic or', 'Latino']];
+	['Native Hawaiian or', 'Other Pacific Islander'], ['Multiracial'], ['Hispanic or', 'Latino']];
 }
 else {
 	var demolabels = ['White',['Black'], ['Nat. Am/Nat. AK.'], 'Asian',
-			['Nat. HI/Pac-Isl'], ['Multiracial'], ['Hisp/Lat']];
+	['Nat. HI/Pac-Isl'], ['Multiracial'], ['Hisp/Lat']];
 }
 
 //Insert bar graph using Chart.js for Demographics 2000/2010
@@ -338,18 +314,13 @@ function insertDemoChart(){
 
 //Behavior for mousever and click- Election layers
 function election_onEachFeature(feature, layer) {
-	
-
-	
-	
 	layer.on({
 		mouseover: highlightFeature,
-		mouseout: resetHighlightElection,
+		mouseout: resetHighlight,
 		click: zoomToFeature,
-		contextmenu: resetHighlightElection2
+		contextmenu: resetHighlightContext
 	});
 
-	
 	//Binds data with mouseover of objects for Chart.js
 	layer.on('click', function (e) {
 		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
@@ -368,75 +339,52 @@ function election_onEachFeature(feature, layer) {
 		document.getElementById('republicanTotal').innerHTML = parseInt(feature.properties.TOT_REP).toLocaleString();
 		document.getElementById('independentTotal').innerHTML = parseInt(feature.properties.TOT_OTH).toLocaleString();
 		
-		
-
 		if (selected == false){
-			
-		selectList.push(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
-	
-		$('#electionTest').html(selectList);
-		
-		demTot2 = parseInt(feature.properties.TOT_DEM);
-		demTot += demTot2;
-		
-		repTot2 = parseInt(feature.properties.TOT_REP);
-		repTot += repTot2;
-		
-		othTot2 = parseInt(feature.properties.TOT_OTH);
-		othTot += othTot2;
+			selectList.push(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
+			$('#electionTest').html(selectList);	
+			demTot2 = parseInt(feature.properties.TOT_DEM);
+			demTot += demTot2;	
+			repTot2 = parseInt(feature.properties.TOT_REP);
+			repTot += repTot2;	
+			othTot2 = parseInt(feature.properties.TOT_OTH);
+			othTot += othTot2;
 		}
 		
 		demPer = ((demTot / (demTot + repTot + othTot))*100);
 		repPer = ((repTot / (demTot + repTot + othTot))*100);
 		othPer = ((othTot / (demTot + repTot + othTot))*100);
 		
-
-		
-		if (selectMode === true) {
-			
+		if (selectMode === true) {		
 			document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-		election_data = [demPer,repPer, othPer];
-		insertElectionChart();
-		document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		
-		document.getElementById('democrat').innerHTML = parseFloat(demPer).toFixed(2) + "%";
-		document.getElementById('republican').innerHTML = parseFloat(repPer).toFixed(2) + "%";
-		document.getElementById('independent').innerHTML = parseFloat(othPer).toFixed(2) + "%";
-		document.getElementById('democratTotal').innerHTML = parseInt(demTot).toLocaleString();
-		document.getElementById('republicanTotal').innerHTML = parseInt(repTot).toLocaleString();
-		document.getElementById('independentTotal').innerHTML = parseInt(othTot).toLocaleString();
-		
-		
-		
+			election_data = [demPer,repPer, othPer];
+			insertElectionChart();
+			document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			
+			document.getElementById('democrat').innerHTML = parseFloat(demPer).toFixed(2) + "%";
+			document.getElementById('republican').innerHTML = parseFloat(repPer).toFixed(2) + "%";
+			document.getElementById('independent').innerHTML = parseFloat(othPer).toFixed(2) + "%";
+			document.getElementById('democratTotal').innerHTML = parseInt(demTot).toLocaleString();
+			document.getElementById('republicanTotal').innerHTML = parseInt(repTot).toLocaleString();
+			document.getElementById('independentTotal').innerHTML = parseInt(othTot).toLocaleString();
 		}
-		
     });
 	
-	
-		layer.on('contextmenu', function (e) {
-			
+	layer.on('contextmenu', function (e) {
 		var indextest = selectList.indexOf(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
-		
 		if (indextest > -1) {
 			selectList.splice(indextest, 1);
 		}
-	
 		$('#electionTest').html(selectList);
-		
 		if (selected == true){
-		demTot2 = parseInt(feature.properties.TOT_DEM);
-		demTot -= demTot2;
-		console.log(demTot);
-		
-		repTot2 = parseInt(feature.properties.TOT_REP);
-		repTot -= repTot2;
-		
-		othTot2 = parseInt(feature.properties.TOT_OTH);
-		othTot -= othTot2;
-		
+			demTot2 = parseInt(feature.properties.TOT_DEM);
+			demTot -= demTot2;
+			repTot2 = parseInt(feature.properties.TOT_REP);
+			repTot -= repTot2;
+			othTot2 = parseInt(feature.properties.TOT_OTH);
+			othTot -= othTot2;
 		}
 		
 		demPer = ((demTot / (demTot + repTot + othTot))*100);
@@ -444,30 +392,22 @@ function election_onEachFeature(feature, layer) {
 		othPer = ((othTot / (demTot + repTot + othTot))*100);
 		
 		if (selectMode === true) {
+			document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+			election_data = [demPer,repPer, othPer];
+			insertElectionChart();
+			document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 			
-				document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-		election_data = [demPer,repPer, othPer];
-		insertElectionChart();
-		document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		
-		document.getElementById('democrat').innerHTML = parseFloat(demPer).toFixed(2) + "%";
-		document.getElementById('republican').innerHTML = parseFloat(repPer).toFixed(2) + "%";
-		document.getElementById('independent').innerHTML = parseFloat(othPer).toFixed(2) + "%";
-		document.getElementById('democratTotal').innerHTML = parseInt(demTot).toLocaleString();
-		document.getElementById('republicanTotal').innerHTML = parseInt(repTot).toLocaleString();
-		document.getElementById('independentTotal').innerHTML = parseInt(othTot).toLocaleString();
-		
-		
-		
+			document.getElementById('democrat').innerHTML = parseFloat(demPer).toFixed(2) + "%";
+			document.getElementById('republican').innerHTML = parseFloat(repPer).toFixed(2) + "%";
+			document.getElementById('independent').innerHTML = parseFloat(othPer).toFixed(2) + "%";
+			document.getElementById('democratTotal').innerHTML = parseInt(demTot).toLocaleString();
+			document.getElementById('republicanTotal').innerHTML = parseInt(repTot).toLocaleString();
+			document.getElementById('independentTotal').innerHTML = parseInt(othTot).toLocaleString();	
 		}
-
-
-		
-		
-    });
+	});
 
 	//Binds labels
 	if (feature.properties) {
@@ -483,9 +423,9 @@ function election_onEachFeature(feature, layer) {
 function census_onEachFeature(feature, layer) {
 	layer.on({
 		mouseover: highlightFeature,
-		mouseout: resetHighlightCensus,
+		mouseout: resetHighlight,
 		click: zoomToFeature,
-		contextmenu: resetHighlightElection2
+		contextmenu: resetHighlightContext
 	});
 	
 	//Binds mouseover of objects with data for Chart.js
@@ -508,7 +448,7 @@ function census_onEachFeature(feature, layer) {
 			document.getElementById('growth_2000').innerHTML = feature.properties.PER_CHA + "%";
 		}
 		
-				if (map.hasLayer(census2010) === true) {
+		if (map.hasLayer(census2010) === true) {
 			census_data = [Number(feature.properties.TOT_1980),Number(feature.properties.TOT_1990),Number(feature.properties.TOT_2000),feature.properties.TOT_CUR];
 			labels = ['1980','1990','2000','2010'];
 			
@@ -526,93 +466,86 @@ function census_onEachFeature(feature, layer) {
 			document.getElementById('pop_1980').innerHTML = parseInt(feature.properties.TOT_1980).toLocaleString();	
 			document.getElementById('growth_2010').innerHTML = feature.properties.PER_CHA + "%";
 		}
+		
 		insertCensusChart();
 		
-		
-		
 		if (selected == false){
-			
-		selectList.push(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
-		$('#electionTest').html(selectList);
-		
-		total102 = (feature.properties.TOT_CUR);
-		total10 += total102
-		
-		total002 = parseInt(feature.properties.TOT_2000);
-		total00 += total002;
-		
-		totalPop2 = (feature.properties.TOT_CUR);
-		totalPop += totalPop2;
-		
-		total2 = parseInt(feature.properties.TOT_1990);
-		total90 += total2;
-		
-		total3 = parseInt(feature.properties.TOT_1980);
-		total80 += total3;
-			
+			selectList.push(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
+			$('#electionTest').html(selectList);
+			total102 = (feature.properties.TOT_CUR);
+			total10 += total102
+			total002 = parseInt(feature.properties.TOT_2000);
+			total00 += total002;	
+			totalPop2 = (feature.properties.TOT_CUR);
+			totalPop += totalPop2;	
+			total2 = parseInt(feature.properties.TOT_1990);
+			total90 += total2;
+			total3 = parseInt(feature.properties.TOT_1980);
+			total80 += total3;	
 		}
+		
 		growth2000 = ((totalPop - total90)/total90)*100;
 		growth2010 = ((total10 - total00)/total00)*100;
 		
 		if (selectMode === true) {
 			
-		if (map.hasLayer(census2000) === true){
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-        census_data = [total80,total90,totalPop];
-		
-			labels = ['1980','1990','2000'];
+			if (map.hasLayer(census2000) === true){
+				document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+				census_data = [total80,total90,totalPop];
+				
+				labels = ['1980','1990','2000'];
+				
+				//Binds data to Bootstrap table in sidebar
+				document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
+				'<tr><th>2000 Growth:</th><td id="growth_2000"></td></tr>' +
+				'<tr><th>2000 Pop:</th><td id="total_pop"></td></tr>' +
+				'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
+				'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
+				'</table>';
+				document.getElementById('total_pop').innerHTML = parseInt(totalPop).toLocaleString();
+				document.getElementById('pop_1990').innerHTML = parseInt(total90).toLocaleString();
+				document.getElementById('pop_1980').innerHTML = parseInt(total80).toLocaleString();	
+				document.getElementById('growth_2000').innerHTML = parseFloat(growth2000).toFixed(2) + "%";
+				insertCensusChart();
+				document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
+				'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+				document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
+				'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			}
 			
-			//Binds data to Bootstrap table in sidebar
-			document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
-			'<tr><th>2000 Growth:</th><td id="growth_2000"></td></tr>' +
-			'<tr><th>2000 Pop:</th><td id="total_pop"></td></tr>' +
-			'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
-			'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
-			'</table>';
-			document.getElementById('total_pop').innerHTML = parseInt(totalPop).toLocaleString();
-			document.getElementById('pop_1990').innerHTML = parseInt(total90).toLocaleString();
-			document.getElementById('pop_1980').innerHTML = parseInt(total80).toLocaleString();	
-			document.getElementById('growth_2000').innerHTML = parseFloat(growth2000).toFixed(2) + "%";
-			insertCensusChart();
-			document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		}
-		
-		
-		if (map.hasLayer(census2010) === true){
-			document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-        census_data = [total80,total90,total00,total10];
-		
-			labels = ['1980','1990','2000','2010'];
 			
-			//Binds data to Bootstrap table in sidebar
-			document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
-			'<tr><th>2010 Growth:</th><td id="growth_2010"></td></tr>' +
-			'<tr><th>2010 Pop:</th><td id="total_pop"></td></tr>' +
-			'<tr><th>2000 Pop:</th><td id="pop_2000"></td></tr>' +
-			'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
-			'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
-			'</table>';
-			document.getElementById('total_pop').innerHTML = parseInt(total10).toLocaleString();
-			document.getElementById('pop_2000').innerHTML = parseInt(total00).toLocaleString();
-			document.getElementById('pop_1990').innerHTML = parseInt(total90).toLocaleString();
-			document.getElementById('pop_1980').innerHTML = parseInt(total80).toLocaleString();	
-			document.getElementById('growth_2010').innerHTML = parseFloat(growth2010).toFixed(2) + "%";
-			insertCensusChart();
-			document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		}
+			if (map.hasLayer(census2010) === true){
+				document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+				census_data = [total80,total90,total00,total10];
+			
+				labels = ['1980','1990','2000','2010'];
+				
+				//Binds data to Bootstrap table in sidebar
+				document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
+				'<tr><th>2010 Growth:</th><td id="growth_2010"></td></tr>' +
+				'<tr><th>2010 Pop:</th><td id="total_pop"></td></tr>' +
+				'<tr><th>2000 Pop:</th><td id="pop_2000"></td></tr>' +
+				'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
+				'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
+				'</table>';
+				document.getElementById('total_pop').innerHTML = parseInt(total10).toLocaleString();
+				document.getElementById('pop_2000').innerHTML = parseInt(total00).toLocaleString();
+				document.getElementById('pop_1990').innerHTML = parseInt(total90).toLocaleString();
+				document.getElementById('pop_1980').innerHTML = parseInt(total80).toLocaleString();	
+				document.getElementById('growth_2010').innerHTML = parseFloat(growth2010).toFixed(2) + "%";
+				insertCensusChart();
+				document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
+				'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+				document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
+				'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			}
 		}
 		
 		if (selectMode === false) {
 			document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		}
     });
 	
@@ -629,71 +562,64 @@ function census_onEachFeature(feature, layer) {
 		if (selected == true){
 			total102 = (feature.properties.TOT_CUR);
 			total10 -= total102
-			
 			total002 = parseInt(feature.properties.TOT_2000);
 			total00 -= total002;
-			
 			totalPop2 = (feature.properties.TOT_CUR);
 			totalPop -= totalPop2;
-			
 			total2 = parseInt(feature.properties.TOT_1990);
 			total90 -= total2;
-			
 			total3 = parseInt(feature.properties.TOT_1980);
-			total80 -= total3;
+			total80 -= total3;	
+		}
 			
-			}
-			
-			growth2000 = ((totalPop - total90)/total90)*100;
+		growth2000 = ((totalPop - total90)/total90)*100;
 		growth2010 = ((total10 - total00)/total00)*100;
 			
 		if (selectMode === true) {
 			if (map.hasLayer(census2000) === true){
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-        census_data = [total80,total90,totalPop];
-		
-			labels = ['1980','1990','2000'];
+				document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+				census_data = [total80,total90,totalPop];
+				
+				labels = ['1980','1990','2000'];
+					
+				//Binds data to Bootstrap table in sidebar
+				document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
+				'<tr><th>2000 Growth:</th><td id="growth_2000"></td></tr>' +
+				'<tr><th>2000 Pop:</th><td id="total_pop"></td></tr>' +
+				'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
+				'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
+				'</table>';
+				document.getElementById('total_pop').innerHTML = parseInt(totalPop).toLocaleString();
+				document.getElementById('pop_1990').innerHTML = parseInt(total90).toLocaleString();
+				document.getElementById('pop_1980').innerHTML = parseInt(total80).toLocaleString();	
+				document.getElementById('growth_2000').innerHTML = parseFloat(growth2000).toFixed(2) + "%";
+				insertCensusChart();
+			}	
 			
-			//Binds data to Bootstrap table in sidebar
-			document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
-			'<tr><th>2000 Growth:</th><td id="growth_2000"></td></tr>' +
-			'<tr><th>2000 Pop:</th><td id="total_pop"></td></tr>' +
-			'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
-			'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
-			'</table>';
-			document.getElementById('total_pop').innerHTML = parseInt(totalPop).toLocaleString();
-			document.getElementById('pop_1990').innerHTML = parseInt(total90).toLocaleString();
-			document.getElementById('pop_1980').innerHTML = parseInt(total80).toLocaleString();	
-			document.getElementById('growth_2000').innerHTML = parseFloat(growth2000).toFixed(2) + "%";
-			insertCensusChart();
-		}	
-		
 			if (map.hasLayer(census2010) === true){
-			document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-        census_data = [total80,total90,total00,total10];
-		
-			labels = ['1980','1990','2000','2010'];
+				document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+				census_data = [total80,total90,total00,total10];
 			
-			//Binds data to Bootstrap table in sidebar
-			document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
-			'<tr><th>2010 Growth:</th><td id="growth_2010"></td></tr>' +
-			'<tr><th>2010 Pop:</th><td id="total_pop"></td></tr>' +
-			'<tr><th>2000 Pop:</th><td id="pop_2000"></td></tr>' +
-			'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
-			'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
-			'</table>';
-			document.getElementById('total_pop').innerHTML = parseInt(total10).toLocaleString();
-			document.getElementById('pop_2000').innerHTML = parseInt(total00).toLocaleString();
-			document.getElementById('pop_1990').innerHTML = parseInt(total90).toLocaleString();
-			document.getElementById('pop_1980').innerHTML = parseInt(total80).toLocaleString();	
-			document.getElementById('growth_2010').innerHTML = parseFloat(growth2010).toFixed(2) + "%";
-			insertCensusChart();
-		}
-		
+				labels = ['1980','1990','2000','2010'];
+				
+				//Binds data to Bootstrap table in sidebar
+				document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
+				'<tr><th>2010 Growth:</th><td id="growth_2010"></td></tr>' +
+				'<tr><th>2010 Pop:</th><td id="total_pop"></td></tr>' +
+				'<tr><th>2000 Pop:</th><td id="pop_2000"></td></tr>' +
+				'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
+				'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
+				'</table>';
+				document.getElementById('total_pop').innerHTML = parseInt(total10).toLocaleString();
+				document.getElementById('pop_2000').innerHTML = parseInt(total00).toLocaleString();
+				document.getElementById('pop_1990').innerHTML = parseInt(total90).toLocaleString();
+				document.getElementById('pop_1980').innerHTML = parseInt(total80).toLocaleString();	
+				document.getElementById('growth_2010').innerHTML = parseFloat(growth2010).toFixed(2) + "%";
+				insertCensusChart();
+			}
 		}
 	});
 
-	
 	//Binds labels
 	if (feature.properties) {
 		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY
@@ -708,17 +634,11 @@ function census_onEachFeature(feature, layer) {
 function demo_onEachFeature(feature, layer) {
 	
 		whiteTot2 = parseInt(feature.properties.TOT_WHITE);
-
 		blackTot2 = parseInt(feature.properties.TOT_BLACK);
-
 		nativeTot2 = parseInt(feature.properties.TOT_NAT);
-
 		asianTot2 = parseInt(feature.properties.TOT_ASIAN);
-		
 		pacificTot2 = parseInt(feature.properties.TOT_HAW);
-		
 		multiracialTot2 = parseInt(feature.properties.TOT_MULTI);
-
 		hispanicTot2 = parseInt(feature.properties.TOT_LAT);
 		
 		whitePer = ((whiteTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
@@ -729,13 +649,11 @@ function demo_onEachFeature(feature, layer) {
 		multiracialPer = ((multiracialTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
 		hispanicPer = ((hispanicTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
 		
-	
-	
 	layer.on({
 		mouseover: highlightFeature,
-		mouseout: resetHighlightElection,
+		mouseout: resetHighlight,
 		click: zoomToFeature,
-		contextmenu: resetHighlightElection2
+		contextmenu: resetHighlightContext
 	});
 	
 	//Binds mouseover of objects with data for Chart.js
@@ -750,20 +668,12 @@ function demo_onEachFeature(feature, layer) {
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		
 		//Binds data to Bootstrap table in sidebar
-		
-		
-				whiteTot2 = parseInt(feature.properties.TOT_WHITE);
-
+		whiteTot2 = parseInt(feature.properties.TOT_WHITE);
 		blackTot2 = parseInt(feature.properties.TOT_BLACK);
-
 		nativeTot2 = parseInt(feature.properties.TOT_NAT);
-
 		asianTot2 = parseInt(feature.properties.TOT_ASIAN);
-		
 		pacificTot2 = parseInt(feature.properties.TOT_HAW);
-		
 		multiracialTot2 = parseInt(feature.properties.TOT_MULTI);
-
 		hispanicTot2 = parseInt(feature.properties.TOT_LAT);
 		
 		whitePer = ((whiteTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
@@ -773,7 +683,6 @@ function demo_onEachFeature(feature, layer) {
 		pacificPer = ((pacificTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
 		multiracialPer = ((multiracialTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
 		hispanicPer = ((hispanicTot2 / (whiteTot2 + blackTot2 + nativeTot2 + asianTot2 + pacificTot2 + multiracialTot2 + hispanicTot2))*100);
-		
 		
 		document.getElementById('white').innerHTML = parseFloat(whitePer).toFixed(2) + "%";
 		document.getElementById('black').innerHTML = parseFloat(feature.properties.PER_BLACK).toFixed(2) + "%";
@@ -791,25 +700,15 @@ function demo_onEachFeature(feature, layer) {
 		document.getElementById('hispanicTotal').innerHTML = parseInt(feature.properties.TOT_LAT).toLocaleString();
     
 		if (selected == false && selectMode === true){
-			
-		selectList.push(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
-		$('#electionTest').html(selectList);
-		
-		
-		whiteTot += whiteTot2;
-		
-		blackTot += blackTot2;
-		
-		nativeTot += nativeTot2;
-		
-		asianTot += asianTot2;
-		
-		pacificTot += pacificTot2;
-		
-		multiracialTot += multiracialTot2;
-		
-		hispanicTot += hispanicTot2;
-		
+			selectList.push(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
+			$('#electionTest').html(selectList);
+			whiteTot += whiteTot2;
+			blackTot += blackTot2;
+			nativeTot += nativeTot2;
+			asianTot += asianTot2;
+			pacificTot += pacificTot2;
+			multiracialTot += multiracialTot2;
+			hispanicTot += hispanicTot2;
 		}
 	
 		whitePer2 = ((whiteTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
@@ -822,30 +721,28 @@ function demo_onEachFeature(feature, layer) {
 	
 		if (selectMode === true) {
 			document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-        demo_data = [whitePer2, blackPer2, nativePer2, asianPer2, pacificPer2, multiracialPer2, hispanicPer2];
-		insertDemoChart();
-		document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		
-		document.getElementById('white').innerHTML = parseFloat(whitePer2).toFixed(2) + "%";
-		document.getElementById('black').innerHTML = parseFloat(blackPer2).toFixed(2) + "%";
-		document.getElementById('native').innerHTML = parseFloat(nativePer2).toFixed(2) + "%";
-		document.getElementById('asian').innerHTML = parseFloat(asianPer2).toFixed(2) + "%";
-		document.getElementById('pacific').innerHTML = parseFloat(pacificPer2).toFixed(2) + "%";
-		document.getElementById('multiracial').innerHTML = parseFloat(multiracialPer2).toFixed(2) + "%";
-		document.getElementById('hispanic').innerHTML = parseFloat(hispanicPer2).toFixed(2) + "%";
-		document.getElementById('whiteTotal').innerHTML = parseInt(whiteTot).toLocaleString();
-		document.getElementById('blackTotal').innerHTML = parseInt(blackTot).toLocaleString();
-		document.getElementById('nativeTotal').innerHTML = parseInt(nativeTot).toLocaleString();
-		document.getElementById('asianTotal').innerHTML = parseInt(asianTot).toLocaleString();
-		document.getElementById('pacificTotal').innerHTML = parseInt(pacificTot).toLocaleString();
-		document.getElementById('multiracialTotal').innerHTML = parseInt(multiracialTot).toLocaleString();
-		document.getElementById('hispanicTotal').innerHTML = parseInt(hispanicTot).toLocaleString();
-		
+			demo_data = [whitePer2, blackPer2, nativePer2, asianPer2, pacificPer2, multiracialPer2, hispanicPer2];
+			insertDemoChart();
+			document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			
+			document.getElementById('white').innerHTML = parseFloat(whitePer2).toFixed(2) + "%";
+			document.getElementById('black').innerHTML = parseFloat(blackPer2).toFixed(2) + "%";
+			document.getElementById('native').innerHTML = parseFloat(nativePer2).toFixed(2) + "%";
+			document.getElementById('asian').innerHTML = parseFloat(asianPer2).toFixed(2) + "%";
+			document.getElementById('pacific').innerHTML = parseFloat(pacificPer2).toFixed(2) + "%";
+			document.getElementById('multiracial').innerHTML = parseFloat(multiracialPer2).toFixed(2) + "%";
+			document.getElementById('hispanic').innerHTML = parseFloat(hispanicPer2).toFixed(2) + "%";
+			document.getElementById('whiteTotal').innerHTML = parseInt(whiteTot).toLocaleString();
+			document.getElementById('blackTotal').innerHTML = parseInt(blackTot).toLocaleString();
+			document.getElementById('nativeTotal').innerHTML = parseInt(nativeTot).toLocaleString();
+			document.getElementById('asianTotal').innerHTML = parseInt(asianTot).toLocaleString();
+			document.getElementById('pacificTotal').innerHTML = parseInt(pacificTot).toLocaleString();
+			document.getElementById('multiracialTotal').innerHTML = parseInt(multiracialTot).toLocaleString();
+			document.getElementById('hispanicTotal').innerHTML = parseInt(hispanicTot).toLocaleString();		
 		}
-	
 	});
 	
 	layer.on('contextmenu', function (e) {
@@ -859,39 +756,23 @@ function demo_onEachFeature(feature, layer) {
 		$('#electionTest').html(selectList);
 		
 		if (selected == true){
-		
-
-		whiteTot2 = parseInt(feature.properties.TOT_WHITE);
-
-		blackTot2 = parseInt(feature.properties.TOT_BLACK);
-
-		nativeTot2 = parseInt(feature.properties.TOT_NAT);
-
-		asianTot2 = parseInt(feature.properties.TOT_ASIAN);
-		
-		pacificTot2 = parseInt(feature.properties.TOT_HAW);
-		
-		multiracialTot2 = parseInt(feature.properties.TOT_MULTI);
-
-		hispanicTot2 = parseInt(feature.properties.TOT_LAT);
-		
-		whiteTot -= whiteTot2;
-		
-		blackTot -= blackTot2;
-		
-		nativeTot -= nativeTot2;
-		
-		asianTot -= asianTot2;
-		
-		pacificTot -= pacificTot2;
-		
-		multiracialTot -= multiracialTot2;
-		
-		hispanicTot -= hispanicTot2;
-		
+			whiteTot2 = parseInt(feature.properties.TOT_WHITE);
+			blackTot2 = parseInt(feature.properties.TOT_BLACK);
+			nativeTot2 = parseInt(feature.properties.TOT_NAT);
+			asianTot2 = parseInt(feature.properties.TOT_ASIAN);
+			pacificTot2 = parseInt(feature.properties.TOT_HAW);
+			multiracialTot2 = parseInt(feature.properties.TOT_MULTI);
+			hispanicTot2 = parseInt(feature.properties.TOT_LAT);
+			whiteTot -= whiteTot2;
+			blackTot -= blackTot2;
+			nativeTot -= nativeTot2;
+			asianTot -= asianTot2;
+			pacificTot -= pacificTot2;
+			multiracialTot -= multiracialTot2;
+			hispanicTot -= hispanicTot2;
 		}
 		
-				whitePer2 = ((whiteTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
+		whitePer2 = ((whiteTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
 		blackPer2 = ((blackTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
 		nativePer2 = ((nativeTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
 		asianPer2 = ((asianTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
@@ -899,33 +780,30 @@ function demo_onEachFeature(feature, layer) {
 		multiracialPer2 = ((multiracialTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
 		hispanicPer2 = ((hispanicTot / (whiteTot + blackTot + nativeTot + asianTot + pacificTot + multiracialTot + hispanicTot))*100);
 		
-		if (selectMode === true) {
+		if (selectMode === true) {	
+			document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
+			demo_data = [whitePer2, blackPer2, nativePer2, asianPer2, pacificPer2, multiracialPer2, hispanicPer2];
+			insertDemoChart();
+			document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 			
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-		demo_data = [whitePer2, blackPer2, nativePer2, asianPer2, pacificPer2, multiracialPer2, hispanicPer2];
-		insertDemoChart();
-		document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		
-		document.getElementById('white').innerHTML = parseFloat(whitePer2).toFixed(2) + "%";
-		document.getElementById('black').innerHTML = parseFloat(blackPer2).toFixed(2) + "%";
-		document.getElementById('native').innerHTML = parseFloat(nativePer2).toFixed(2) + "%";
-		document.getElementById('asian').innerHTML = parseFloat(asianPer2).toFixed(2) + "%";
-		document.getElementById('pacific').innerHTML = parseFloat(pacificPer2).toFixed(2) + "%";
-		document.getElementById('multiracial').innerHTML = parseFloat(multiracialPer2).toFixed(2) + "%";
-		document.getElementById('hispanic').innerHTML = parseFloat(hispanicPer2).toFixed(2) + "%";
-		document.getElementById('whiteTotal').innerHTML = parseInt(whiteTot).toLocaleString();
-		document.getElementById('blackTotal').innerHTML = parseInt(blackTot).toLocaleString();
-		document.getElementById('nativeTotal').innerHTML = parseInt(nativeTot).toLocaleString();
-		document.getElementById('asianTotal').innerHTML = parseInt(asianTot).toLocaleString();
-		document.getElementById('pacificTotal').innerHTML = parseInt(pacificTot).toLocaleString();
-		document.getElementById('multiracialTotal').innerHTML = parseInt(multiracialTot).toLocaleString();
-		document.getElementById('hispanicTotal').innerHTML = parseInt(hispanicTot).toLocaleString();
-		
-		}
-		
+			document.getElementById('white').innerHTML = parseFloat(whitePer2).toFixed(2) + "%";
+			document.getElementById('black').innerHTML = parseFloat(blackPer2).toFixed(2) + "%";
+			document.getElementById('native').innerHTML = parseFloat(nativePer2).toFixed(2) + "%";
+			document.getElementById('asian').innerHTML = parseFloat(asianPer2).toFixed(2) + "%";
+			document.getElementById('pacific').innerHTML = parseFloat(pacificPer2).toFixed(2) + "%";
+			document.getElementById('multiracial').innerHTML = parseFloat(multiracialPer2).toFixed(2) + "%";
+			document.getElementById('hispanic').innerHTML = parseFloat(hispanicPer2).toFixed(2) + "%";
+			document.getElementById('whiteTotal').innerHTML = parseInt(whiteTot).toLocaleString();
+			document.getElementById('blackTotal').innerHTML = parseInt(blackTot).toLocaleString();
+			document.getElementById('nativeTotal').innerHTML = parseInt(nativeTot).toLocaleString();
+			document.getElementById('asianTotal').innerHTML = parseInt(asianTot).toLocaleString();
+			document.getElementById('pacificTotal').innerHTML = parseInt(pacificTot).toLocaleString();
+			document.getElementById('multiracialTotal').innerHTML = parseInt(multiracialTot).toLocaleString();
+			document.getElementById('hispanicTotal').innerHTML = parseInt(hispanicTot).toLocaleString();	
+		}	
 	});
 	
 	//Binds labels
@@ -964,7 +842,6 @@ function collapse_sidebar(id_name){
 		document.getElementById("sidebar").className = "sidebar sidebar-left collapsed";	
 	});	
 }
-
 
 //-------------------------------------------------MAP LAYERS--------------------------------------------------//
 
@@ -1322,7 +1199,7 @@ $('.base_map').click(function(){
 		map.removeLayer(osm);
 });
 
-//Selection Toggle
+//Selection toggle
 $('.selectMode').click(function(){
 	if (selectMode === false) {
 		selectMode = true;
@@ -1340,59 +1217,32 @@ $('.selectMode').click(function(){
 		});		
 });
 
-//Clear Selection Button
-$('.clearSelection').click(function(){
-		selectList = [];
-		$('#electionTest').html(selectList);
-		demTot = 0;
-		repTot = 0;
-		othTot = 0;
-		totalPop = 0;
-		total10 = 0;
-		total00 = 0;
-		total90 = 0;
-		total80 = 0;
-		whiteTot = 0;
-		blackTot = 0;
-		nativeTot = 0;
-		asianTot = 0;
-		pacificTot = 0;
-		multiracialTot = 0;
-		hispanicTot = 0;
-		currentMap.setStyle({
-			weight: 1,
-			opacity: 1,
-			color: 'white',
-			dashArray: '3',
-			fillOpacity: 0.7
-		});		
-});
-
+//Clear Selection
 $('.layercontrol').click(function(){
 	selectList = [];
-		$('#electionTest').html(selectList);
-		demTot = 0;
-		repTot = 0;
-		othTot = 0;
-		totalPop = 0;
-		total10 = 0;
-		total00 = 0;
-		total90 = 0;
-		total80 = 0;
-		whiteTot = 0;
-		blackTot = 0;
-		nativeTot = 0;
-		asianTot = 0;
-		pacificTot = 0;
-		multiracialTot = 0;
-		hispanicTot = 0;
-		currentMap.setStyle({
-			weight: 1,
-			opacity: 1,
-			color: 'white',
-			dashArray: '3',
-			fillOpacity: 0.7
-		});		
+	$('#electionTest').html(selectList);
+	demTot = 0;
+	repTot = 0;
+	othTot = 0;
+	totalPop = 0;
+	total10 = 0;
+	total00 = 0;
+	total90 = 0;
+	total80 = 0;
+	whiteTot = 0;
+	blackTot = 0;
+	nativeTot = 0;
+	asianTot = 0;
+	pacificTot = 0;
+	multiracialTot = 0;
+	hispanicTot = 0;
+	currentMap.setStyle({
+		weight: 1,
+		opacity: 1,
+		color: 'white',
+		dashArray: '3',
+		fillOpacity: 0.7
+	});		
 });
 
 
