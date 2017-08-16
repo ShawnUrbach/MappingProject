@@ -2,6 +2,7 @@
 
 
 //Variables: GeoJsons
+var new2010;
 var election2012;
 var election2008;
 var census2010;
@@ -36,6 +37,12 @@ var options; //<--Variable for autocomplete search
 var demTot = 0;
 var repTot = 0;
 var othTot = 0;
+var demTot2 = 0;
+var repTot2 = 0;
+var othTot2 = 0;
+var demTot3 = 0;
+var repTot3 = 0;
+var othTot3 = 0;
 
 //Variables: Census Data
 var totalPop = 0;
@@ -57,6 +64,8 @@ var selectMode = false;
 var selectList = [];
 var selected = false;
 
+var ethnicGroup;
+
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
 
@@ -65,6 +74,103 @@ var selected = false;
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();   
 });
+
+
+
+
+
+function defaultStyle(feature) {
+	
+	function elections(dem, rep, oth){
+		var total = dem+rep+oth;
+		var percentDem = (dem/total)*100;
+		var percentRep = (rep/total)*100;
+		return percentDem-percentRep;	
+	}
+
+	function popchange(year2, year1){
+		return ((year2-year1)/year1)*100
+	}
+	
+	function demos(pop, whi){
+		var total = pop;
+		var white = whi;
+		var percentWhite = (whi/total)*100;
+		return percentWhite;	
+	}
+	
+	
+	function findLayer(){
+		if (currentMap == 'election2016'){
+			return GetColor(elections(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016));
+		}
+		if (currentMap == 'election2012'){
+			return GetColor(elections(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012));
+		}
+		if (currentMap == 'election2008'){
+			return GetColor(elections(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008));
+		}
+		if (currentMap == 'census2010'){
+			return GetColor2(popchange(feature.properties.POP2010, feature.properties.POP2000));
+		}
+		if (currentMap == 'census2000'){
+			return GetColor2(popchange(feature.properties.POP2000, feature.properties.POP1990));
+		}
+		if (currentMap == 'demo2010'){
+			return GetColor3(demos(feature.properties.POP2010, feature.properties.WHI2010));
+		}
+		if (currentMap == 'demo2000'){
+			return GetColor3(demos(feature.properties.POP2000, feature.properties.WHI2000));
+		}
+	}
+	
+	return {
+		fillColor: findLayer(), 
+		weight: 1,
+		opacity: 1,
+		color: 'white',
+		dashArray: '3',
+		fillOpacity: 0.7
+	};
+}
+
+function GetColor(w) {
+	return w > 30 ? '#104896' :
+		w > 20  ? '#2d67b7' :
+		w > 10  ? '#4880ce' :
+		w > 0  ? '#87b9ff' :
+		w > -10   ? '#f7d4d4' :
+		w > -20   ? '#ff9696' :
+		w > -30   ? '#ff6d6d' :
+		w > -100   ? '#ff2b2b' : '#01347c';	
+}
+
+function GetColor2(w) {
+	return w > 30 ? '#b30000' :
+		w > 25  ? '#e60000' :
+		w > 20  ? '#ff1a1a' :
+		w > 15  ? '#ff4d4d' :
+		w > 10   ? '#ff8080' :
+		w > 5   ? '#ffb3b3' :
+		w > 0   ? '#ffe6e6' :
+		w > -5   ? '#9999ff' : '#00008B';
+}
+
+function GetColor3(w) {
+	return w > 95 ? '#b30000' :
+		w > 90  ? '#e60000' :
+		w > 85  ? '#ff1a1a' :
+		w > 80  ? '#ff4d4d' :
+		w > 75   ? '#ff8080' :
+		w > 70   ? '#ffb3b3' :
+		w > 65   ? '#ffe6e6' :
+		w > 60   ? '#9999ff' : '#00008B';
+}
+
+
+
+
+
 
 //Style properties for Election 2012/2008
 function electionStyle(feature) {
@@ -168,7 +274,7 @@ function highlightFeature(e) {
 //Resets highlight on mouseout
 function resetHighlight(e) {
 	if (selectMode == false){
-		currentMap.resetStyle(e.target);
+		counties2010.resetStyle(e.target);
 	}
 }
 
@@ -178,7 +284,7 @@ function resetHighlightContext(e) {
 		var layer = e.target;
 		if (layer.options.weight == 4){
 			selected = true;
-			currentMap.resetStyle(e.target);
+			counties2010.resetStyle(e.target);
 		} else {
 			selected = false;
 		}
@@ -208,8 +314,8 @@ function zoomToFeature(e) {
 }
 
 //Insert pie graph using Chart.js for Election 2008/2012
-function insertElectionChart(){
-	var ctx = document.getElementById("myChart");
+function insertElectionChart(newChart, year){
+	var ctx = document.getElementById(newChart);
 		var myChart = new Chart(ctx, {
 			type: 'pie',
 			data: {
@@ -226,13 +332,31 @@ function insertElectionChart(){
 			},
 			options: {
 				animation: {
-					duration: 1000,
+					duration: 500,
 					easing: 'easeInExpo',
 				},
 				maintainAspectRatio: true,
+				tooltips: {
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    var value = data.datasets[0].data[tooltipItem.index];
+                      var label = data.labels[tooltipItem.index];
+                      var percentage = (value).toFixed(2);
+                      return label + ' ' + percentage + '%';
+                }
+            }
+
+        },
+				title: {
+					display: true,
+					text: year
+				}
 			}
 		});	
+	
+
 }
+
 
 //Insert line graph using Chart.js for Census 2000/2010
 function insertCensusChart(){
@@ -302,16 +426,43 @@ function insertDemoChart(){
 
 //Behavior for mousever and click- Election layers
 function election_onEachFeature(feature, layer) {
+	
+
+
+
+function doitman(demYear, repYear, othYear, demYear2, repYear2, othYear2, demYear3, repYear3, othYear3){
+	
+	var total = demYear+repYear+othYear;
+	var percentDem = (demYear/total)*100;
+	var percentRep = (repYear/total)*100;
+	var percentOth = (othYear/total)*100;
+	
+	var total2 = demYear2 + repYear2 + othYear2;
+	var percentDem2 = (demYear2/total2)*100;
+	var percentRep2 = (repYear2/total2)*100;
+	var percentOth2 = (othYear2/total2)*100;
+	
+	var total3 = demYear3 + repYear3 + othYear3;
+	var percentDem3 = (demYear3/total3)*100;
+	var percentRep3 = (repYear3/total3)*100;
+	var percentOth3 = (othYear3/total3)*100;
+	
+	var demPer;
+	var repPer;
+	var othPer;
+	var demPer2;
+	var repPer2;
+	var othPer2;
+	var demPer3;
+	var repPer3;
+	var othPer3;
+
 	layer.on({
 		mouseover: highlightFeature,
 		mouseout: resetHighlight,
 		click: zoomToFeature,
 		contextmenu: resetHighlightContext
 	});
-
-	var demPer;
-	var repPer;
-	var othPer;
 	
 	//Binds data to Bootstrap table in sidebar
 	function bindElectionTable(){
@@ -320,18 +471,29 @@ function election_onEachFeature(feature, layer) {
 		document.getElementById('independent').innerHTML = parseFloat(othPer).toFixed(2) + "%";
 		document.getElementById('democratTotal').innerHTML = parseInt(demTot).toLocaleString();
 		document.getElementById('republicanTotal').innerHTML = parseInt(repTot).toLocaleString();
-		document.getElementById('independentTotal').innerHTML = parseInt(othTot).toLocaleString();	
+		document.getElementById('independentTotal').innerHTML = parseInt(othTot).toLocaleString();
+		document.getElementById('democrat2').innerHTML = parseFloat(demPer2).toFixed(2) + "%";
+		document.getElementById('republican2').innerHTML = parseFloat(repPer2).toFixed(2) + "%";
+		document.getElementById('independent2').innerHTML = parseFloat(othPer2).toFixed(2) + "%";
+		document.getElementById('democratTotal2').innerHTML = parseInt(demTot2).toLocaleString();
+		document.getElementById('republicanTotal2').innerHTML = parseInt(repTot2).toLocaleString();
+		document.getElementById('independentTotal2').innerHTML = parseInt(othTot2).toLocaleString();
+		document.getElementById('democrat3').innerHTML = parseFloat(demPer3).toFixed(2) + "%";
+		document.getElementById('republican3').innerHTML = parseFloat(repPer3).toFixed(2) + "%";
+		document.getElementById('independent3').innerHTML = parseFloat(othPer3).toFixed(2) + "%";
+		document.getElementById('democratTotal3').innerHTML = parseInt(demTot3).toLocaleString();
+		document.getElementById('republicanTotal3').innerHTML = parseInt(repTot3).toLocaleString();
+		document.getElementById('independentTotal3').innerHTML = parseInt(othTot3).toLocaleString();			
 	}
 	
 	//Binds data to Chart.js in sidebar
 	function bindElectionChart(){
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-		election_data = [demPer,repPer, othPer];
+		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="105px" width="100px"></canvas>'+
+		'<br><canvas id="myChart3" height="105px" width="100px"></canvas>';
 		document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		insertElectionChart();
 	}
 	
 	function findPer(){
@@ -340,38 +502,82 @@ function election_onEachFeature(feature, layer) {
 		othPer = ((othTot / (demTot + repTot + othTot))*100);
 	}
 	
+	function findPer2(){
+		demPer2 = ((demTot2 / (demTot2 + repTot2 + othTot2))*100);
+		repPer2 = ((repTot2 / (demTot2 + repTot2 + othTot2))*100);
+		othPer2 = ((othTot2 / (demTot2 + repTot2 + othTot2))*100);
+	}
+	
+	function findPer3(){
+		demPer3 = ((demTot3 / (demTot3 + repTot3 + othTot3))*100);
+		repPer3 = ((repTot3 / (demTot3 + repTot3 + othTot3))*100);
+		othPer3 = ((othTot3 / (demTot3 + repTot3 + othTot3))*100);
+	}
+	
+	
 	//Behavior for left click events
 	layer.on('click', function (e) {
 		
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-        election_data = [feature.properties.PER_DEM, feature.properties.PER_REP, feature.properties.PER_OTH];
-		document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="105px" width="100px"></canvas>'+
+		'<br><canvas id="myChart3" height="105px" width="100px"></canvas>';
+        election_data = [percentDem, percentRep, percentOth];
+		document.getElementById('sbar-table').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
+		document.getElementById('sbar-header').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';	
-		insertElectionChart();
+		insertElectionChart("myChart", '2016');
+		election_data = [percentDem2, percentRep2, percentOth2];
+		insertElectionChart("myChart2", '2012');
+		election_data = [percentDem3, percentRep3, percentOth3];
+		insertElectionChart("myChart3", '2008');
 		
-		document.getElementById('democrat').innerHTML = parseFloat(feature.properties.PER_DEM).toFixed(2) + "%";
-	    document.getElementById('republican').innerHTML = parseFloat(feature.properties.PER_REP).toFixed(2) + "%";
-		document.getElementById('independent').innerHTML = parseFloat(feature.properties.PER_OTH).toFixed(2) + "%";
-		document.getElementById('democratTotal').innerHTML = parseInt(feature.properties.TOT_DEM).toLocaleString();
-		document.getElementById('republicanTotal').innerHTML = parseInt(feature.properties.TOT_REP).toLocaleString();
-		document.getElementById('independentTotal').innerHTML = parseInt(feature.properties.TOT_OTH).toLocaleString();	
+
 		
-		if (selected == false){
-			selectList.push(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
+		
+		document.getElementById('democrat').innerHTML = parseFloat(percentDem).toFixed(2) + "%";
+	    document.getElementById('republican').innerHTML = parseFloat(percentRep).toFixed(2) + "%";
+		document.getElementById('independent').innerHTML = parseFloat(percentOth).toFixed(2) + "%";
+		document.getElementById('democratTotal').innerHTML = parseInt(demYear).toLocaleString();
+		document.getElementById('republicanTotal').innerHTML = parseInt(repYear).toLocaleString();
+		document.getElementById('independentTotal').innerHTML = parseInt(othYear).toLocaleString();
+		document.getElementById('democrat2').innerHTML = parseFloat(percentDem2).toFixed(2) + "%";
+		document.getElementById('republican2').innerHTML = parseFloat(percentRep2).toFixed(2) + "%";
+		document.getElementById('independent2').innerHTML = parseFloat(percentOth2).toFixed(2) + "%";
+		document.getElementById('democratTotal2').innerHTML = parseInt(demYear2).toLocaleString();
+		document.getElementById('republicanTotal2').innerHTML = parseInt(repYear2).toLocaleString();
+		document.getElementById('independentTotal2').innerHTML = parseInt(othYear2).toLocaleString();
+		document.getElementById('democrat3').innerHTML = parseFloat(percentDem3).toFixed(2) + "%";
+		document.getElementById('republican3').innerHTML = parseFloat(percentRep3).toFixed(2) + "%";
+		document.getElementById('independent3').innerHTML = parseFloat(percentOth3).toFixed(2) + "%";
+		document.getElementById('democratTotal3').innerHTML = parseInt(demYear3).toLocaleString();
+		document.getElementById('republicanTotal3').innerHTML = parseInt(repYear3).toLocaleString();
+		document.getElementById('independentTotal3').innerHTML = parseInt(othYear3).toLocaleString();			
+		
+		if (selected == false && selectMode === true){
+			selectList.push(feature.properties.CO + ', ' + feature.properties.ST + '<br>');
 			$('#electionTest').html(selectList);	
-			demTot2 = parseInt(feature.properties.TOT_DEM);
-			demTot += demTot2;	
-			repTot2 = parseInt(feature.properties.TOT_REP);
-			repTot += repTot2;	
-			othTot2 = parseInt(feature.properties.TOT_OTH);
-			othTot += othTot2;
+			demTot += parseInt(demYear);	
+			repTot += parseInt(repYear);	
+			othTot += parseInt(othYear);
+			demTot2 += parseInt(demYear2);
+			repTot2 += parseInt(repYear2);
+			othTot2 += parseInt(othYear2);
+			demTot3 += parseInt(demYear3);
+			repTot3 += parseInt(repYear3);
+			othTot3 += parseInt(othYear3);
 			findPer();
+			findPer2();
+			findPer3();
 		}
 		
 		if (selectMode === true) {		
 			bindElectionChart();
+			election_data = [demPer,repPer,othPer];
+			insertElectionChart("myChart", '2016');
+			election_data = [demPer2,repPer2,othPer2];
+			insertElectionChart("myChart2", '2012');
+			election_data = [demPer3,repPer3,othPer3];
+			insertElectionChart("myChart3", '2008');
 			bindElectionTable();
 		}
     });
@@ -379,36 +585,153 @@ function election_onEachFeature(feature, layer) {
 	//Behavior for right click events
 	layer.on('contextmenu', function (e) {
 		if (selected == true){
-			var indextest = selectList.indexOf(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
+			var indextest = selectList.indexOf(feature.properties.CO + ', ' + feature.properties.ST + '<br>');
 			if (indextest > -1) {
 				selectList.splice(indextest, 1);
 			}
 			$('#electionTest').html(selectList);
-			
-			demTot2 = parseInt(feature.properties.TOT_DEM);
-			demTot -= demTot2;
-			repTot2 = parseInt(feature.properties.TOT_REP);
-			repTot -= repTot2;
-			othTot2 = parseInt(feature.properties.TOT_OTH);
-			othTot -= othTot2;
+			demTot -= parseInt(demYear);
+			repTot -= parseInt(repYear);
+			othTot -= parseInt(othYear);
+			demTot2 -= parseInt(demYear2);
+			repTot2 -= parseInt(repYear2);
+			othTot2 -= parseInt(othYear2);
+			demTot3 -= parseInt(demYear3);
+			repTot3 -= parseInt(repYear3);
+			othTot3 -= parseInt(othYear3);
 			findPer();
+			findPer2();
+			findPer3();
 		}
 		
-		if (selectMode === true) {
+		if (selectMode == true && selected == true) {
 			bindElectionChart();
+			election_data = [demPer,repPer,othPer];
+			insertElectionChart("myChart", '2016');
+			election_data = [demPer2,repPer2,othPer2];
+			insertElectionChart("myChart2", '2012');
+			election_data = [demPer3,repPer3,othPer3];
+			insertElectionChart("myChart3", '2008');
 			bindElectionTable();
 		}
 	});
 
+
+
+
+}
+
+
+
+
+
+
+switch (currentMap)
+            {
+               case 'election2016': doitman(feature.properties.DEM2016,feature.properties.REP2016,feature.properties.OTH2016,feature.properties.DEM2012,feature.properties.REP2012,feature.properties.OTH2012,feature.properties.DEM2008,feature.properties.REP2008,feature.properties.OTH2008);
+               break;
+            
+               case 'election2012': doitman(feature.properties.DEM2012,feature.properties.REP2012,feature.properties.OTH2012,feature.properties.DEM2016,feature.properties.REP2016,feature.properties.OTH2016,feature.properties.DEM2008,feature.properties.REP2008,feature.properties.OTH2008);
+               break;
+            
+               case 'election2008': doitman(feature.properties.DEM2008,feature.properties.REP2008,feature.properties.OTH2008,feature.properties.DEM2012,feature.properties.REP2012,feature.properties.OTH2012,feature.properties.DEM2016,feature.properties.REP2016,feature.properties.OTH2016);
+               break;
+            
+               default:  return;
+            }
+
+
+
+
+	
+	
 	//Binds labels
 	if (feature.properties) {
-		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY 
-		+ ", " + feature.properties.STATE
-		+ "</b></u></big><br><div class = 'popup_body'> <b>Democrat:&nbsp;</b>" + Number(feature.properties.PER_DEM).toFixed(2) + "%"
-		+ "<br> <b>Republican:&nbsp;</b>" + Number(feature.properties.PER_REP).toFixed(2) + "%</div>"
-		, {permanent: false});
+		
+		function displayElectionLables(dem, rep, oth){
+			var total = dem + rep + oth
+			var percentDem = (dem/total)*100;
+			var percentRep = (rep/total)*100;
+		
+			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.CO 
+			+ ", " + feature.properties.ST
+			+ "</b></u></big><br><div class = 'popup_body'> <b>Democrat:&nbsp;</b>" + (percentDem).toFixed(2) + "%"
+			+ "<br> <b>Republican:&nbsp;</b>" + Number(percentRep).toFixed(2) + "%</div>"
+			, {permanent: false});
+		}
+		
+		function displayCensusLables(year2, year1){
+	
+			var popchange = ((year2-year1)/year1)*100
+	
+			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.CO 
+			+ ", " + feature.properties.ST
+			+ "</b></u></big><br><div class = 'popup_body'> <b>Total Population:&nbsp;</b>" + parseInt(year2).toLocaleString()
+			+ "<br> <b>Population Growth:&nbsp;</b>" + Number(popchange).toFixed(2) + "%</div>"
+			, {permanent: false});
+		}
+		
+		function displayDemoLables(pop, eth){
+	
+			var total = pop;
+			var ethPer = (eth/total)*100;
+	
+			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.CO 
+			+ ", " + feature.properties.ST
+			+ "</b></u></big><br><div class = 'popup_body'> <b>Total " + ethnicGroup + ":&nbsp;</b>" + parseInt(eth).toLocaleString()
+			+ "<br> <b>Percent " + ethnicGroup + ":&nbsp;</b>" + Number(ethPer).toFixed(2) + "%</div>"
+			, {permanent: false});
+		}	
+			
+		
+		displayElectionLables(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+
+		$('#election_16, #election_16s').click(function(){
+			displayElectionLables(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+		});
+		
+		$('#election_12, #election_12s').click(function(){
+			displayElectionLables(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+		});
+		
+		$('#election_08, #election_08s').click(function(){
+			displayElectionLables(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+		});
+		
+		$('#census_10, #census_10s').click(function(){
+			displayCensusLables(feature.properties.POP2010, feature.properties.POP2000);
+		});
+		
+		$('#census_00, #census_00s').click(function(){
+			displayCensusLables(feature.properties.POP2000, feature.properties.POP1990);
+		});
+
+		$('#demo_10, #demo_10s').click(function(){
+			displayDemoLables(feature.properties.POP2010, feature.properties.WHI2010);
+		});
+	
+		$('#demo_00, #demo_00s').click(function(){
+			displayDemoLables(feature.properties.POP2000, feature.properties.WHI2000);
+		});
+
+		
 	}
+	
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
 
 //Behavior for mousever and click- Census layers
 function census_onEachFeature(feature, layer) {
@@ -807,6 +1130,10 @@ function collapse_sidebar(id_name){
 //-------------------------------------------------MAP LAYERS--------------------------------------------------//
 
 
+
+
+
+
 //Loads Leaflet map object
 map = L.map('map', {
 	center: [39.1,-94.5],
@@ -825,13 +1152,24 @@ osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 //Loads geoJson layers
-election2016 = new L.GeoJSON.AJAX("geography/election2016-min.geojson", {style: electionStyle, onEachFeature: election_onEachFeature}).addTo(map);
-election2012 = new L.GeoJSON.AJAX("geography/election2012-min.geojson", {style: electionStyle, onEachFeature: election_onEachFeature});
-election2008 = new L.GeoJSON.AJAX("geography/election2008-min.geojson", {style: electionStyle, onEachFeature: election_onEachFeature});
-census2000 = new L.GeoJSON.AJAX("geography/census2000-min.geojson", {style: censusStyle, onEachFeature: census_onEachFeature});
-census2010 = new L.GeoJSON.AJAX("geography/census2010-min.geojson", {style: censusStyle, onEachFeature: census_onEachFeature});
-demo2000 = new L.GeoJSON.AJAX("geography/race2000-min.geojson", {style: demoStyle, onEachFeature: demo_onEachFeature});
-demo2010 = new L.GeoJSON.AJAX("geography/race2010-min.geojson", {style: demoStyle, onEachFeature: demo_onEachFeature});
+
+
+
+
+
+
+
+
+
+counties2010 = new L.GeoJSON.AJAX("geography/2010.geojson", {style: defaultStyle, onEachFeature: election_onEachFeature}).addTo(map);
+
+
+
+
+
+
+
+
 states = new L.GeoJSON.AJAX("geography/states-min.geojson", {style: statesStyle, pane: 'labels'}).addTo(map);
 
 
@@ -949,7 +1287,7 @@ currentLegend = electionLegend;
 
 
 //Loading GIF displays on page load
-election2012.on('data:loaded', function() {
+counties2010.on('data:loaded', function() {
   $(".loader").fadeOut("slow");
 });
 
@@ -995,15 +1333,15 @@ $("#county_search").easyAutocomplete(options);
 
 
 //Layer controls via drop down menu, dynamically change map title, legend, and table type
-currentMap = election2016;
+currentMap = 'election2016';
 currentTable = document.getElementById("election_table");
 document.getElementById('mapTitleText').innerHTML = '<center>2016: PRESIDENTIAL ELECTION RESULTS</center>';
 
 $('#election_08, #election_08s').click(function(){
 	//Change layer
-	map.addLayer(election2008);
-	map.removeLayer(currentMap);
-	currentMap = election2008;
+
+	currentMap = 'election2008';
+	counties2010.setStyle(defaultStyle);
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
@@ -1020,10 +1358,11 @@ $('#election_08, #election_08s').click(function(){
 	currentTable.style.display = "inline";	
 });
 $('#election_12, #election_12s').click(function(){
-	//Change layer
-	map.addLayer(election2012);
-	map.removeLayer(currentMap);
-	currentMap = election2012;
+
+	
+	currentMap = 'election2012';
+	counties2010.setStyle(defaultStyle);
+	
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
@@ -1042,9 +1381,9 @@ $('#election_12, #election_12s').click(function(){
 });
 $('#election_16, #election_16s').click(function(){
 	//Change layer
-	map.addLayer(election2016);
-	map.removeLayer(currentMap);
-	currentMap = election2016;
+
+	currentMap = 'election2016';
+	counties2010.setStyle(defaultStyle);
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
@@ -1063,9 +1402,9 @@ $('#election_16, #election_16s').click(function(){
 });
 $('#census_00, #census_00s').click(function(){
 	//Change layer
-	map.addLayer(census2000);
-	map.removeLayer(currentMap);
-	currentMap = census2000;
+
+	currentMap = 'census2000';
+	counties2010.setStyle(defaultStyle);
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
@@ -1083,9 +1422,9 @@ $('#census_00, #census_00s').click(function(){
 });
 $('#census_10, #census_10s').click(function(){
 	//Change layer
-	map.addLayer(census2010);
-	map.removeLayer(currentMap);
-	currentMap = census2010;
+
+	currentMap = 'census2010';
+	counties2010.setStyle(defaultStyle);
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
@@ -1103,9 +1442,9 @@ $('#census_10, #census_10s').click(function(){
 });
 $('#demo_00, #demo_00s').click(function(){
 	//Change layer
-	map.addLayer(demo2000);
-	map.removeLayer(currentMap);
-	currentMap = demo2000;
+	ethnicGroup = 'White';
+	currentMap = 'demo2000';
+	counties2010.setStyle(defaultStyle);
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
@@ -1123,9 +1462,9 @@ $('#demo_00, #demo_00s').click(function(){
 });
 $('#demo_10, #demo_10s').click(function(){
 	//Change layer
-	map.addLayer(demo2010);
-	map.removeLayer(currentMap);
-	currentMap = demo2010;
+	ethnicGroup = 'White';
+	currentMap = 'demo2010';
+	counties2010.setStyle(defaultStyle);
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
@@ -1169,7 +1508,7 @@ $('.selectMode').click(function(){
 		selectMode = false;
 		selectList = [];
 		$('#electionTest').html(selectList);
-		currentMap.setStyle({
+		counties2010.setStyle({
 			weight: 1,
 			opacity: 1,
 			color: 'white',
@@ -1185,6 +1524,12 @@ function clearStuff(){
 	demTot = 0;
 	repTot = 0;
 	othTot = 0;
+	demTot2 = 0;
+	repTot2 = 0;
+	othTot2 = 0;
+	demTot3 = 0;
+	repTot3 = 0;
+	othTot3 = 0;
 	totalPop = 0;
 	total10 = 0;
 	total00 = 0;
@@ -1197,7 +1542,7 @@ function clearStuff(){
 	pacificTot = 0;
 	multiracialTot = 0;
 	hispanicTot = 0;
-	currentMap.setStyle({
+	counties2010.setStyle({
 		weight: 1,
 		opacity: 1,
 		color: 'white',
@@ -1215,4 +1560,3 @@ $('.layercontrol').click(function(){
 $('.clearSelection').click(function(){
 	clearStuff();
 });
-

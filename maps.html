@@ -132,7 +132,7 @@
 						<span class="sidebar-close" id="sbar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>
 					</h1>
 					<div class = "container-fluid" id="chart_container">
-						<canvas id="myChart" height="90px" width="100px"></canvas>
+						
 					</div>
 				</div>
 				<div class="sidebar-pane" id="table">
@@ -140,29 +140,50 @@
 
 						<div id = "election_table">
 						  <table class="table table-hover">
+						  <thead>
+						  <tr>
+							<th></th>
+							<th>2016</th>
+							<th>2012</th>
+							<th>2008</th>
+						  </tr>
+						</thead>
 							  <tr>
 								<th>Dem %</th>
 								<td id="democrat"></td>
+								<td id="democrat2"></td>
+								<td id="democrat3"></td>
 							  </tr>
 							  <tr>
 								<th>Rep %</th>
 								<td id="republican"></td>
+								<td id="republican2"></td>
+								<td id="republican3"></td>
+								
 							  </tr>
 							  <tr>
 								<th>Other %</th>
 								<td id="independent"></td>
+								<td id="independent2"></td>
+								<td id="independent3"></td>
 							  </tr>
 							  <tr>
 								<th>Dem Tot.</th>
 								<td id="democratTotal"></td>
+								<td id="democratTotal2"></td>
+								<td id="democratTotal3"></td>
 							  </tr>
 							  <tr>
 								<th>Rep Tot.</th>
 								<td id="republicanTotal"></td>
+								<td id="republicanTotal2"></td>
+								<td id="republicanTotal3"></td>
 							  </tr>
 							  <tr>
 								<th>Oth Tot.</th>
 								<td id="independentTotal"></td>
+								<td id="independentTotal2"></td>
+								<td id="independentTotal3"></td>
 							  </tr>
 						  </table>
 						</div>

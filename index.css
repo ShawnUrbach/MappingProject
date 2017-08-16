@@ -298,7 +298,6 @@ td {
 
 #myChart {
 	margin-top: 1%;
-	pointer-events: none;
 	height: 90px;
 	width: 100px;
 }
