@@ -457,6 +457,61 @@ function doitman(demYear, repYear, othYear, demYear2, repYear2, othYear2, demYea
 	var repPer3;
 	var othPer3;
 
+					var chart_block = `				
+								
+								<div id = "election_table">
+						  <table class="table table-hover">
+						  <thead>
+						  <tr>
+							<th></th>
+							<th>2016</th>
+							<th>2012</th>
+							<th>2008</th>
+						  </tr>
+						</thead>
+							  <tr>
+								<th>Dem %</th>
+								<td id="democrat"></td>
+								<td id="democrat2"></td>
+								<td id="democrat3"></td>
+							  </tr>
+							  <tr>
+								<th>Rep %</th>
+								<td id="republican"></td>
+								<td id="republican2"></td>
+								<td id="republican3"></td>
+								
+							  </tr>
+							  <tr>
+								<th>Other %</th>
+								<td id="independent"></td>
+								<td id="independent2"></td>
+								<td id="independent3"></td>
+							  </tr>
+							  <tr>
+								<th>Dem Tot.</th>
+								<td id="democratTotal"></td>
+								<td id="democratTotal2"></td>
+								<td id="democratTotal3"></td>
+							  </tr>
+							  <tr>
+								<th>Rep Tot.</th>
+								<td id="republicanTotal"></td>
+								<td id="republicanTotal2"></td>
+								<td id="republicanTotal3"></td>
+							  </tr>
+							  <tr>
+								<th>Oth Tot.</th>
+								<td id="independentTotal"></td>
+								<td id="independentTotal2"></td>
+								<td id="independentTotal3"></td>
+							  </tr>
+						  </table>
+						</div>
+		`;
+	
+	
+	
 	layer.on({
 		mouseover: highlightFeature,
 		mouseout: resetHighlight,
@@ -488,12 +543,13 @@ function doitman(demYear, repYear, othYear, demYear2, repYear2, othYear2, demYea
 	
 	//Binds data to Chart.js in sidebar
 	function bindElectionChart(){
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="105px" width="100px"></canvas>'+
-		'<br><canvas id="myChart3" height="105px" width="100px"></canvas>';
+		document.getElementById('chart_container').innerHTML = chart_block+'<br><br><br><br><canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="90px" width="100px"></canvas>'+
+		'<br><canvas id="myChart3" height="90px" width="100px"></canvas>';
 		document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+		'<span class="dropdown" id="mapChooser"></span>';
+		document.getElementById('mapChooser').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart">16 PIE</a></li><li><a href="#myChart2">12 PIE</a></li><li><a href="#myChart3">08 PIE</a></li></ul>';
 	}
 	
 	function findPer(){
@@ -518,13 +574,21 @@ function doitman(demYear, repYear, othYear, demYear2, repYear2, othYear2, demYea
 	//Behavior for left click events
 	layer.on('click', function (e) {
 		
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="105px" width="100px"></canvas>'+
-		'<br><canvas id="myChart3" height="105px" width="100px"></canvas>';
+
+		
+		
+		
+		document.getElementById('chart_container').innerHTML = chart_block+'<br><br><br><br><canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="90px" width="100px"></canvas>'+
+		'<br><canvas id="myChart3" height="90px" width="100px"></canvas>';
         election_data = [percentDem, percentRep, percentOth];
 		document.getElementById('sbar-table').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
 		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 		document.getElementById('sbar-header').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';	
+		'<span class="dropdown" id="mapChooser"></span>';
+		document.getElementById('mapChooser').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart">16 PIE</a></li><li><a href="#myChart2">12 PIE</a></li><li><a href="#myChart3">08 PIE</a></li></ul>';
+		
+
+		
 		insertElectionChart("myChart", '2016');
 		election_data = [percentDem2, percentRep2, percentOth2];
 		insertElectionChart("myChart2", '2012');
@@ -1180,7 +1244,6 @@ states = new L.GeoJSON.AJAX("geography/states-min.geojson", {style: statesStyle,
 sidebar = L.control.sidebar('sidebar').addTo(map);
 
 //Collapses sidebar when user clicks header
-collapse_sidebar("sbar-header");
 collapse_sidebar("sbar-table");
 
 
@@ -1355,7 +1418,10 @@ $('#election_08, #election_08s').click(function(){
 	//Change table
 	currentTable.style.display = "none";
 	currentTable = document.getElementById("election_table");
-	currentTable.style.display = "inline";	
+	currentTable.style.display = "inline";
+
+	
+ 
 });
 $('#election_12, #election_12s').click(function(){
 
