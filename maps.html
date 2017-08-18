@@ -117,84 +117,23 @@
 					<li id = "infotab"><a href="#info_chart" role="tab" title="Election Data"><img src="img/icons8-Elections-100.png"/></a></li>
 					<li><a href="#table" role="tab" title="Population Growth Data"><img src="img/icons8-Line Chart-100.png"/></a></li>
 					<li><a href="#table2" role="tab" title="Demographics Data"><img src="img/icons8-Global Citizen Filled-100.png"/></a></li>
-					<li><a href="#selections" role="tab" title="Selections"><i class="fa fa-object-group" aria-hidden="true"></i></a></li>
-					
-				</ul>
-
-				<ul role="tablist">
+					<li><a href="#selections" role="tab" title="Selections"><i class="fa fa-object-group"></i></a></li>
 					<li><a href="#settings" role="tab" title="Map options"><i class="fa fa-gear"></i></a></li>
 				</ul>
 			</div>
-
 			<div class="sidebar-content">
-				<div class="sidebar-pane" id="info_chart">
-					<h1 class="sidebar-header" id='sbar-header'>Click map to populate data
 			
-	<span class="dropdown" id="mapChooser">
-	</span>
-	
- 
-
-					
-	
-						<span class="sidebar-close" id="sbar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>
+				<!--Elections Tab-->
+				<div class="sidebar-pane" id="info_chart">
+					<h1 class="sidebar-header" id='sbar-header'>Click map to populate data<span class="dropdown" id="mapChooser"></span><span class="sidebar-close" id="sbar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>
 					</h1>
 					<div class = "container-fluid" id="chart_container">
-						
 					</div>
 				</div>
+				
+				<!--Population Growth Tab-->
 				<div class="sidebar-pane" id="table">
-					<h1 class="sidebar-header" id='sbar-table'>Table<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
-
-						<div id = "election_table">
-						  <table class="table table-hover">
-						  <thead>
-						  <tr>
-							<th></th>
-							<th>2016</th>
-							<th>2012</th>
-							<th>2008</th>
-						  </tr>
-						</thead>
-							  <tr>
-								<th>Dem %</th>
-								<td id="democrat"></td>
-								<td id="democrat2"></td>
-								<td id="democrat3"></td>
-							  </tr>
-							  <tr>
-								<th>Rep %</th>
-								<td id="republican"></td>
-								<td id="republican2"></td>
-								<td id="republican3"></td>
-								
-							  </tr>
-							  <tr>
-								<th>Other %</th>
-								<td id="independent"></td>
-								<td id="independent2"></td>
-								<td id="independent3"></td>
-							  </tr>
-							  <tr>
-								<th>Dem Tot.</th>
-								<td id="democratTotal"></td>
-								<td id="democratTotal2"></td>
-								<td id="democratTotal3"></td>
-							  </tr>
-							  <tr>
-								<th>Rep Tot.</th>
-								<td id="republicanTotal"></td>
-								<td id="republicanTotal2"></td>
-								<td id="republicanTotal3"></td>
-							  </tr>
-							  <tr>
-								<th>Oth Tot.</th>
-								<td id="independentTotal"></td>
-								<td id="independentTotal2"></td>
-								<td id="independentTotal3"></td>
-							  </tr>
-						  </table>
-						</div>
+					<h1 class="sidebar-header" id='sbar-table'>Click map to populate data<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
 						
 						<div id = "census_table">
 						  <table class="table table-hover">
@@ -261,9 +200,11 @@
 							  </tr>
 						  </table>
 						</div>
-		
 				</div>
 
+				<!--Demographics Tab-->
+				
+				<!-- Selection Tab -->
 				<div class="sidebar-pane" id="selections">
 					<h1 class="sidebar-header">Selected Counties<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
 					<div id = "election_table2">
@@ -276,8 +217,7 @@
 					</div>
 				</div>
 				
-
-
+				<!-- Settings Tab -->
 				<div class="sidebar-pane" id="settings">
 					<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
 					<div class="checkbox" id="settings_list">

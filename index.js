@@ -29,7 +29,7 @@ var demoLegend;
 var currentLegend;
 
 //Variables: Other
-var currentMap;
+var currentMap = 'election2016';
 var currentTable;
 var options; //<--Variable for autocomplete search
 
@@ -424,299 +424,279 @@ function insertDemoChart(){
 		});	
 }
 
-//Behavior for mousever and click- Election layers
-function election_onEachFeature(feature, layer) {
+//Behavior for mousever and click
+function onEachFeature(feature, layer) {
 	
+	//Behavior for Election Features
+	function Election_onEachFeature(demYear, repYear, othYear, demYear2, repYear2, othYear2, demYear3, repYear3, othYear3){
+		
+		var total = demYear+repYear+othYear;
+		var percentDem = (demYear/total)*100;
+		var percentRep = (repYear/total)*100;
+		var percentOth = (othYear/total)*100;
+		
+		var total2 = demYear2 + repYear2 + othYear2;
+		var percentDem2 = (demYear2/total2)*100;
+		var percentRep2 = (repYear2/total2)*100;
+		var percentOth2 = (othYear2/total2)*100;
+		
+		var total3 = demYear3 + repYear3 + othYear3;
+		var percentDem3 = (demYear3/total3)*100;
+		var percentRep3 = (repYear3/total3)*100;
+		var percentOth3 = (othYear3/total3)*100;
+		
+		var demPer;
+		var repPer;
+		var othPer;
+		var demPer2;
+		var repPer2;
+		var othPer2;
+		var demPer3;
+		var repPer3;
+		var othPer3;
 
-
-
-function doitman(demYear, repYear, othYear, demYear2, repYear2, othYear2, demYear3, repYear3, othYear3){
-	
-	var total = demYear+repYear+othYear;
-	var percentDem = (demYear/total)*100;
-	var percentRep = (repYear/total)*100;
-	var percentOth = (othYear/total)*100;
-	
-	var total2 = demYear2 + repYear2 + othYear2;
-	var percentDem2 = (demYear2/total2)*100;
-	var percentRep2 = (repYear2/total2)*100;
-	var percentOth2 = (othYear2/total2)*100;
-	
-	var total3 = demYear3 + repYear3 + othYear3;
-	var percentDem3 = (demYear3/total3)*100;
-	var percentRep3 = (repYear3/total3)*100;
-	var percentOth3 = (othYear3/total3)*100;
-	
-	var demPer;
-	var repPer;
-	var othPer;
-	var demPer2;
-	var repPer2;
-	var othPer2;
-	var demPer3;
-	var repPer3;
-	var othPer3;
-
-					var chart_block = `				
-								
-								<div id = "election_table">
-						  <table class="table table-hover">
-						  <thead>
-						  <tr>
-							<th></th>
-							<th>2016</th>
-							<th>2012</th>
-							<th>2008</th>
-						  </tr>
-						</thead>
-							  <tr>
-								<th>Dem %</th>
-								<td id="democrat"></td>
-								<td id="democrat2"></td>
-								<td id="democrat3"></td>
-							  </tr>
-							  <tr>
-								<th>Rep %</th>
-								<td id="republican"></td>
-								<td id="republican2"></td>
-								<td id="republican3"></td>
-								
-							  </tr>
-							  <tr>
-								<th>Other %</th>
-								<td id="independent"></td>
-								<td id="independent2"></td>
-								<td id="independent3"></td>
-							  </tr>
-							  <tr>
-								<th>Dem Tot.</th>
-								<td id="democratTotal"></td>
-								<td id="democratTotal2"></td>
-								<td id="democratTotal3"></td>
-							  </tr>
-							  <tr>
-								<th>Rep Tot.</th>
-								<td id="republicanTotal"></td>
-								<td id="republicanTotal2"></td>
-								<td id="republicanTotal3"></td>
-							  </tr>
-							  <tr>
-								<th>Oth Tot.</th>
-								<td id="independentTotal"></td>
-								<td id="independentTotal2"></td>
-								<td id="independentTotal3"></td>
-							  </tr>
-						  </table>
-						</div>
+		var chart_block = `				
+					
+			<div id = "election_table">
+			  <table class="table table-hover">
+			  <thead>
+			  <tr>
+				<th></th>
+				<th>2016</th>
+				<th>2012</th>
+				<th>2008</th>
+			  </tr>
+			  </thead>
+				  <tr>
+					<th>Dem %</th>
+					<td id="democrat"></td>
+					<td id="democrat2"></td>
+					<td id="democrat3"></td>
+				  </tr>
+				  <tr>
+					<th>Rep %</th>
+					<td id="republican"></td>
+					<td id="republican2"></td>
+					<td id="republican3"></td>
+					
+				  </tr>
+				  <tr>
+					<th>Other %</th>
+					<td id="independent"></td>
+					<td id="independent2"></td>
+					<td id="independent3"></td>
+				  </tr>
+				  <tr>
+					<th>Dem Tot.</th>
+					<td id="democratTotal"></td>
+					<td id="democratTotal2"></td>
+					<td id="democratTotal3"></td>
+				  </tr>
+				  <tr>
+					<th>Rep Tot.</th>
+					<td id="republicanTotal"></td>
+					<td id="republicanTotal2"></td>
+					<td id="republicanTotal3"></td>
+				  </tr>
+				  <tr>
+					<th>Oth Tot.</th>
+					<td id="independentTotal"></td>
+					<td id="independentTotal2"></td>
+					<td id="independentTotal3"></td>
+				  </tr>
+			  </table>
+			</div>
 		`;
-	
-	
-	
-	layer.on({
-		mouseover: highlightFeature,
-		mouseout: resetHighlight,
-		click: zoomToFeature,
-		contextmenu: resetHighlightContext
-	});
-	
-	//Binds data to Bootstrap table in sidebar
-	function bindElectionTable(){
-		document.getElementById('democrat').innerHTML = parseFloat(demPer).toFixed(2) + "%";
-		document.getElementById('republican').innerHTML = parseFloat(repPer).toFixed(2) + "%";
-		document.getElementById('independent').innerHTML = parseFloat(othPer).toFixed(2) + "%";
-		document.getElementById('democratTotal').innerHTML = parseInt(demTot).toLocaleString();
-		document.getElementById('republicanTotal').innerHTML = parseInt(repTot).toLocaleString();
-		document.getElementById('independentTotal').innerHTML = parseInt(othTot).toLocaleString();
-		document.getElementById('democrat2').innerHTML = parseFloat(demPer2).toFixed(2) + "%";
-		document.getElementById('republican2').innerHTML = parseFloat(repPer2).toFixed(2) + "%";
-		document.getElementById('independent2').innerHTML = parseFloat(othPer2).toFixed(2) + "%";
-		document.getElementById('democratTotal2').innerHTML = parseInt(demTot2).toLocaleString();
-		document.getElementById('republicanTotal2').innerHTML = parseInt(repTot2).toLocaleString();
-		document.getElementById('independentTotal2').innerHTML = parseInt(othTot2).toLocaleString();
-		document.getElementById('democrat3').innerHTML = parseFloat(demPer3).toFixed(2) + "%";
-		document.getElementById('republican3').innerHTML = parseFloat(repPer3).toFixed(2) + "%";
-		document.getElementById('independent3').innerHTML = parseFloat(othPer3).toFixed(2) + "%";
-		document.getElementById('democratTotal3').innerHTML = parseInt(demTot3).toLocaleString();
-		document.getElementById('republicanTotal3').innerHTML = parseInt(repTot3).toLocaleString();
-		document.getElementById('independentTotal3').innerHTML = parseInt(othTot3).toLocaleString();			
-	}
-	
-	//Binds data to Chart.js in sidebar
-	function bindElectionChart(){
-		document.getElementById('chart_container').innerHTML = chart_block+'<br><br><br><br><canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="90px" width="100px"></canvas>'+
-		'<br><canvas id="myChart3" height="90px" width="100px"></canvas>';
-		document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
-		'<span class="dropdown" id="mapChooser"></span>';
-		document.getElementById('mapChooser').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart">16 PIE</a></li><li><a href="#myChart2">12 PIE</a></li><li><a href="#myChart3">08 PIE</a></li></ul>';
-	}
-	
-	function findPer(){
-		demPer = ((demTot / (demTot + repTot + othTot))*100);
-		repPer = ((repTot / (demTot + repTot + othTot))*100);
-		othPer = ((othTot / (demTot + repTot + othTot))*100);
-	}
-	
-	function findPer2(){
-		demPer2 = ((demTot2 / (demTot2 + repTot2 + othTot2))*100);
-		repPer2 = ((repTot2 / (demTot2 + repTot2 + othTot2))*100);
-		othPer2 = ((othTot2 / (demTot2 + repTot2 + othTot2))*100);
-	}
-	
-	function findPer3(){
-		demPer3 = ((demTot3 / (demTot3 + repTot3 + othTot3))*100);
-		repPer3 = ((repTot3 / (demTot3 + repTot3 + othTot3))*100);
-		othPer3 = ((othTot3 / (demTot3 + repTot3 + othTot3))*100);
-	}
-	
-	
-	//Behavior for left click events
-	layer.on('click', function (e) {
 		
-
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight,
+			click: zoomToFeature,
+			contextmenu: resetHighlightContext
+		});
 		
-		
-		
-		document.getElementById('chart_container').innerHTML = chart_block+'<br><br><br><br><canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="90px" width="100px"></canvas>'+
-		'<br><canvas id="myChart3" height="90px" width="100px"></canvas>';
-        election_data = [percentDem, percentRep, percentOth];
-		document.getElementById('sbar-table').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
-		'<span class="dropdown" id="mapChooser"></span>';
-		document.getElementById('mapChooser').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart">16 PIE</a></li><li><a href="#myChart2">12 PIE</a></li><li><a href="#myChart3">08 PIE</a></li></ul>';
-		
-
-		
-		insertElectionChart("myChart", '2016');
-		election_data = [percentDem2, percentRep2, percentOth2];
-		insertElectionChart("myChart2", '2012');
-		election_data = [percentDem3, percentRep3, percentOth3];
-		insertElectionChart("myChart3", '2008');
-		
-
-		
-		
-		document.getElementById('democrat').innerHTML = parseFloat(percentDem).toFixed(2) + "%";
-	    document.getElementById('republican').innerHTML = parseFloat(percentRep).toFixed(2) + "%";
-		document.getElementById('independent').innerHTML = parseFloat(percentOth).toFixed(2) + "%";
-		document.getElementById('democratTotal').innerHTML = parseInt(demYear).toLocaleString();
-		document.getElementById('republicanTotal').innerHTML = parseInt(repYear).toLocaleString();
-		document.getElementById('independentTotal').innerHTML = parseInt(othYear).toLocaleString();
-		document.getElementById('democrat2').innerHTML = parseFloat(percentDem2).toFixed(2) + "%";
-		document.getElementById('republican2').innerHTML = parseFloat(percentRep2).toFixed(2) + "%";
-		document.getElementById('independent2').innerHTML = parseFloat(percentOth2).toFixed(2) + "%";
-		document.getElementById('democratTotal2').innerHTML = parseInt(demYear2).toLocaleString();
-		document.getElementById('republicanTotal2').innerHTML = parseInt(repYear2).toLocaleString();
-		document.getElementById('independentTotal2').innerHTML = parseInt(othYear2).toLocaleString();
-		document.getElementById('democrat3').innerHTML = parseFloat(percentDem3).toFixed(2) + "%";
-		document.getElementById('republican3').innerHTML = parseFloat(percentRep3).toFixed(2) + "%";
-		document.getElementById('independent3').innerHTML = parseFloat(percentOth3).toFixed(2) + "%";
-		document.getElementById('democratTotal3').innerHTML = parseInt(demYear3).toLocaleString();
-		document.getElementById('republicanTotal3').innerHTML = parseInt(repYear3).toLocaleString();
-		document.getElementById('independentTotal3').innerHTML = parseInt(othYear3).toLocaleString();			
-		
-		if (selected == false && selectMode === true){
-			selectList.push(feature.properties.CO + ', ' + feature.properties.ST + '<br>');
-			$('#electionTest').html(selectList);	
-			demTot += parseInt(demYear);	
-			repTot += parseInt(repYear);	
-			othTot += parseInt(othYear);
-			demTot2 += parseInt(demYear2);
-			repTot2 += parseInt(repYear2);
-			othTot2 += parseInt(othYear2);
-			demTot3 += parseInt(demYear3);
-			repTot3 += parseInt(repYear3);
-			othTot3 += parseInt(othYear3);
-			findPer();
-			findPer2();
-			findPer3();
+		//Binds Table Data
+		function bindElectionTable(){
+			document.getElementById('democrat').innerHTML = parseFloat(demPer).toFixed(2) + "%";
+			document.getElementById('republican').innerHTML = parseFloat(repPer).toFixed(2) + "%";
+			document.getElementById('independent').innerHTML = parseFloat(othPer).toFixed(2) + "%";
+			document.getElementById('democratTotal').innerHTML = parseInt(demTot).toLocaleString();
+			document.getElementById('republicanTotal').innerHTML = parseInt(repTot).toLocaleString();
+			document.getElementById('independentTotal').innerHTML = parseInt(othTot).toLocaleString();
+			document.getElementById('democrat2').innerHTML = parseFloat(demPer2).toFixed(2) + "%";
+			document.getElementById('republican2').innerHTML = parseFloat(repPer2).toFixed(2) + "%";
+			document.getElementById('independent2').innerHTML = parseFloat(othPer2).toFixed(2) + "%";
+			document.getElementById('democratTotal2').innerHTML = parseInt(demTot2).toLocaleString();
+			document.getElementById('republicanTotal2').innerHTML = parseInt(repTot2).toLocaleString();
+			document.getElementById('independentTotal2').innerHTML = parseInt(othTot2).toLocaleString();
+			document.getElementById('democrat3').innerHTML = parseFloat(demPer3).toFixed(2) + "%";
+			document.getElementById('republican3').innerHTML = parseFloat(repPer3).toFixed(2) + "%";
+			document.getElementById('independent3').innerHTML = parseFloat(othPer3).toFixed(2) + "%";
+			document.getElementById('democratTotal3').innerHTML = parseInt(demTot3).toLocaleString();
+			document.getElementById('republicanTotal3').innerHTML = parseInt(repTot3).toLocaleString();
+			document.getElementById('independentTotal3').innerHTML = parseInt(othTot3).toLocaleString();			
 		}
 		
-		if (selectMode === true) {		
-			bindElectionChart();
-			election_data = [demPer,repPer,othPer];
+		//Binds Chart Data
+		function bindElectionChart(){
+			document.getElementById('chart_container').innerHTML = chart_block+'<br><br><br><br><canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="90px" width="100px"></canvas>'+
+			'<br><canvas id="myChart3" height="90px" width="100px"></canvas>';
+			document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
+			'<span class="dropdown" id="mapChooser"></span>';
+			document.getElementById('mapChooser').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart">16 PIE</a></li><li><a href="#myChart2">12 PIE</a></li><li><a href="#myChart3">08 PIE</a></li></ul>';
+		}
+		
+		//Calculate Percentages
+		function findPer(){
+			demPer = ((demTot / (demTot + repTot + othTot))*100);
+			repPer = ((repTot / (demTot + repTot + othTot))*100);
+			othPer = ((othTot / (demTot + repTot + othTot))*100);
+		}
+		
+		function findPer2(){
+			demPer2 = ((demTot2 / (demTot2 + repTot2 + othTot2))*100);
+			repPer2 = ((repTot2 / (demTot2 + repTot2 + othTot2))*100);
+			othPer2 = ((othTot2 / (demTot2 + repTot2 + othTot2))*100);
+		}
+		
+		function findPer3(){
+			demPer3 = ((demTot3 / (demTot3 + repTot3 + othTot3))*100);
+			repPer3 = ((repTot3 / (demTot3 + repTot3 + othTot3))*100);
+			othPer3 = ((othTot3 / (demTot3 + repTot3 + othTot3))*100);
+		}
+		
+		//Behavior for left click events
+		layer.on('click', function (e) {
+			
+			//Insert Header
+			document.getElementById('chart_container').innerHTML = chart_block+'<br><br><br><br><canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="90px" width="100px"></canvas>'+
+			'<br><canvas id="myChart3" height="90px" width="100px"></canvas>';
+			election_data = [percentDem, percentRep, percentOth];
+			document.getElementById('sbar-table').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
+			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
+			document.getElementById('sbar-header').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
+			'<span class="dropdown" id="mapChooser"></span>';
+			document.getElementById('mapChooser').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart">16 PIE</a></li><li><a href="#myChart2">12 PIE</a></li><li><a href="#myChart3">08 PIE</a></li></ul>';
+			
+			//Insert Chart
 			insertElectionChart("myChart", '2016');
-			election_data = [demPer2,repPer2,othPer2];
+			election_data = [percentDem2, percentRep2, percentOth2];
 			insertElectionChart("myChart2", '2012');
-			election_data = [demPer3,repPer3,othPer3];
+			election_data = [percentDem3, percentRep3, percentOth3];
 			insertElectionChart("myChart3", '2008');
-			bindElectionTable();
-		}
-    });
-	
-	//Behavior for right click events
-	layer.on('contextmenu', function (e) {
-		if (selected == true){
-			var indextest = selectList.indexOf(feature.properties.CO + ', ' + feature.properties.ST + '<br>');
-			if (indextest > -1) {
-				selectList.splice(indextest, 1);
+			
+			//Insert Table
+			document.getElementById('democrat').innerHTML = parseFloat(percentDem).toFixed(2) + "%";
+			document.getElementById('republican').innerHTML = parseFloat(percentRep).toFixed(2) + "%";
+			document.getElementById('independent').innerHTML = parseFloat(percentOth).toFixed(2) + "%";
+			document.getElementById('democratTotal').innerHTML = parseInt(demYear).toLocaleString();
+			document.getElementById('republicanTotal').innerHTML = parseInt(repYear).toLocaleString();
+			document.getElementById('independentTotal').innerHTML = parseInt(othYear).toLocaleString();
+			document.getElementById('democrat2').innerHTML = parseFloat(percentDem2).toFixed(2) + "%";
+			document.getElementById('republican2').innerHTML = parseFloat(percentRep2).toFixed(2) + "%";
+			document.getElementById('independent2').innerHTML = parseFloat(percentOth2).toFixed(2) + "%";
+			document.getElementById('democratTotal2').innerHTML = parseInt(demYear2).toLocaleString();
+			document.getElementById('republicanTotal2').innerHTML = parseInt(repYear2).toLocaleString();
+			document.getElementById('independentTotal2').innerHTML = parseInt(othYear2).toLocaleString();
+			document.getElementById('democrat3').innerHTML = parseFloat(percentDem3).toFixed(2) + "%";
+			document.getElementById('republican3').innerHTML = parseFloat(percentRep3).toFixed(2) + "%";
+			document.getElementById('independent3').innerHTML = parseFloat(percentOth3).toFixed(2) + "%";
+			document.getElementById('democratTotal3').innerHTML = parseInt(demYear3).toLocaleString();
+			document.getElementById('republicanTotal3').innerHTML = parseInt(repYear3).toLocaleString();
+			document.getElementById('independentTotal3').innerHTML = parseInt(othYear3).toLocaleString();			
+			
+			//Behavior for left click events (selectMode ON)
+			if (selected == false && selectMode === true){
+				selectList.push(feature.properties.CO + ', ' + feature.properties.ST + '<br>');
+				$('#electionTest').html(selectList);	
+				demTot += parseInt(demYear);	
+				repTot += parseInt(repYear);	
+				othTot += parseInt(othYear);
+				demTot2 += parseInt(demYear2);
+				repTot2 += parseInt(repYear2);
+				othTot2 += parseInt(othYear2);
+				demTot3 += parseInt(demYear3);
+				repTot3 += parseInt(repYear3);
+				othTot3 += parseInt(othYear3);
+				findPer();
+				findPer2();
+				findPer3();
 			}
-			$('#electionTest').html(selectList);
-			demTot -= parseInt(demYear);
-			repTot -= parseInt(repYear);
-			othTot -= parseInt(othYear);
-			demTot2 -= parseInt(demYear2);
-			repTot2 -= parseInt(repYear2);
-			othTot2 -= parseInt(othYear2);
-			demTot3 -= parseInt(demYear3);
-			repTot3 -= parseInt(repYear3);
-			othTot3 -= parseInt(othYear3);
-			findPer();
-			findPer2();
-			findPer3();
-		}
+			
+			//Updates Election Data 
+			if (selectMode === true) {		
+				bindElectionChart();
+				election_data = [demPer,repPer,othPer];
+				insertElectionChart("myChart", '2016');
+				election_data = [demPer2,repPer2,othPer2];
+				insertElectionChart("myChart2", '2012');
+				election_data = [demPer3,repPer3,othPer3];
+				insertElectionChart("myChart3", '2008');
+				bindElectionTable();
+			}
+		});
 		
-		if (selectMode == true && selected == true) {
-			bindElectionChart();
-			election_data = [demPer,repPer,othPer];
-			insertElectionChart("myChart", '2016');
-			election_data = [demPer2,repPer2,othPer2];
-			insertElectionChart("myChart2", '2012');
-			election_data = [demPer3,repPer3,othPer3];
-			insertElectionChart("myChart3", '2008');
-			bindElectionTable();
-		}
-	});
-
-
-
-
-}
-
-
-
-
-
-
-switch (currentMap)
-            {
-               case 'election2016': doitman(feature.properties.DEM2016,feature.properties.REP2016,feature.properties.OTH2016,feature.properties.DEM2012,feature.properties.REP2012,feature.properties.OTH2012,feature.properties.DEM2008,feature.properties.REP2008,feature.properties.OTH2008);
-               break;
-            
-               case 'election2012': doitman(feature.properties.DEM2012,feature.properties.REP2012,feature.properties.OTH2012,feature.properties.DEM2016,feature.properties.REP2016,feature.properties.OTH2016,feature.properties.DEM2008,feature.properties.REP2008,feature.properties.OTH2008);
-               break;
-            
-               case 'election2008': doitman(feature.properties.DEM2008,feature.properties.REP2008,feature.properties.OTH2008,feature.properties.DEM2012,feature.properties.REP2012,feature.properties.OTH2012,feature.properties.DEM2016,feature.properties.REP2016,feature.properties.OTH2016);
-               break;
-            
-               default:  return;
-            }
-
-
-
-
+		//Behavior for right click events
+		layer.on('contextmenu', function (e) {
+			if (selected == true){
+				var indextest = selectList.indexOf(feature.properties.CO + ', ' + feature.properties.ST + '<br>');
+				if (indextest > -1) {
+					selectList.splice(indextest, 1);
+				}
+				$('#electionTest').html(selectList);
+				demTot -= parseInt(demYear);
+				repTot -= parseInt(repYear);
+				othTot -= parseInt(othYear);
+				demTot2 -= parseInt(demYear2);
+				repTot2 -= parseInt(repYear2);
+				othTot2 -= parseInt(othYear2);
+				demTot3 -= parseInt(demYear3);
+				repTot3 -= parseInt(repYear3);
+				othTot3 -= parseInt(othYear3);
+				findPer();
+				findPer2();
+				findPer3();
+			}
+			
+			//Updates Election Data 
+			if (selectMode == true && selected == true) {
+				bindElectionChart();
+				election_data = [demPer,repPer,othPer];
+				insertElectionChart("myChart", '2016');
+				election_data = [demPer2,repPer2,othPer2];
+				insertElectionChart("myChart2", '2012');
+				election_data = [demPer3,repPer3,othPer3];
+				insertElectionChart("myChart3", '2008');
+				bindElectionTable();
+			}
+		});
+	}
+		
+	function Census_onEachFeature(feature, layer){
+		console.log('hello');
+		
+	}
+		
+		
+		
+		
+		
+		
+		
+		
+	Election_onEachFeature(feature.properties.DEM2016,feature.properties.REP2016,feature.properties.OTH2016,feature.properties.DEM2012,feature.properties.REP2012,feature.properties.OTH2012,feature.properties.DEM2008,feature.properties.REP2008,feature.properties.OTH2008);
+	Census_onEachFeature();
 	
-	
-	//Binds labels
+
+	//Functions for Binding Labels
 	if (feature.properties) {
 		
 		function displayElectionLables(dem, rep, oth){
 			var total = dem + rep + oth
 			var percentDem = (dem/total)*100;
 			var percentRep = (rep/total)*100;
-		
 			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.CO 
 			+ ", " + feature.properties.ST
 			+ "</b></u></big><br><div class = 'popup_body'> <b>Democrat:&nbsp;</b>" + (percentDem).toFixed(2) + "%"
@@ -725,9 +705,7 @@ switch (currentMap)
 		}
 		
 		function displayCensusLables(year2, year1){
-	
 			var popchange = ((year2-year1)/year1)*100
-	
 			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.CO 
 			+ ", " + feature.properties.ST
 			+ "</b></u></big><br><div class = 'popup_body'> <b>Total Population:&nbsp;</b>" + parseInt(year2).toLocaleString()
@@ -736,10 +714,8 @@ switch (currentMap)
 		}
 		
 		function displayDemoLables(pop, eth){
-	
 			var total = pop;
 			var ethPer = (eth/total)*100;
-	
 			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.CO 
 			+ ", " + feature.properties.ST
 			+ "</b></u></big><br><div class = 'popup_body'> <b>Total " + ethnicGroup + ":&nbsp;</b>" + parseInt(eth).toLocaleString()
@@ -747,7 +723,7 @@ switch (currentMap)
 			, {permanent: false});
 		}	
 			
-		
+		//Binds Labels
 		displayElectionLables(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
 
 		$('#election_16, #election_16s').click(function(){
@@ -776,15 +752,8 @@ switch (currentMap)
 	
 		$('#demo_00, #demo_00s').click(function(){
 			displayDemoLables(feature.properties.POP2000, feature.properties.WHI2000);
-		});
-
-		
+		});	
 	}
-	
-
-
-
-
 }
 
 
@@ -1225,7 +1194,7 @@ osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 
 
-counties2010 = new L.GeoJSON.AJAX("geography/2010.geojson", {style: defaultStyle, onEachFeature: election_onEachFeature}).addTo(map);
+counties2010 = new L.GeoJSON.AJAX("geography/2010.geojson", {style: defaultStyle, onEachFeature: onEachFeature}).addTo(map);
 
 
 
@@ -1460,10 +1429,7 @@ $('#election_16, #election_16s').click(function(){
     currentLegend = electionLegend;
     electionLegend.addTo(map);
 	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("election_table");
-	currentTable.style.display = "inline";
+	
 	
 });
 $('#census_00, #census_00s').click(function(){
@@ -1481,10 +1447,7 @@ $('#census_00, #census_00s').click(function(){
     currentLegend = censusLegend;
     censusLegend.addTo(map);
 	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("census_table");
-	currentTable.style.display = "inline";
+	
 });
 $('#census_10, #census_10s').click(function(){
 	//Change layer
@@ -1501,10 +1464,7 @@ $('#census_10, #census_10s').click(function(){
     currentLegend = censusLegend;
     censusLegend.addTo(map);
 	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("census_table");
-	currentTable.style.display = "inline";
+	
 });
 $('#demo_00, #demo_00s').click(function(){
 	//Change layer
@@ -1521,10 +1481,7 @@ $('#demo_00, #demo_00s').click(function(){
     currentLegend = demoLegend;
     demoLegend.addTo(map);
 	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("demo_table");
-	currentTable.style.display = "inline";
+	
 });
 $('#demo_10, #demo_10s').click(function(){
 	//Change layer
@@ -1541,10 +1498,7 @@ $('#demo_10, #demo_10s').click(function(){
     currentLegend = demoLegend;
     demoLegend.addTo(map);
 	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("demo_table");
-	currentTable.style.display = "inline";
+	
 });
 
 //State outline toggle
