@@ -46,11 +46,12 @@ var othTot3 = 0;
 
 //Variables: Census Data
 var totalPop = 0;
-var total10 = 0;
-var total00 = 0;
-var total90 = 0;
-var total80 = 0;
+var pop2010Tot = 0;
+var pop2000Tot = 0;
+var pop1990Tot = 0;
+var pop1980Tot = 0;
 
+//Variables: Demographics Data
 var whiteTot = 0;
 var blackTot = 0;
 var nativeTot = 0;
@@ -58,6 +59,13 @@ var asianTot = 0;
 var pacificTot = 0;
 var multiracialTot = 0;
 var hispanicTot = 0;
+var whiteTot2000 = 0;
+var blackTot2000 = 0;
+var nativeTot2000 = 0;
+var asianTot2000 = 0;
+var pacificTot2000 = 0;
+var multiracialTot2000 = 0;
+var hispanicTot2000 = 0;
 		
 //Variables: Selections		
 var selectMode = false;
@@ -337,16 +345,15 @@ function insertElectionChart(newChart, year){
 				},
 				maintainAspectRatio: true,
 				tooltips: {
-            callbacks: {
-                label: function(tooltipItem, data) {
-                    var value = data.datasets[0].data[tooltipItem.index];
-                      var label = data.labels[tooltipItem.index];
-                      var percentage = (value).toFixed(2);
-                      return label + ' ' + percentage + '%';
-                }
-            }
-
-        },
+					callbacks: {
+						label: function(tooltipItem, data) {
+							var value = data.datasets[0].data[tooltipItem.index];
+							var label = data.labels[tooltipItem.index];
+							var percentage = (value).toFixed(2);
+							return label + ' ' + percentage + '%';
+						}
+					}
+				},
 				title: {
 					display: true,
 					text: year
@@ -360,18 +367,16 @@ function insertElectionChart(newChart, year){
 
 //Insert line graph using Chart.js for Census 2000/2010
 function insertCensusChart(){
-	var ctx = document.getElementById("myChart");
+	var ctx = document.getElementById("myChart5");
 		var myChart = new Chart(ctx, {
 			type: 'line',
 			data: {
-				labels: labels,  //X Axis
+				labels: ['1980', '1990', '2000', '2010'],  //X Axis
 				datasets: [{
 					label: "Population Growth",
 					data: census_data,  //Y Axis
 					borderWidth: 1,
-					backgroundColor: [
-						'red',
-					],
+					backgroundColor: 'red',
 					borderColor: 'red',
 					lineTension: 0.1,
 					fill: false,
@@ -383,13 +388,21 @@ function insertCensusChart(){
 					easing: 'easeInExpo',
 				},
 				maintainAspectRatio: true,
-				
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							var value = data.datasets[0].data[tooltipItem.index];
+							var label = data.labels[tooltipItem.index];
+							return 'Pop: '+ value.toLocaleString();
+						}
+					}
+				},
 			}
 		});	
 }
 
 //Changes Demographics 2000/2010 layer labels for smaller screen sizes
-if ($(window).width() > 450) {
+if ($(window).width() > 700) {
 	var demolabels = ['White',['Black or', 'African American'], ['American Indian or', 'Alaska Native'], 'Asian',
 	['Native Hawaiian or', 'Other Pacific Islander'], ['Multiracial'], ['Hispanic or', 'Latino']];
 }
@@ -399,8 +412,8 @@ else {
 }
 
 //Insert bar graph using Chart.js for Demographics 2000/2010
-function insertDemoChart(){
-	var ctx = document.getElementById("myChart");
+function insertDemoChart(newChart,year){
+	var ctx = document.getElementById(newChart);
 		var myChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
@@ -420,6 +433,20 @@ function insertDemoChart(){
 					easing: 'easeInExpo',
 				},
 				maintainAspectRatio: true,
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem, data) {
+							var value = data.datasets[0].data[tooltipItem.index];
+							var label = data.labels[tooltipItem.index];
+							var percentage = (value).toFixed(2);
+							return percentage + '%';
+						}
+					}
+				},
+				title: {
+					display: true,
+					text: year
+				}
 			}
 		});	
 }
@@ -428,22 +455,22 @@ function insertDemoChart(){
 function onEachFeature(feature, layer) {
 	
 	//Behavior for Election Features
-	function Election_onEachFeature(demYear, repYear, othYear, demYear2, repYear2, othYear2, demYear3, repYear3, othYear3){
+	function Election_onEachFeature(){
 		
-		var total = demYear+repYear+othYear;
-		var percentDem = (demYear/total)*100;
-		var percentRep = (repYear/total)*100;
-		var percentOth = (othYear/total)*100;
+		var total = feature.properties.DEM2016+feature.properties.REP2016+feature.properties.OTH2016;
+		var percentDem = (feature.properties.DEM2016/total)*100;
+		var percentRep = (feature.properties.REP2016/total)*100;
+		var percentOth = (feature.properties.OTH2016/total)*100;
 		
-		var total2 = demYear2 + repYear2 + othYear2;
-		var percentDem2 = (demYear2/total2)*100;
-		var percentRep2 = (repYear2/total2)*100;
-		var percentOth2 = (othYear2/total2)*100;
+		var total2 = feature.properties.DEM2012 + feature.properties.REP2012 + feature.properties.OTH2012;
+		var percentDem2 = (feature.properties.DEM2012/total2)*100;
+		var percentRep2 = (feature.properties.REP2012/total2)*100;
+		var percentOth2 = (feature.properties.OTH2012/total2)*100;
 		
-		var total3 = demYear3 + repYear3 + othYear3;
-		var percentDem3 = (demYear3/total3)*100;
-		var percentRep3 = (repYear3/total3)*100;
-		var percentOth3 = (othYear3/total3)*100;
+		var total3 = feature.properties.DEM2008 + feature.properties.REP2008 + feature.properties.OTH2008;
+		var percentDem3 = (feature.properties.DEM2008/total3)*100;
+		var percentRep3 = (feature.properties.REP2008/total3)*100;
+		var percentOth3 = (feature.properties.OTH2008/total3)*100;
 		
 		var demPer;
 		var repPer;
@@ -455,59 +482,6 @@ function onEachFeature(feature, layer) {
 		var repPer3;
 		var othPer3;
 
-		var chart_block = `				
-					
-			<div id = "election_table">
-			  <table class="table table-hover">
-			  <thead>
-			  <tr>
-				<th></th>
-				<th>2016</th>
-				<th>2012</th>
-				<th>2008</th>
-			  </tr>
-			  </thead>
-				  <tr>
-					<th>Dem %</th>
-					<td id="democrat"></td>
-					<td id="democrat2"></td>
-					<td id="democrat3"></td>
-				  </tr>
-				  <tr>
-					<th>Rep %</th>
-					<td id="republican"></td>
-					<td id="republican2"></td>
-					<td id="republican3"></td>
-					
-				  </tr>
-				  <tr>
-					<th>Other %</th>
-					<td id="independent"></td>
-					<td id="independent2"></td>
-					<td id="independent3"></td>
-				  </tr>
-				  <tr>
-					<th>Dem Tot.</th>
-					<td id="democratTotal"></td>
-					<td id="democratTotal2"></td>
-					<td id="democratTotal3"></td>
-				  </tr>
-				  <tr>
-					<th>Rep Tot.</th>
-					<td id="republicanTotal"></td>
-					<td id="republicanTotal2"></td>
-					<td id="republicanTotal3"></td>
-				  </tr>
-				  <tr>
-					<th>Oth Tot.</th>
-					<td id="independentTotal"></td>
-					<td id="independentTotal2"></td>
-					<td id="independentTotal3"></td>
-				  </tr>
-			  </table>
-			</div>
-		`;
-		
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlight,
@@ -539,10 +513,8 @@ function onEachFeature(feature, layer) {
 		
 		//Binds Chart Data
 		function bindElectionChart(){
-			document.getElementById('chart_container').innerHTML = chart_block+'<br><br><br><br><canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="90px" width="100px"></canvas>'+
+			document.getElementById('chart_container').innerHTML = '<br><br><br><br><canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="90px" width="100px"></canvas>'+
 			'<br><canvas id="myChart3" height="90px" width="100px"></canvas>';
-			document.getElementById('sbar-table').innerHTML = 'Selected Counties'+
-			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 			document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
 			'<span class="dropdown" id="mapChooser"></span>';
 			document.getElementById('mapChooser').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart">16 PIE</a></li><li><a href="#myChart2">12 PIE</a></li><li><a href="#myChart3">08 PIE</a></li></ul>';
@@ -571,14 +543,12 @@ function onEachFeature(feature, layer) {
 		layer.on('click', function (e) {
 			
 			//Insert Header
-			document.getElementById('chart_container').innerHTML = chart_block+'<br><br><br><br><canvas id="myChart" height="90px" width="100px"></canvas><br><canvas id="myChart2" height="90px" width="100px"></canvas>'+
-			'<br><canvas id="myChart3" height="90px" width="100px"></canvas>';
+			document.getElementById('chart_container').innerHTML = '<br><br><br><br><canvas id="myChart" height="90px" width="100px"></canvas><br><br><br><canvas id="myChart2" height="90px" width="100px"></canvas>'+
+			'<br><br><br><canvas id="myChart3" height="90px" width="100px"></canvas><br><br>';
 			election_data = [percentDem, percentRep, percentOth];
-			document.getElementById('sbar-table').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
-			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
 			document.getElementById('sbar-header').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
 			'<span class="dropdown" id="mapChooser"></span>';
-			document.getElementById('mapChooser').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart">16 PIE</a></li><li><a href="#myChart2">12 PIE</a></li><li><a href="#myChart3">08 PIE</a></li></ul>';
+			document.getElementById('mapChooser').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart">16 Graph</a></li><li><a href="#myChart2">12 Graph</a></li><li><a href="#myChart3">08 Graph</a></li></ul>';
 			
 			//Insert Chart
 			insertElectionChart("myChart", '2016');
@@ -591,35 +561,35 @@ function onEachFeature(feature, layer) {
 			document.getElementById('democrat').innerHTML = parseFloat(percentDem).toFixed(2) + "%";
 			document.getElementById('republican').innerHTML = parseFloat(percentRep).toFixed(2) + "%";
 			document.getElementById('independent').innerHTML = parseFloat(percentOth).toFixed(2) + "%";
-			document.getElementById('democratTotal').innerHTML = parseInt(demYear).toLocaleString();
-			document.getElementById('republicanTotal').innerHTML = parseInt(repYear).toLocaleString();
-			document.getElementById('independentTotal').innerHTML = parseInt(othYear).toLocaleString();
+			document.getElementById('democratTotal').innerHTML = parseInt(feature.properties.DEM2016).toLocaleString();
+			document.getElementById('republicanTotal').innerHTML = parseInt(feature.properties.REP2016).toLocaleString();
+			document.getElementById('independentTotal').innerHTML = parseInt(feature.properties.OTH2016).toLocaleString();
 			document.getElementById('democrat2').innerHTML = parseFloat(percentDem2).toFixed(2) + "%";
 			document.getElementById('republican2').innerHTML = parseFloat(percentRep2).toFixed(2) + "%";
 			document.getElementById('independent2').innerHTML = parseFloat(percentOth2).toFixed(2) + "%";
-			document.getElementById('democratTotal2').innerHTML = parseInt(demYear2).toLocaleString();
-			document.getElementById('republicanTotal2').innerHTML = parseInt(repYear2).toLocaleString();
-			document.getElementById('independentTotal2').innerHTML = parseInt(othYear2).toLocaleString();
+			document.getElementById('democratTotal2').innerHTML = parseInt(feature.properties.DEM2012).toLocaleString();
+			document.getElementById('republicanTotal2').innerHTML = parseInt(feature.properties.REP2012).toLocaleString();
+			document.getElementById('independentTotal2').innerHTML = parseInt(feature.properties.OTH2012).toLocaleString();
 			document.getElementById('democrat3').innerHTML = parseFloat(percentDem3).toFixed(2) + "%";
 			document.getElementById('republican3').innerHTML = parseFloat(percentRep3).toFixed(2) + "%";
 			document.getElementById('independent3').innerHTML = parseFloat(percentOth3).toFixed(2) + "%";
-			document.getElementById('democratTotal3').innerHTML = parseInt(demYear3).toLocaleString();
-			document.getElementById('republicanTotal3').innerHTML = parseInt(repYear3).toLocaleString();
-			document.getElementById('independentTotal3').innerHTML = parseInt(othYear3).toLocaleString();			
+			document.getElementById('democratTotal3').innerHTML = parseInt(feature.properties.DEM2008).toLocaleString();
+			document.getElementById('republicanTotal3').innerHTML = parseInt(feature.properties.REP2008).toLocaleString();
+			document.getElementById('independentTotal3').innerHTML = parseInt(feature.properties.OTH2008).toLocaleString();			
 			
 			//Behavior for left click events (selectMode ON)
 			if (selected == false && selectMode === true){
 				selectList.push(feature.properties.CO + ', ' + feature.properties.ST + '<br>');
 				$('#electionTest').html(selectList);	
-				demTot += parseInt(demYear);	
-				repTot += parseInt(repYear);	
-				othTot += parseInt(othYear);
-				demTot2 += parseInt(demYear2);
-				repTot2 += parseInt(repYear2);
-				othTot2 += parseInt(othYear2);
-				demTot3 += parseInt(demYear3);
-				repTot3 += parseInt(repYear3);
-				othTot3 += parseInt(othYear3);
+				demTot += parseInt(feature.properties.DEM2016);	
+				repTot += parseInt(feature.properties.REP2016);	
+				othTot += parseInt(feature.properties.OTH2016);
+				demTot2 += parseInt(feature.properties.DEM2012);
+				repTot2 += parseInt(feature.properties.REP2012);
+				othTot2 += parseInt(feature.properties.OTH2012);
+				demTot3 += parseInt(feature.properties.DEM2008);
+				repTot3 += parseInt(feature.properties.REP2008);
+				othTot3 += parseInt(feature.properties.OTH2008);
 				findPer();
 				findPer2();
 				findPer3();
@@ -646,15 +616,15 @@ function onEachFeature(feature, layer) {
 					selectList.splice(indextest, 1);
 				}
 				$('#electionTest').html(selectList);
-				demTot -= parseInt(demYear);
-				repTot -= parseInt(repYear);
-				othTot -= parseInt(othYear);
-				demTot2 -= parseInt(demYear2);
-				repTot2 -= parseInt(repYear2);
-				othTot2 -= parseInt(othYear2);
-				demTot3 -= parseInt(demYear3);
-				repTot3 -= parseInt(repYear3);
-				othTot3 -= parseInt(othYear3);
+				demTot -= parseInt(feature.properties.DEM2016);
+				repTot -= parseInt(feature.properties.REP2016);
+				othTot -= parseInt(feature.properties.OTH2016);
+				demTot2 -= parseInt(feature.properties.DEM2012);
+				repTot2 -= parseInt(feature.properties.REP2012);
+				othTot2 -= parseInt(feature.properties.OTH2012);
+				demTot3 -= parseInt(feature.properties.DEM2008);
+				repTot3 -= parseInt(feature.properties.REP2008);
+				othTot3 -= parseInt(feature.properties.OTH2008);
 				findPer();
 				findPer2();
 				findPer3();
@@ -673,21 +643,320 @@ function onEachFeature(feature, layer) {
 			}
 		});
 	}
+	
+	function Census_onEachFeature(){
+	//Behavior for Census Features
+	
+		var gain2010 = feature.properties.POP2010-feature.properties.POP2000;
+		var gain2000 = feature.properties.POP2000-feature.properties.POP1990;
+		var gain1990 = feature.properties.POP1990-feature.properties.POP1980;
+		var growth2010 = ((feature.properties.POP2010 - feature.properties.POP2000)/feature.properties.POP2000)*100;
+		var growth2000 = ((feature.properties.POP2000 - feature.properties.POP1990)/feature.properties.POP1990)*100;
+		var growth1990 = ((feature.properties.POP1990 - feature.properties.POP1980)/feature.properties.POP1980)*100;
 		
-	function Census_onEachFeature(feature, layer){
-		console.log('hello');
 		
-	}
+		//Binds Table Data
+		function bindCensusTable(){
+			document.getElementById('totpop1').innerHTML = pop2010Tot.toLocaleString();
+			document.getElementById('totpop2').innerHTML = pop2000Tot.toLocaleString();
+			document.getElementById('totpop3').innerHTML = pop1990Tot.toLocaleString();
+			document.getElementById('totpop4').innerHTML = pop1980Tot.toLocaleString();
+			document.getElementById('gain1').innerHTML = gain2010.toLocaleString();
+			document.getElementById('gain2').innerHTML = gain2000.toLocaleString();
+			document.getElementById('gain3').innerHTML = gain1990.toLocaleString();
+			document.getElementById('growth1').innerHTML = parseFloat(growth2010).toFixed(2) + "%";
+			document.getElementById('growth2').innerHTML = parseFloat(growth2000).toFixed(2) + "%";
+			document.getElementById('growth3').innerHTML = parseFloat(growth1990).toFixed(2) + "%";			
+		}
+		
+		//Binds Chart Data
+		function bindCensusChart(){
+			document.getElementById('chart_container2').innerHTML = '<br><br><br><br><br><br><br><br><br><br><canvas id="myChart5" height="90px" width="100px"></canvas>';	
+		}
+		
+		layer.on('click', function (e) {
+			
+			//Insert Header
+			document.getElementById('sbar-table').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
+			'<span class="dropdown" id="mapChooser2"></span>';
+			document.getElementById('mapChooser2').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart5">1980-2010 Graph</a></li></ul>';
+			
+			//Insert Chart
+			bindCensusChart();
+			census_data = [feature.properties.POP1980, feature.properties.POP1990, feature.properties.POP2000, feature.properties.POP2010];
+			insertCensusChart();
+			
+			//Insert Table
+			document.getElementById('totpop1').innerHTML = feature.properties.POP2010.toLocaleString();
+			document.getElementById('totpop2').innerHTML = feature.properties.POP2000.toLocaleString();
+			document.getElementById('totpop3').innerHTML = feature.properties.POP1990.toLocaleString();
+			document.getElementById('totpop4').innerHTML = feature.properties.POP1980.toLocaleString();
+			document.getElementById('gain1').innerHTML = gain2010.toLocaleString();
+			document.getElementById('gain2').innerHTML = gain2000.toLocaleString();
+			document.getElementById('gain3').innerHTML = gain1990.toLocaleString();
+			document.getElementById('growth1').innerHTML = parseFloat(growth2010).toFixed(2) + "%";
+			document.getElementById('growth2').innerHTML = parseFloat(growth2000).toFixed(2) + "%";
+			document.getElementById('growth3').innerHTML = parseFloat(growth1990).toFixed(2) + "%";
+			
+			//Behavior for left click events (selectMode ON)
+			if (selected == false && selectMode === true){	
+				document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
+				'<span class="dropdown" id="mapChooser2"></span>';
+				document.getElementById('mapChooser2').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart5">1980-2010 Graph</a></li></ul>';
+				pop1980Tot += parseInt(feature.properties.POP1980);	
+				pop1990Tot += parseInt(feature.properties.POP1990);	
+				pop2000Tot += parseInt(feature.properties.POP2000);
+				pop2010Tot += parseInt(feature.properties.POP2010);
+				gain2010 = pop2010Tot-pop2000Tot;
+				gain2000 = pop2000Tot-pop1990Tot;
+				gain1990 = pop1990Tot-pop1980Tot;
+				growth2010 = ((pop2010Tot - pop2000Tot)/pop2000Tot)*100;
+				growth2000 = ((pop2000Tot - pop1990Tot)/pop1990Tot)*100;
+				growth1990 = ((pop1990Tot - pop1980Tot)/pop1980Tot)*100;
+			}
+			
+			//Updates Census Data 
+			if (selectMode === true) {		
+				bindCensusChart();
+				census_data = [pop1980Tot,pop1990Tot,pop2000Tot,pop2010Tot];
+				insertCensusChart();
+				bindCensusTable();
+			}
+		});
+		
+		//Behavior for right click events
+		layer.on('contextmenu', function (e) {
+			if (selected == true){
+				pop1980Tot -= parseInt(feature.properties.POP1980);	
+				pop1990Tot -= parseInt(feature.properties.POP1990);	
+				pop2000Tot -= parseInt(feature.properties.POP2000);
+				pop2010Tot -= parseInt(feature.properties.POP2010);
+				gain2010 = pop2010Tot-pop2000Tot;
+				gain2000 = pop2000Tot-pop1990Tot;
+				gain1990 = pop1990Tot-pop1980Tot;
+				growth2010 = ((pop2010Tot - pop2000Tot)/pop2000Tot)*100;
+				growth2000 = ((pop2000Tot - pop1990Tot)/pop1990Tot)*100;
+				growth1990 = ((pop1990Tot - pop1980Tot)/pop1980Tot)*100;
+			}
+			
+			//Updates Election Data 
+			if (selectMode == true && selected == true) {
+				bindCensusChart();
+				census_data = [pop1980Tot,pop1990Tot,pop2000Tot,pop2010Tot];
+				insertCensusChart("myChart", '2016');
+				bindCensusTable();
+			}
+		});
+	}	
+	
+	//Behavior for Demographics Features
+	function Demo_onEachFeature(){
+	
+	var whitePer2010 = ((feature.properties.WHI2010 / (feature.properties.POP2010))*100);
+	var whitePer2000 = ((feature.properties.WHI2000 / (feature.properties.POP2000))*100);
+	var blackPer2010 = ((feature.properties.BLA2010 / (feature.properties.POP2010))*100);
+	var blackPer2000 = ((feature.properties.BLA2000 / (feature.properties.POP2000))*100);
+	var nativePer2010 = ((feature.properties.NAT2010 / (feature.properties.POP2010))*100);
+	var nativePer2000 = ((feature.properties.NAT2000 / (feature.properties.POP2000))*100);
+	var asianPer2010 = ((feature.properties.ASI2010 / (feature.properties.POP2010))*100);
+	var asianPer2000 = ((feature.properties.ASI2000 / (feature.properties.POP2000))*100);
+	var pacificPer2010 = ((feature.properties.HAW2010 / (feature.properties.POP2010))*100);
+	var pacificPer2000 = ((feature.properties.HAW2000 / (feature.properties.POP2000))*100);
+	var multiracialPer2010 = ((feature.properties.MUL2010 / (feature.properties.POP2010))*100);
+	var multiracialPer2000 = ((feature.properties.MUL2000 / (feature.properties.POP2000))*100);
+	var hispanicPer2010 = ((feature.properties.LAT2010 / (feature.properties.POP2010))*100);
+	var hispanicPer2000 = ((feature.properties.LAT2000 / (feature.properties.POP2000))*100);
+	
+	var perWhite2010;
+	var perWhite2000;
+	var perBlack2010;
+	var perBlack2000;
+	var perNative2010;
+	var perNative2000;
+	var perAsian2010;
+	var perAsian2000;
+	var perPacific2010;
+	var perPacific2000;
+	var perMultiracial2010;
+	var perMultiracial2000;
+	var perHispanic2010;
+	var perHispanic2000;
+	
+	
+		//Binds Table Data
+		function bindDemoTable(){
+			document.getElementById('whitetot2010').innerHTML = whiteTot.toLocaleString();
+			document.getElementById('whitetot2000').innerHTML = whiteTot2000.toLocaleString();
+			document.getElementById('blacktot2010').innerHTML = blackTot.toLocaleString();
+			document.getElementById('blacktot2000').innerHTML = blackTot2000.toLocaleString();
+			document.getElementById('nativetot2010').innerHTML = nativeTot.toLocaleString();
+			document.getElementById('nativetot2000').innerHTML = nativeTot2000.toLocaleString();
+			document.getElementById('asiantot2010').innerHTML = asianTot.toLocaleString();
+			document.getElementById('asiantot2000').innerHTML = asianTot2000.toLocaleString();
+			document.getElementById('pactot2010').innerHTML = pacificTot.toLocaleString();
+			document.getElementById('pactot2000').innerHTML = pacificTot2000.toLocaleString();
+			document.getElementById('multitot2010').innerHTML = multiracialTot.toLocaleString();
+			document.getElementById('multitot2000').innerHTML = multiracialTot2000.toLocaleString();
+			document.getElementById('histot2010').innerHTML = hispanicTot.toLocaleString();
+			document.getElementById('histot2000').innerHTML = hispanicTot2000.toLocaleString();
+			document.getElementById('whiteper2010').innerHTML = parseFloat(perWhite2010).toFixed(2) + "%";
+			document.getElementById('whiteper2000').innerHTML = parseFloat(perWhite2000).toFixed(2) + "%";
+			document.getElementById('blackper2010').innerHTML = parseFloat(perBlack2010).toFixed(2) + "%";
+			document.getElementById('blackper2000').innerHTML = parseFloat(perBlack2000).toFixed(2) + "%";
+			document.getElementById('nativeper2010').innerHTML = parseFloat(perNative2010).toFixed(2) + "%";
+			document.getElementById('nativeper2000').innerHTML = parseFloat(perNative2000).toFixed(2) + "%";
+			document.getElementById('asianper2010').innerHTML = parseFloat(perAsian2010).toFixed(2) + "%";
+			document.getElementById('asianper2000').innerHTML = parseFloat(perAsian2000).toFixed(2) + "%";
+			document.getElementById('pacper2010').innerHTML = parseFloat(perPacific2010).toFixed(2) + "%";
+			document.getElementById('pacper2000').innerHTML = parseFloat(perPacific2000).toFixed(2) + "%";
+			document.getElementById('multiper2010').innerHTML = parseFloat(perMultiracial2010).toFixed(2) + "%";
+			document.getElementById('multiper2000').innerHTML = parseFloat(perMultiracial2000).toFixed(2) + "%";
+			document.getElementById('hisper2010').innerHTML = parseFloat(perHispanic2010).toFixed(2) + "%";
+			document.getElementById('hisper2000').innerHTML = parseFloat(perHispanic2000).toFixed(2) + "%";		
+		}
+		
+		//Binds Chart Data
+		function bindDemoChart(){
+			document.getElementById('chart_container3').innerHTML = '<br><br><br><br><br><br><br><br><br><br><canvas id="myChart6" height="100px" width="100px"></canvas><br><br><br><canvas id="myChart7" height="100px" width="100px"></canvas><br>';	
+		}
+		
+		function findPer4(){
+			perWhite2010 = ((whiteTot / (pop2010Tot))*100);
+			perWhite2000 = ((whiteTot2000 / (pop2000Tot))*100);
+			perBlack2010 = ((blackTot / (pop2010Tot))*100);
+			perBlack2000 = ((blackTot2000 / (pop2000Tot))*100);
+			perNative2010 = ((nativeTot / (pop2010Tot))*100);
+			perNative2000 = ((nativeTot2000 / (pop2000Tot))*100);
+			perAsian2010 = ((asianTot / (pop2010Tot))*100);
+			perAsian2000 = ((asianTot2000 / (pop2000Tot))*100);
+			perPacific2010 = ((pacificTot / (pop2010Tot))*100);
+			perPacific2000 = ((pacificTot2000 / (pop2000Tot))*100);
+			perMultiracial2010 = ((multiracialTot / (pop2010Tot))*100);
+			perMultiracial2000 = ((multiracialTot2000 / (pop2000Tot))*100);
+			perHispanic2010 = ((hispanicTot / (pop2010Tot))*100);
+			perHispanic2000 = ((hispanicTot2000 / (pop2000Tot))*100);
+		}
 		
 		
 		
+		layer.on('click', function (e) {
+			
+			//Insert Header
+			document.getElementById('demoHeader').innerHTML = feature.properties.CO + ", " + feature.properties.ST +
+			'<span class="dropdown" id="mapChooser3"></span>';
+			document.getElementById('mapChooser3').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart6">2010 Graph</a></li><li><a href="#myChart7">2000 Graph</a></li></ul>';
+			
+			//Insert Chart
+			bindDemoChart();
+			demo_data = [whitePer2010,blackPer2010,nativePer2010,asianPer2010,pacificPer2010,multiracialPer2010,hispanicPer2010];
+			insertDemoChart("myChart6",'2010');
+			demo_data = [whitePer2000,blackPer2000,nativePer2000,asianPer2000,pacificPer2000,multiracialPer2000,hispanicPer2000];
+			insertDemoChart("myChart7",'2000');
+			
+			//Insert Table
+			document.getElementById('whitetot2010').innerHTML = feature.properties.WHI2010.toLocaleString();
+			document.getElementById('whitetot2000').innerHTML = feature.properties.WHI2000.toLocaleString();
+			document.getElementById('blacktot2010').innerHTML = feature.properties.BLA2010.toLocaleString();
+			document.getElementById('blacktot2000').innerHTML = feature.properties.BLA2000.toLocaleString();
+			document.getElementById('nativetot2010').innerHTML = feature.properties.NAT2010.toLocaleString();
+			document.getElementById('nativetot2000').innerHTML = feature.properties.NAT2000.toLocaleString();
+			document.getElementById('asiantot2010').innerHTML = feature.properties.ASI2010.toLocaleString();
+			document.getElementById('asiantot2000').innerHTML = feature.properties.ASI2000.toLocaleString();
+			document.getElementById('pactot2010').innerHTML = feature.properties.HAW2010.toLocaleString();
+			document.getElementById('pactot2000').innerHTML = feature.properties.HAW2000.toLocaleString();
+			document.getElementById('multitot2010').innerHTML = feature.properties.MUL2010.toLocaleString();
+			document.getElementById('multitot2000').innerHTML = feature.properties.MUL2000.toLocaleString();
+			document.getElementById('histot2010').innerHTML = feature.properties.LAT2010.toLocaleString();
+			document.getElementById('histot2000').innerHTML = feature.properties.LAT2000.toLocaleString();
+			document.getElementById('whiteper2010').innerHTML = parseFloat(whitePer2010).toFixed(2) + "%";
+			document.getElementById('whiteper2000').innerHTML = parseFloat(whitePer2000).toFixed(2) + "%";
+			document.getElementById('blackper2010').innerHTML = parseFloat(blackPer2010).toFixed(2) + "%";
+			document.getElementById('blackper2000').innerHTML = parseFloat(blackPer2000).toFixed(2) + "%";
+			document.getElementById('nativeper2010').innerHTML = parseFloat(nativePer2010).toFixed(2) + "%";
+			document.getElementById('nativeper2000').innerHTML = parseFloat(nativePer2000).toFixed(2) + "%";
+			document.getElementById('asianper2010').innerHTML = parseFloat(asianPer2010).toFixed(2) + "%";
+			document.getElementById('asianper2000').innerHTML = parseFloat(asianPer2000).toFixed(2) + "%";
+			document.getElementById('pacper2010').innerHTML = parseFloat(pacificPer2010).toFixed(2) + "%";
+			document.getElementById('pacper2000').innerHTML = parseFloat(pacificPer2000).toFixed(2) + "%";
+			document.getElementById('multiper2010').innerHTML = parseFloat(multiracialPer2010).toFixed(2) + "%";
+			document.getElementById('multiper2000').innerHTML = parseFloat(multiracialPer2000).toFixed(2) + "%";
+			document.getElementById('hisper2010').innerHTML = parseFloat(hispanicPer2010).toFixed(2) + "%";
+			document.getElementById('hisper2000').innerHTML = parseFloat(hispanicPer2000).toFixed(2) + "%";
+			
+			//Behavior for left click events (selectMode ON)
+			if (selected == false && selectMode === true){	
+				document.getElementById('demoHeader').innerHTML = 'Selected Counties' +
+				'<span class="dropdown" id="mapChooser3"></span>';
+				document.getElementById('mapChooser3').innerHTML = '&nbsp;&nbsp;<button class="btn btn-primary dropdown-toggle" id="testbutton" type="button" data-toggle="dropdown"><i class="fa fa-bar-chart-o"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#myChart6">2010 Graph</a></li><li><a href="#myChart7">2000 Graph</a></li></ul>';
+				
+				whiteTot += parseInt(feature.properties.WHI2010);	
+				blackTot += parseInt(feature.properties.BLA2010);
+				nativeTot += parseInt(feature.properties.NAT2010);
+				asianTot += parseInt(feature.properties.ASI2010);
+				pacificTot += parseInt(feature.properties.HAW2010);
+				multiracialTot += parseInt(feature.properties.MUL2010);
+				hispanicTot += parseInt(feature.properties.LAT2010);
+				whiteTot2000 += parseInt(feature.properties.WHI2000);	
+				blackTot2000 += parseInt(feature.properties.BLA2000);
+				nativeTot2000 += parseInt(feature.properties.NAT2000);
+				asianTot2000 += parseInt(feature.properties.ASI2000);
+				pacificTot2000 += parseInt(feature.properties.HAW2000);
+				multiracialTot2000 += parseInt(feature.properties.MUL2000);
+				hispanicTot2000 += parseInt(feature.properties.LAT2000);
+				findPer4();
+			}
+	
+			//Updates Demographics Data 
+			if (selectMode === true) {		
+				bindDemoChart();
+				demo_data = [perWhite2010,perBlack2010,perNative2010,perAsian2010,perPacific2010,perMultiracial2010,perHispanic2010];
+				insertDemoChart("myChart6",'2010');
+				demo_data = [perWhite2000,perBlack2000,perNative2000,perAsian2000,perPacific2000,perMultiracial2000,perHispanic2000];
+				insertDemoChart("myChart7",'2000');
+				bindDemoTable();
+			}
+		});
 		
+		//Behavior for right click events
+		layer.on('contextmenu', function (e) {
+			if (selected == true){
+				whiteTot -= parseInt(feature.properties.WHI2010);	
+				blackTot -= parseInt(feature.properties.BLA2010);
+				nativeTot -= parseInt(feature.properties.NAT2010);
+				asianTot -= parseInt(feature.properties.ASI2010);
+				pacificTot -= parseInt(feature.properties.HAW2010);
+				multiracialTot -= parseInt(feature.properties.MUL2010);
+				hispanicTot -= parseInt(feature.properties.LAT2010);
+				whiteTot2000 -= parseInt(feature.properties.WHI2000);	
+				blackTot2000 -= parseInt(feature.properties.BLA2000);
+				nativeTot2000 -= parseInt(feature.properties.NAT2000);
+				asianTot2000 -= parseInt(feature.properties.ASI2000);
+				pacificTot2000 -= parseInt(feature.properties.HAW2000);
+				multiracialTot2000 -= parseInt(feature.properties.MUL2000);
+				hispanicTot2000 -= parseInt(feature.properties.LAT2000);
+				findPer4();
+			}
+			
+			//Updates Demographics Data 
+			if (selectMode == true && selected == true) {
+				bindDemoChart();
+				demo_data = [whitePer2010,blackPer2010,nativePer2010,asianPer2010,pacificPer2010,multiracialPer2010,hispanicPer2010];
+				insertDemoChart('myChart6','2010');
+				demo_data = [whitePer2000,blackPer2000,nativePer2000,asianPer2000,pacificPer2000,multiracialPer2000,hispanicPer2000];
+				insertDemoChart('myChart7','2000');
+				bindDemoTable();
+			}
+		});
+	}	
+
+
+	
+
+	
 		
-		
-		
-		
-	Election_onEachFeature(feature.properties.DEM2016,feature.properties.REP2016,feature.properties.OTH2016,feature.properties.DEM2012,feature.properties.REP2012,feature.properties.OTH2012,feature.properties.DEM2008,feature.properties.REP2008,feature.properties.OTH2008);
+	Election_onEachFeature();
 	Census_onEachFeature();
+	Demo_onEachFeature();
 	
 
 	//Functions for Binding Labels
@@ -766,202 +1035,7 @@ function onEachFeature(feature, layer) {
 
 
 
-//Behavior for mousever and click- Census layers
-function census_onEachFeature(feature, layer) {
-	layer.on({
-		mouseover: highlightFeature,
-		mouseout: resetHighlight,
-		click: zoomToFeature,
-		contextmenu: resetHighlightContext
-	});
-	
-	var growth2000;
-	var growth2010;
-	
-	//Binds data to Chart.js in sidebar
-	function bindCensusChart(){
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-		census_data = [total80,total90,totalPop];
-		labels = ['1980','1990','2000'];
-	}
-	
-	//Binds data to Chart.js in sidebar
-	function bindCensusChart2010(){
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-		census_data = [total80,total90,total00,total10];
-		labels = ['1980','1990','2000','2010'];
-	}
-	
-	//Binds data to Bootstrap table in sidebar
-	function bindCensusTable(){
-		document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
-		'<tr><th>2000 Growth:</th><td id="growth_2000"></td></tr>' +
-		'<tr><th>2000 Pop:</th><td id="total_pop"></td></tr>' +
-		'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
-		'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
-		'</table>';
-		document.getElementById('total_pop').innerHTML = parseInt(totalPop).toLocaleString();
-		document.getElementById('pop_1990').innerHTML = parseInt(total90).toLocaleString();
-		document.getElementById('pop_1980').innerHTML = parseInt(total80).toLocaleString();	
-		document.getElementById('growth_2000').innerHTML = parseFloat(growth2000).toFixed(2) + "%";
-		document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		insertCensusChart();			
-	}
-	
-	//Binds data to Bootstrap table in sidebar
-	function bindCensusTable2010(){
-		document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
-		'<tr><th>2010 Growth:</th><td id="growth_2010"></td></tr>' +
-		'<tr><th>2010 Pop:</th><td id="total_pop"></td></tr>' +
-		'<tr><th>2000 Pop:</th><td id="pop_2000"></td></tr>' +
-		'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
-		'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
-		'</table>';
-		document.getElementById('total_pop').innerHTML = parseInt(total10).toLocaleString();
-		document.getElementById('pop_2000').innerHTML = parseInt(total00).toLocaleString();
-		document.getElementById('pop_1990').innerHTML = parseInt(total90).toLocaleString();
-		document.getElementById('pop_1980').innerHTML = parseInt(total80).toLocaleString();	
-		document.getElementById('growth_2010').innerHTML = parseFloat(growth2010).toFixed(2) + "%";
-		document.getElementById('sbar-table').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		document.getElementById('sbar-header').innerHTML = 'Selected Counties' +
-		'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		insertCensusChart();
-	}
-	
-	//Behavior for left click events
-	layer.on('click', function (e) {
-		
-		document.getElementById('chart_container').innerHTML = '<canvas id="myChart" height="90px" width="100px"></canvas>';
-        census_data = [Number(feature.properties.TOT_1980),Number(feature.properties.TOT_1990),feature.properties.TOT_CUR];
-		
-		if (map.hasLayer(census2000) === true) {
-			labels = ['1980','1990','2000'];
-			
-			//Binds data to Bootstrap table in sidebar
-			document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
-			'<tr><th>2000 Growth:</th><td id="growth_2000"></td></tr>' +
-			'<tr><th>2000 Pop:</th><td id="total_pop"></td></tr>' +
-			'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
-			'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
-			'</table>';
-			document.getElementById('total_pop').innerHTML = parseInt(feature.properties.TOT_CUR).toLocaleString();
-			document.getElementById('pop_1990').innerHTML = parseInt(feature.properties.TOT_1990).toLocaleString();
-			document.getElementById('pop_1980').innerHTML = parseInt(feature.properties.TOT_1980).toLocaleString();	
-			document.getElementById('growth_2000').innerHTML = feature.properties.PER_CHA + "%";
-		}
-		
-		if (map.hasLayer(census2010) === true) {
-			
-			census_data = [Number(feature.properties.TOT_1980),Number(feature.properties.TOT_1990),Number(feature.properties.TOT_2000),feature.properties.TOT_CUR];
-			labels = ['1980','1990','2000','2010'];
-			
-			//Binds data to Bootstrap table in sidebar
-			document.getElementById('census_table').innerHTML = '<table class="table table-hover">' + 
-			'<tr><th>2010 Growth:</th><td id="growth_2010"></td></tr>' +
-			'<tr><th>2010 Pop:</th><td id="total_pop"></td></tr>' +
-			'<tr><th>2000 Pop:</th><td id="pop_2000"></td></tr>' +
-			'<tr><th>1990 Pop:</th><td id="pop_1990"></td></tr>' +
-			'<tr><th>1980 Pop:</th><td id="pop_1980"></td></tr>' +
-			'</table>';
-			document.getElementById('total_pop').innerHTML = parseInt(feature.properties.TOT_CUR).toLocaleString();
-			document.getElementById('pop_2000').innerHTML = parseInt(feature.properties.TOT_2000).toLocaleString();
-			document.getElementById('pop_1990').innerHTML = parseInt(feature.properties.TOT_1990).toLocaleString();
-			document.getElementById('pop_1980').innerHTML = parseInt(feature.properties.TOT_1980).toLocaleString();	
-			document.getElementById('growth_2010').innerHTML = feature.properties.PER_CHA + "%";
-		}
-		
-		insertCensusChart();
-		
-		if (selected == false){
-			selectList.push(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
-			$('#electionTest').html(selectList);
-			total102 = (feature.properties.TOT_CUR);
-			total10 += total102
-			total002 = parseInt(feature.properties.TOT_2000);
-			total00 += total002;	
-			totalPop2 = (feature.properties.TOT_CUR);
-			totalPop += totalPop2;	
-			total2 = parseInt(feature.properties.TOT_1990);
-			total90 += total2;
-			total3 = parseInt(feature.properties.TOT_1980);
-			total80 += total3;	
-		}
-		
-		growth2000 = ((totalPop - total90)/total90)*100;
-		growth2010 = ((total10 - total00)/total00)*100;
-		
-		if (selectMode === true) {
-			
-			if (map.hasLayer(census2000) === true){
-				bindCensusChart();
-				bindCensusTable();
-			}
-			
-			if (map.hasLayer(census2010) === true){
-				bindCensusChart2010();
-				bindCensusTable2010();
-			}
-		}
-		
-		if (selectMode === false) {
-			document.getElementById('sbar-table').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
-			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-			document.getElementById('sbar-header').innerHTML = feature.properties.COUNTY + ", " + feature.properties.STATE +
-			'<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>';
-		}
-    });
-	
-	//Behavior for right click events
-	layer.on('contextmenu', function (e) {
-		
-		var indextest = selectList.indexOf(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
-		if (indextest > -1) {
-			selectList.splice(indextest, 1);
-		}
-		$('#electionTest').html(selectList);
-		
-		if (selected == true){
-			total102 = (feature.properties.TOT_CUR);
-			total10 -= total102
-			total002 = parseInt(feature.properties.TOT_2000);
-			total00 -= total002;
-			totalPop2 = (feature.properties.TOT_CUR);
-			totalPop -= totalPop2;
-			total2 = parseInt(feature.properties.TOT_1990);
-			total90 -= total2;
-			total3 = parseInt(feature.properties.TOT_1980);
-			total80 -= total3;	
-		}
-			
-		growth2000 = ((totalPop - total90)/total90)*100;
-		growth2010 = ((total10 - total00)/total00)*100;
-			
-		if (selectMode === true) {
-			if (map.hasLayer(census2000) === true){
-				bindCensusChart();
-				bindCensusTable();
-			}	
-			
-			if (map.hasLayer(census2010) === true){			
-				bindCensusChart2010();
-				bindCensusTable2010();
-			}
-		}
-	});
 
-	//Binds labels
-	if (feature.properties) {
-		layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY
-		+ ", " + feature.properties.STATE
-		+ "</b></u></big><div class='popup_body'> <b>Total Population:&nbsp;</b>" + parseInt(feature.properties.TOT_CUR).toLocaleString()
-		+ "<br> <b>Growth Over Decade:&nbsp;</b>" + feature.properties.PER_CHA + "%</div>"
-		, {permanent: false});
-	}
-}
 
 //Behavior for mousever and click- Demographic layers
 function demo_onEachFeature(feature, layer) {
@@ -1098,11 +1172,6 @@ function demo_onEachFeature(feature, layer) {
 	//Behavior for right click events
 	layer.on('contextmenu', function (e) {
 			
-		var indextest = selectList.indexOf(feature.properties.COUNTY + ', ' + feature.properties.STATE + '<br>');
-		if (indextest > -1) {
-			selectList.splice(indextest, 1);
-		}
-		$('#electionTest').html(selectList);
 		
 		if (selected == true){
 			findTotal();		
@@ -1123,34 +1192,7 @@ function demo_onEachFeature(feature, layer) {
 		}	
 	});
 	
-	//Binds labels
-	if (feature.properties) {
-		if ($(window).width() < 450) {
-			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY
-			+ ", " + feature.properties.STATE
-			+ "</b></u></big><div class = 'popup_body'> <b>White:&nbsp;</b>" + parseFloat(whitePer).toFixed(2) + "%"
-			+ "<br> <b>Black:&nbsp;</b>" + parseFloat(blackPer).toFixed(2) + "%"
-			+ "<br> <b>Nat. Am/Nat. AK:&nbsp;</b>" + parseFloat(nativePer).toFixed(2) + "%"
-			+ "<br> <b>Asian:&nbsp;</b>" + parseFloat(asianPer).toFixed(2) + "%"
-			+ "<br> <b>Nat. HI/Pac-Isl:&nbsp;</b>" + parseFloat(pacificPer).toFixed(2) + "%"
-			+ "<br> <b>Multiracial:&nbsp;</b>" + parseFloat(multiracialPer).toFixed(2) + "%"
-			+ "<br> <b>Hispanic/Lat:&nbsp;</b>" + parseFloat(hispanicPer).toFixed(2) + "%</div>"
-			, {permanent: false});
-		}
-		
-		else {
-			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.COUNTY
-			+ ", " + feature.properties.STATE
-			+ "</b></u></big><div class = 'popup_body'> <b>White:&nbsp;</b>" + parseFloat(whitePer).toFixed(2) + "%"
-			+ "<br> <b>Black or African American:&nbsp;</b>" + parseFloat(blackPer).toFixed(2) + "%"
-			+ "<br> <b>American Indian or Alaska Native:&nbsp;</b>" + parseFloat(nativePer).toFixed(2) + "%"
-			+ "<br> <b>Asian:&nbsp;</b>" + parseFloat(asianPer).toFixed(2) + "%"
-			+ "<br> <b>Native Hawaiin or Other Pacific Islander:&nbsp;</b>" + parseFloat(pacificPer).toFixed(2) + "%"
-			+ "<br> <b>Multiracial:&nbsp;</b>" + parseFloat(multiracialPer).toFixed(2) + "%"
-			+ "<br> <b>Hispanic or Latino:&nbsp;</b>" + parseFloat(hispanicPer).toFixed(2) + "%</div>"
-			, {permanent: false});
-		}
-	}
+	
 }
 
 //Collapses sidebar when user clicks header
@@ -1213,7 +1255,7 @@ states = new L.GeoJSON.AJAX("geography/states-min.geojson", {style: statesStyle,
 sidebar = L.control.sidebar('sidebar').addTo(map);
 
 //Collapses sidebar when user clicks header
-collapse_sidebar("sbar-table");
+
 
 
 //Map options - toggles legend
@@ -1384,10 +1426,7 @@ $('#election_08, #election_08s').click(function(){
     currentLegend = electionLegend;
     electionLegend.addTo(map);
 	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("election_table");
-	currentTable.style.display = "inline";
+	
 
 	
  
@@ -1408,10 +1447,7 @@ $('#election_12, #election_12s').click(function(){
     currentLegend = electionLegend;
     electionLegend.addTo(map);
 	
-	//Change table
-	currentTable.style.display = "none";
-	currentTable = document.getElementById("election_table");
-	currentTable.style.display = "inline";
+	
 	
 });
 $('#election_16, #election_16s').click(function(){
@@ -1551,10 +1587,10 @@ function clearStuff(){
 	repTot3 = 0;
 	othTot3 = 0;
 	totalPop = 0;
-	total10 = 0;
-	total00 = 0;
-	total90 = 0;
-	total80 = 0;
+	pop2010Tot = 0;
+    pop2000Tot = 0;
+    pop1990Tot = 0;
+    pop1980Tot = 0;
 	whiteTot = 0;
 	blackTot = 0;
 	nativeTot = 0;
@@ -1562,6 +1598,13 @@ function clearStuff(){
 	pacificTot = 0;
 	multiracialTot = 0;
 	hispanicTot = 0;
+	whiteTot2000 = 0;
+	blackTot2000 = 0;
+	nativeTot2000 = 0;
+	asianTot2000 = 0;
+	pacificTot2000 = 0;
+	multiracialTot2000 = 0;
+	hispanicTot2000 = 0;
 	counties2010.setStyle({
 		weight: 1,
 		opacity: 1,

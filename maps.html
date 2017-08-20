@@ -116,7 +116,7 @@
 				<ul role="tablist">
 					<li id = "infotab"><a href="#info_chart" role="tab" title="Election Data"><img src="img/icons8-Elections-100.png"/></a></li>
 					<li><a href="#table" role="tab" title="Population Growth Data"><img src="img/icons8-Line Chart-100.png"/></a></li>
-					<li><a href="#table2" role="tab" title="Demographics Data"><img src="img/icons8-Global Citizen Filled-100.png"/></a></li>
+					<li><a href="#demographicsTab" role="tab" title="Demographics Data"><img src="img/icons8-Global Citizen Filled-100.png"/></a></li>
 					<li><a href="#selections" role="tab" title="Selections"><i class="fa fa-object-group"></i></a></li>
 					<li><a href="#settings" role="tab" title="Map options"><i class="fa fa-gear"></i></a></li>
 				</ul>
@@ -125,84 +125,195 @@
 			
 				<!--Elections Tab-->
 				<div class="sidebar-pane" id="info_chart">
-					<h1 class="sidebar-header" id='sbar-header'>Click map to populate data<span class="dropdown" id="mapChooser"></span><span class="sidebar-close" id="sbar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span>
-					</h1>
-					<div class = "container-fluid" id="chart_container">
+					<h1 class="sidebar-header" id='sbar-header'>Click map to populate data<span class="dropdown" id="mapChooser"></span><span class="sidebar-close" id="sbar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
+					
+					<div id = "election_table">
+					  <table class="table table-hover">
+					  <thead>
+					  <tr>
+						<th></th>
+						<th>2016</th>
+						<th>2012</th>
+						<th>2008</th>
+					  </tr>
+					  </thead>
+						  <tr>
+							<th>Dem %</th>
+							<td id="democrat"></td>
+							<td id="democrat2"></td>
+							<td id="democrat3"></td>
+						  </tr>
+						  <tr>
+							<th>Rep %</th>
+							<td id="republican"></td>
+							<td id="republican2"></td>
+							<td id="republican3"></td>
+							
+						  </tr>
+						  <tr>
+							<th>Other %</th>
+							<td id="independent"></td>
+							<td id="independent2"></td>
+							<td id="independent3"></td>
+						  </tr>
+						  <tr>
+							<th>Dem Tot.</th>
+							<td id="democratTotal"></td>
+							<td id="democratTotal2"></td>
+							<td id="democratTotal3"></td>
+						  </tr>
+						  <tr>
+							<th>Rep Tot.</th>
+							<td id="republicanTotal"></td>
+							<td id="republicanTotal2"></td>
+							<td id="republicanTotal3"></td>
+						  </tr>
+						  <tr>
+							<th>Oth Tot.</th>
+							<td id="independentTotal"></td>
+							<td id="independentTotal2"></td>
+							<td id="independentTotal3"></td>
+						  </tr>
+					  </table>
 					</div>
+					
+					<div class = "container-fluid" id="chart_container"></div>
 				</div>
 				
 				<!--Population Growth Tab-->
 				<div class="sidebar-pane" id="table">
 					<h1 class="sidebar-header" id='sbar-table'>Click map to populate data<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
-						
-						<div id = "census_table">
+				
+						<div id = "election_table">
 						  <table class="table table-hover">
+						  <thead>
+						  <tr>
+							<th></th>
+							<th>2010</th>
+							<th>2000</th>
+							<th>1990</th>
+							<th>1980</th>
+						  </tr>
+						  </thead>
+							  <tr>
+								<th>Pop.</th>
+								<td id="totpop1"></td>
+								<td id="totpop2"></td>
+								<td id="totpop3"></td>
+								<td id="totpop4"></td>
+							  </tr>
+							  <tr>
+								<th>Gain/Loss</th>
+								<td id="gain1"></td>
+								<td id="gain2"></td>
+								<td id="gain3"></td>
+								<td id="gain4"></td>		
+							  </tr>
+							  <tr>
+								<th>% Growth</th>
+								<td id="growth1"></td>
+								<td id="growth2"></td>
+								<td id="growth3"></td>
+								<td id="growth4"></td>
+							  </tr>
 						  </table>
 						</div>
 						
-						<div id = "demo_table">
-						  <table class="table table-hover">
-							  <tr>
-								<th>White %</th>
-								<td id="white"></td>
-							  </tr>
-							  <tr>
-								<th>Black %</th>
-								<td id="black"></td>
-							  </tr>
-							  <tr>
-								<th>Native Am %</th>
-								<td id="native"></td>
-							  </tr>
-							  <tr>
-								<th>Asian %</th>
-								<td id="asian"></td>
-							  </tr>
-							  <tr>
-								<th>Pacific Isl %</th>
-								<td id="pacific"></td>
-							  </tr>
-							  <tr>
-								<th>Multiracial %</th>
-								<td id="multiracial"></td>
-							  </tr>
-							  <tr>
-								<th>Hispanic %</th>
-								<td id="hispanic"></td>
-							  </tr>
-							  <tr>
-								<th>White Tot.</th>
-								<td id="whiteTotal"></td>
-							  </tr>
-							  <tr>
-								<th>Black Tot.</th>
-								<td id="blackTotal"></td>
-							  </tr>
-							  <tr>
-								<th>Native Am Tot.</th>
-								<td id="nativeTotal"></td>
-							  </tr>
-							  <tr>
-								<th>Asian Tot.</th>
-								<td id="asianTotal"></td>
-							  </tr>
-							  <tr>
-								<th>Pacific Isl Tot.</th>
-								<td id="pacificTotal"></td>
-							  </tr>
-							  <tr>
-								<th>Multiracial Tot.</th>
-								<td id="multiracialTotal"></td>
-							  </tr>
-							  <tr>
-								<th>Hispanic Tot.</th>
-								<td id="hispanicTotal"></td>
-							  </tr>
-						  </table>
+						<div class = "container-fluid" id="chart_container2">
 						</div>
+						
 				</div>
 
 				<!--Demographics Tab-->
+				<div class="sidebar-pane" id="demographicsTab">
+					<h1 class="sidebar-header" id='demoHeader'>Click map to populate data<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
+				
+						<div id = "demographics_table">
+						  <table class="table table-hover">
+						  <thead>
+						  <tr>
+							<th></th>
+							<th>2010</th>
+							<th>2000</th>
+						  </tr>
+						  </thead>
+							  <tr>
+								<th>White %</th>
+								<td id="whiteper2010"></td>
+								<td id="whiteper2000"></td>
+							  </tr>
+							  <tr>
+								<th>Black %</th>
+								<td id="blackper2010"></td>
+								<td id="blackper2000"></td>	
+							  </tr>
+							  <tr>
+								<th>Native Am %</th>
+								<td id="nativeper2010"></td>
+								<td id="nativeper2000"></td>
+							  </tr>
+							  <tr>
+								<th>Asian %</th>
+								<td id="asianper2010"></td>
+								<td id="asianper2000"></td>
+							  </tr>
+							  <tr>
+								<th>Pacific Isl %</th>
+								<td id="pacper2010"></td>
+								<td id="pacper2000"></td>
+							  </tr>
+							  <tr>
+								<th>Multiracial %</th>
+								<td id="multiper2010"></td>
+								<td id="multiper2000"></td>
+							  </tr>
+							  <tr>
+								<th>Hispanic %</th>
+								<td id="hisper2010"></td>
+								<td id="hisper2000"></td>
+							  </tr>
+							    <tr>
+								<th>White Tot</th>
+								<td id="whitetot2010"></td>
+								<td id="whitetot2000"></td>
+							  </tr>
+							  <tr>
+								<th>Black Tot</th>
+								<td id="blacktot2010"></td>
+								<td id="blacktot2000"></td>	
+							  </tr>
+							  <tr>
+								<th>Native Am Tot</th>
+								<td id="nativetot2010"></td>
+								<td id="nativetot2000"></td>
+							  </tr>
+							  <tr>
+								<th>Asian Tot</th>
+								<td id="asiantot2010"></td>
+								<td id="asiantot2000"></td>
+							  </tr>
+							  <tr>
+								<th>Pacific Isl Tot</th>
+								<td id="pactot2010"></td>
+								<td id="pactot2000"></td>
+							  </tr>
+							  <tr>
+								<th>Multiracial Tot</th>
+								<td id="multitot2010"></td>
+								<td id="multitot2000"></td>
+							  </tr>
+							  <tr>
+								<th>Hispanic Tot</th>
+								<td id="histot2010"></td>
+								<td id="histot2000"></td>
+							  </tr>
+						  </table>
+						</div>
+						
+						<div class = "container-fluid" id="chart_container3">
+						</div>
+						
+				</div>
 				
 				<!-- Selection Tab -->
 				<div class="sidebar-pane" id="selections">

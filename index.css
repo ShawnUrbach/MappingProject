@@ -226,7 +226,7 @@ td {
 	height: 400px;
 	margin: 60px 50px 0 2%;
 	position: fixed;
-	width: 24%;
+	width: 26%;
 	z-index: 1029;
 }
 
@@ -278,17 +278,12 @@ td {
 	}
 }
 
-#census_table{
-	display: none;
-}
+
 
 #election_table{
 	display: inline;
 }
 
-#demo_table{
-	display: none;
-}
 
 #info_chart {
 	min-height: 100%;
