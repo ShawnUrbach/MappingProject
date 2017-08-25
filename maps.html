@@ -20,8 +20,8 @@
         <script src="lib/leaflet/leaflet.js" type="text/javascript"></script>
 		<script src="lib/Leaflet.label-master/dist/leaflet.label.js" type="text/javascript"></script>
 		<script src="lib/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js" type="text/javascript"></script>
-		<script src="lib/sidebar-v2-master/js/jquery-sidebar.js" type="text/javascript"></script>
-		<script src="lib/sidebar-v2-master/js/leaflet-sidebar.js" type="text/javascript"></script>
+		<script src="lib/sidebar-v2-master/js/jquery-sidebar.min.js" type="text/javascript"></script>
+		<script src="lib/sidebar-v2-master/js/leaflet-sidebar.min.js" type="text/javascript"></script>
 		<script src="lib/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js" type="text/javascript"></script>
 		
         <title>Maps - VizMapper</title>
@@ -192,7 +192,6 @@
 							<th>2010</th>
 							<th>2000</th>
 							<th>1990</th>
-							<th>1980</th>
 						  </tr>
 						  </thead>
 							  <tr>
@@ -200,28 +199,44 @@
 								<td id="totpop1"></td>
 								<td id="totpop2"></td>
 								<td id="totpop3"></td>
-								<td id="totpop4"></td>
 							  </tr>
 							  <tr>
 								<th>Gain/Loss</th>
 								<td id="gain1"></td>
 								<td id="gain2"></td>
-								<td id="gain3"></td>
-								<td id="gain4"></td>		
+								<td id="gain3"></td>	
 							  </tr>
 							  <tr>
 								<th>% Growth</th>
 								<td id="growth1"></td>
 								<td id="growth2"></td>
 								<td id="growth3"></td>
+							  </tr>
+							  <thead>
+						  <tr>
+							<th></th>
+							<th>1980</th>
+							<th>1970</th>
+							<th>1960</th>
+						  </tr>
+						  </thead>
+							  <tr>
+								<th>Pop.</th>
+								<td id="totpop4"></td>
+							  </tr>
+							  <tr>
+								<th>Gain/Loss</th>
+								<td id="gain4"></td>		
+							  </tr>
+							  <tr>
+								<th>% Growth</th>
 								<td id="growth4"></td>
 							  </tr>
 						  </table>
 						</div>
 						
 						<div class = "container-fluid" id="chart_container2">
-						</div>
-						
+						</div>					
 				</div>
 
 				<!--Demographics Tab-->
@@ -311,8 +326,7 @@
 						</div>
 						
 						<div class = "container-fluid" id="chart_container3">
-						</div>
-						
+						</div>						
 				</div>
 				
 				<!-- Selection Tab -->
@@ -334,7 +348,8 @@
 					<div class="checkbox" id="settings_list">
 						<p><label><input id="disable_legend" type="checkbox" value="">Remove legend from current layer</label></p>
 						<p><label><input id="bigMapMode" type="checkbox" value="">Enlarge map</label></p>
-						<br><br>
+						<div id = "iconMsg"><a href="https://icons8.com/">Icons by Icons8</a>
+						</div>
 						<div id = "License">
 							This work, excluding the visual design, logo, and blog content, is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
 							<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>

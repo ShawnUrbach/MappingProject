@@ -226,7 +226,7 @@ td {
 	height: 400px;
 	margin: 60px 50px 0 2%;
 	position: fixed;
-	width: 26%;
+	width: 28%;
 	z-index: 1029;
 }
 
@@ -242,21 +242,63 @@ td {
 	margin-top: 10px;
 }
 
+@media screen and (max-width: 1800px) {
+	.sidebar {
+		width: 29%;
+	}
+}
+
 @media screen and (max-width: 1700px) {
 	.sidebar {
-		width: 30%;
+		width: 31%;
+	}
+}
+
+@media screen and (max-width: 1600px) {
+	.sidebar {
+		width: 33%;
+	}
+}
+
+@media screen and (max-width: 1500px) {
+	.sidebar {
+		width: 36%;
 	}
 }
 
 @media screen and (max-width: 1400px) {
 	.sidebar {
-		width: 32%;
+		width: 39%;
 	}
 }
 
-@media screen and (max-width: 1281px) {
+@media screen and (max-width: 1300px) {
 	.sidebar {
-		width: 40%;
+		width: 42%;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	.sidebar {
+		width: 45%;
+	}
+}
+
+@media screen and (max-width: 1100px) {
+	.sidebar {
+		width: 48%;
+	}
+}
+
+@media screen and (max-width: 1000px) {
+	.sidebar {
+		width: 51%;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.sidebar {
+		width: 60%;
 	}
 }
 
@@ -266,9 +308,9 @@ td {
 	}
 }
 
-@media screen and (max-width: 801px) {
+@media screen and (max-width: 800px) {
 	.sidebar {
-		width: 50%;
+		width: 70%;
 	}
 }
 
@@ -305,6 +347,7 @@ td {
 		width: 100%;
 		clear: both;
 		top: -100px;
+		font-size: 12px;
 	}
 }
 
