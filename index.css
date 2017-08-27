@@ -204,9 +204,18 @@ td {
 
 @media screen and (max-width: 425px) {
 	#countySearch {
-		width: 45%;
+		width: 100%;
 		display: inline-block;
 		float: left;
+		margin-bottom: 5px;
+	}
+	
+	#divide {
+		display: none;
+	}
+	
+	#searchDiv {
+		display: none;
 	}
 	
 	#layerSelect{
@@ -556,9 +565,7 @@ td {
 		font-size: 0.8em;
 		margin-top: 20px;
 	}
-	#selectDiv {
-		display: none;
-	}
+
 }
 
 @media screen and (min-width: 426px) {
@@ -590,3 +597,54 @@ td {
 	color: white;
 }
 
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: none;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+a:focus {
+	outline: 0px;
+}

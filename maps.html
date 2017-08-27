@@ -11,7 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="lib/sidebar-v2-master/css/leaflet-sidebar.min.css"> 		
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="index.css"/>
+		<link rel="stylesheet" type="text/css" href="index-min.css"/>
 		
 		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -51,29 +51,71 @@
 							<li><a href="about">About</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right" id = "selectDiv">
-						<li class="dropdown2">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="Turn on to select multiple counties">Multi-Select <span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li><a href="#"><div class = "checkbox"><input id ="selectMode" class = "selectMode" type="checkbox">On/Off</input></div></a></li>
-									<li id = "clearSelection" class = "clearSelection"><a href="#">Clear Selection</a></li>
-									
-								</ul>
-							</li>
+						
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="Select a layer to display on the map">Layers <span class="caret"></span></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="Select a layer to display on the map">Change Map <span class="caret"></span></a>
 								<ul class="dropdown-menu">
-									<li id = "election_08" class = "layercontrol"><a href="#">Election 2008</a></li>
-									<li id = "election_12" class = "layercontrol"><a href="#">Election 2012</a></li>
-									<li id = "election_16" class = "layercontrol"><a href="#">Election 2016</a></li>
-									<li id = "census_00" class = "layercontrol"><a href="#">Census 2000</a></li>
-									<li id = "census_10" class = "layercontrol"><a href="#">Census 2010</a></li>
-									<li id = "demo_00" class = "layercontrol"><a href="#">Demographics 2000</a></li>
-									<li id = "demo_10" class = "layercontrol"><a href="#">Demographics 2010</a></li>
-									<li role="separator" class="divider"></li>
+									
+									<li class="dropdown-submenu">
+										<a class="test" tabindex="-1" href="#">Presidential Elections <span class="caret"></span></a>
+										<ul class="dropdown-menu">
+										  <li class="dropdown-submenu">
+											<li id = "election_16" class = "layercontrol"><a href="#">2016</a></li>
+										  </li>
+										  <li class="dropdown-submenu">
+											<li id = "election_12" class = "layercontrol"><a href="#">2012</a></li>
+										  </li>
+										  <li class="dropdown-submenu">
+											<li id = "election_08" class = "layercontrol"><a href="#">2008</a></li>
+										  </li>
+										</ul>
+									 </li>
+
+									<li class="dropdown-submenu">
+										<a class="test" tabindex="-1" href="#">Demographics <span class="caret"></span></a>
+										<ul class="dropdown-menu">
+										  <li class="dropdown-submenu">
+											<a class="test" href="#">2010 <span class="caret"></span></a>
+											<ul class="dropdown-menu">
+											  <li id = "demo_10" class = "layercontrol"><a href="#">% White</a></li>
+											  <li id = "black_10" class = "layercontrol"><a href="#">% Black</a></li>
+											</ul>
+										  </li>
+										  <li class="dropdown-submenu">
+											<a class="test" href="#">2000 <span class="caret"></span></a>
+											<ul class="dropdown-menu">
+											  <li id = "demo_00" class = "layercontrol"><a href="#">% White</a></li>
+											   <li id = "black_00" class = "layercontrol"><a href="#">% Black</a></li>
+											</ul>
+										  </li>
+										</ul>
+									 </li>
+									 
+									<li class="dropdown-submenu">
+										<a class="test" tabindex="-1" href="#">Population Growth <span class="caret"></span></a>
+										<ul class="dropdown-menu">
+										  <li class="dropdown-submenu">
+											<li id = "census_10" class = "layercontrol"><a href="#">2010</a></li>
+										  </li>
+										  <li class="dropdown-submenu">
+											<li id = "census_00" class = "layercontrol"><a href="#">2000</a></li>
+										  </li>
+										</ul>
+									 </li>
+							
+									<li role="separator" class="divider" id="divide"></li>
 									<li><a href="#"><div class = "checkbox"><input id ="state_outlines" class = "state_outlines" type="checkbox" checked>State Outlines</input></div></a></li>
 									<li><a href="#"><div class = "checkbox"><input id ="base_map" class = "base_map" type="checkbox" checked>Base Map</input></div></a></li>
 								</ul>
 							</li>
+							<li class="dropdown2">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="Turn on to select multiple counties">Multi-Select <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="#"><div class = "checkbox"><input id ="selectMode" class = "selectMode" type="checkbox">On/Off</input></div></a></li>
+									<li id = "clearSelection" class = "clearSelection"><a href="#">Clear Selection</a></li>
+								</ul>
+							</li>
+
 							<form class="navbar-form navbar-left" id = "searchDiv">
 								<div class="form-group">
 									<input type="text" id="county_search" class="form-control" placeholder="Find a county">
@@ -88,24 +130,6 @@
 		<!-- Lower Navbar (Mobile Only) -->
 		<div id = "countySearch"></div>
 
-		<div class="dropdown btn-default" id="layerSelect">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select a layer<span class="caret"></span></a>
-			<ul class="dropdown-menu">
-			<li><a href="#"><div class = "checkbox"><input id ="selectMode" class = "selectMode" type="checkbox">Multi-Select</input></div></a></li>
-				<li id = "clearSelection" class = "clearSelection"><a href="#">Clear Selection</a></li>
-				<li role="separator" class="divider"></li>
-				<li id = "election_08s" class = "layercontrol"><a href="#">Election 2008</a></li>
-				<li id = "election_12s" class = "layercontrol"><a href="#">Election 2012</a></li>
-				<li id = "election_16s" class = "layercontrol"><a href="#">Election 2016</a></li>
-				<li id = "census_00s" class = "layercontrol"><a href="#">Census 2000</a></li>
-				<li id = "census_10s" class = "layercontrol"><a href="#">Census 2010</a></li>
-				<li id = "demo_00s" class = "layercontrol"><a href="#">Demographics 2000</a></li>
-				<li id = "demo_10s" class = "layercontrol"><a href="#">Demographics 2010</a></li>
-				<li role="separator" class="divider"></li>
-				<li><a href="#"><div class = "checkbox"><input id ="state_outlines" class ="state_outlines" type="checkbox" checked>State Outlines</input></div></a></li>
-				<li><a href="#"><div class = "checkbox"><input id ="base_map" class = "base_map" type="checkbox" checked>Base Map</input></div></a></li>
-			</ul>
-		</div>
 					
 		<!-- Map -->
         <div id="map"></div>
@@ -117,7 +141,7 @@
 					<li id = "infotab"><a href="#info_chart" role="tab" title="Election Data"><img src="img/icons8-Elections-100.png"/></a></li>
 					<li><a href="#table" role="tab" title="Population Growth Data"><img src="img/icons8-Line Chart-100.png"/></a></li>
 					<li><a href="#demographicsTab" role="tab" title="Demographics Data"><img src="img/icons8-Global Citizen Filled-100.png"/></a></li>
-					<li><a href="#selections" role="tab" title="Selections"><i class="fa fa-object-group"></i></a></li>
+					<li><a href="#selections" role="tab" title="Selected Counties"><i class="fa fa-object-group"></i></a></li>
 					<li><a href="#settings" role="tab" title="Map options"><i class="fa fa-gear"></i></a></li>
 				</ul>
 			</div>
@@ -335,8 +359,8 @@
 					<div id = "election_table2">
 						<table class="table table-hover" id="electionTest">
 							<tr>
-								<th>County</th>
-								<th>State</td>
+								<th></th>
+								<th></td>
 							</tr>
 						</table>
 					</div>
@@ -374,7 +398,7 @@
 
 	<!-- Javascript -->
 	<script src="geography/counties_latlong-min.js" type="text/javascript"></script>
-	<script src="index.js" type="text/javascript"></script>
+	<script src="index-min.js" type="text/javascript"></script>
     </body>
 </html>
 

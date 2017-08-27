@@ -125,6 +125,12 @@ function defaultStyle(feature) {
 		if (currentMap == 'demo2000'){
 			return GetColor3(demos(feature.properties.POP2000, feature.properties.WHI2000));
 		}
+		if (currentMap == 'black2010'){
+			return GetColor4(demos(feature.properties.POP2010, feature.properties.BLA2010));
+		}
+		if (currentMap == 'black2000'){
+			return GetColor4(demos(feature.properties.POP2000, feature.properties.BLA2000));
+		}
 	}
 	
 	return {
@@ -171,6 +177,17 @@ function GetColor3(w) {
 		w > 70   ? '#ffb3b3' :
 		w > 65   ? '#ffe6e6' :
 		w > 60   ? '#9999ff' : '#00008B';
+}
+
+function GetColor4(w) {
+	return w > 20 ? '#b30000' :
+		w > 18  ? '#e60000' :
+		w > 16  ? '#ff1a1a' :
+		w > 14  ? '#ff4d4d' :
+		w > 12   ? '#ff8080' :
+		w > 10   ? '#ffb3b3' :
+		w > 8   ? '#ffe6e6' :
+		w > 6   ? '#9999ff' : '#00008B';
 }
 
 //Style properties for State Outlines
@@ -955,7 +972,15 @@ function onEachFeature(feature, layer) {
 	
 		$('#demo_00, #demo_00s').click(function(){
 			displayDemoLables(feature.properties.POP2000, feature.properties.WHI2000);
-		});	
+		});
+		
+		$('#black_10').click(function(){
+			displayDemoLables(feature.properties.POP2010, feature.properties.BLA2010);
+		});
+
+		$('#black_00').click(function(){
+			displayDemoLables(feature.properties.POP2000, feature.properties.BLA2000);
+		});			
 	}
 }
 
@@ -1077,6 +1102,8 @@ censusLegend.onAdd = function (map) {
 //Adds legend to map - Demographics Layers
 demoLegend = L.control({position: 'bottomright'});
 demoLegend.onAdd = function (map) {
+	
+	if (currentMap == 'demo2010' || currentMap == 'demo2000'){
 
 	var div = L.DomUtil.create('div', 'legend'),
 		grades = [0, 60, 65, 70, 75, 80, 85, 90, 95],
@@ -1089,6 +1116,21 @@ demoLegend.onAdd = function (map) {
 			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
 	}
 	return div;
+	}
+		if (currentMap == 'black2010' || currentMap == 'black2000'){
+
+	var div = L.DomUtil.create('div', 'legend'),
+		grades = [0, 6, 8, 10, 12, 14, 16, 18, 20],
+		labels = [];
+
+	//Loops through density intervals and generate a label with a colored square for each interval
+	for (var i = 0; i < grades.length; i++) {
+		div.innerHTML +=
+			'<i style="background:' + GetColor4(grades[i] + 0.01) + '"></i> ' +
+			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
+	}
+	return div;
+	}
 };
 
 //Adds legend
@@ -1271,6 +1313,42 @@ $('#demo_10, #demo_10s').click(function(){
     demoLegend.addTo(map);
 });
 
+$('#black_10').click(function(){
+	clearStuff();
+	
+	//Change layer
+	ethnicGroup = 'Black';
+	currentMap = 'black2010';
+	counties2010.setStyle(defaultStyle);
+	
+	//Change title
+	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT BLACK </center>';
+	
+	//Change legend
+	map.removeControl(currentLegend);
+    currentLegend = demoLegend;
+    demoLegend.addTo(map);
+});
+
+$('#black_00').click(function(){
+	clearStuff();
+	
+	//Change layer
+	ethnicGroup = 'Black';
+	currentMap = 'black2000';
+	counties2010.setStyle(defaultStyle);
+	
+	//Change title
+	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
+	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT BLACK </center>';
+	
+	//Change legend
+	map.removeControl(currentLegend);
+    currentLegend = demoLegend;
+    demoLegend.addTo(map);
+});
+
 //State outline toggle
 $('.state_outlines').click(function(){
 	if (map.hasLayer(states) === false) {
@@ -1357,4 +1435,11 @@ $('.clearSelection').click(function(){
 	clearStuff();
 });
 
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+});
 
