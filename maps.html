@@ -55,22 +55,36 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="Select a layer to display on the map">Change Map <span class="caret"></span></a>
 								<ul class="dropdown-menu">
-									
+								
 									<li class="dropdown-submenu">
 										<a class="test" tabindex="-1" href="#">Presidential Elections <span class="caret"></span></a>
 										<ul class="dropdown-menu">
-										  <li class="dropdown-submenu">
-											<li id = "election_16" class = "layercontrol"><a href="#">2016</a></li>
-										  </li>
-										  <li class="dropdown-submenu">
-											<li id = "election_12" class = "layercontrol"><a href="#">2012</a></li>
-										  </li>
-										  <li class="dropdown-submenu">
-											<li id = "election_08" class = "layercontrol"><a href="#">2008</a></li>
-										  </li>
+											<li class="dropdown-submenu">
+												<a class="test" href="#">2016 <span class="caret"></span></a>
+												<ul class="dropdown-menu">
+												  <li id = "election_16" class = "layercontrol"><a href="#">Total Votes D/R</a></li>
+												  <li id = "third_16" class = "layercontrol"><a href="#">Third Party Votes</a></li>
+												  <li id = "diff_16" class = "layercontrol"><a href="#">12-16 Differential</a></li>
+												</ul>
+											</li>
+										    <li class="dropdown-submenu">
+												<a class="test" href="#">2012 <span class="caret"></span></a>
+												<ul class="dropdown-menu">
+												  <li id = "election_12" class = "layercontrol"><a href="#">Total Votes D/R</a></li>
+												  <li id = "third_12" class = "layercontrol"><a href="#">Third Party Votes</a></li>
+												  <li id = "diff_12" class = "layercontrol"><a href="#">08-12 Differential</a></li>
+												</ul>
+											</li>
+											<li class="dropdown-submenu">
+												<a class="test" href="#">2008 <span class="caret"></span></a>
+												<ul class="dropdown-menu">
+												  <li id = "election_08" class = "layercontrol"><a href="#">Total Votes D/R</a></li>
+												  <li id = "third_08" class = "layercontrol"><a href="#">Third Party Votes</a></li>
+												</ul>
+											</li>  
 										</ul>
-									 </li>
-
+									</li>
+							
 									<li class="dropdown-submenu">
 										<a class="test" tabindex="-1" href="#">Demographics <span class="caret"></span></a>
 										<ul class="dropdown-menu">
@@ -79,6 +93,11 @@
 											<ul class="dropdown-menu">
 											  <li id = "demo_10" class = "layercontrol"><a href="#">% White</a></li>
 											  <li id = "black_10" class = "layercontrol"><a href="#">% Black</a></li>
+											  <li id = "native_10" class = "layercontrol"><a href="#">% N.American</a></li>
+											  <li id = "asian_10" class = "layercontrol"><a href="#">% Asian</a></li>
+											  <li id = "pacific_10" class = "layercontrol"><a href="#">% Haw./Pacific Isl.</a></li>
+											  <li id = "multiracial_10" class = "layercontrol"><a href="#">% Multiracial</a></li>
+											  <li id = "hispanic_10" class = "layercontrol"><a href="#">% Latino/Hispanic</a></li>
 											</ul>
 										  </li>
 										  <li class="dropdown-submenu">
@@ -86,6 +105,11 @@
 											<ul class="dropdown-menu">
 											  <li id = "demo_00" class = "layercontrol"><a href="#">% White</a></li>
 											   <li id = "black_00" class = "layercontrol"><a href="#">% Black</a></li>
+											   <li id = "native_00" class = "layercontrol"><a href="#">% N.American</a></li>
+											   <li id = "asian_00" class = "layercontrol"><a href="#">% Asian</a></li>
+											   <li id = "pacific_00" class = "layercontrol"><a href="#">% Haw./Pacific Isl.</a></li>
+											   <li id = "multiracial_00" class = "layercontrol"><a href="#">% Multiracial</a></li>
+											   <li id = "hispanic_00" class = "layercontrol"><a href="#">% Latino/Hispanic</a></li>
 											</ul>
 										  </li>
 										</ul>
@@ -99,6 +123,9 @@
 										  </li>
 										  <li class="dropdown-submenu">
 											<li id = "census_00" class = "layercontrol"><a href="#">2000</a></li>
+										  </li>
+										  <li class="dropdown-submenu">
+											<li id = "census_90" class = "layercontrol"><a href="#">1990</a></li>
 										  </li>
 										</ul>
 									 </li>
