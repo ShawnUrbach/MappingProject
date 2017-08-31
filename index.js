@@ -151,6 +151,9 @@ function defaultStyle(feature) {
 		if (currentMap == 'diff2012'){
 			return GetColor3(electionsdiff(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012, feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008));
 		}
+		if (currentMap == 'census2010'){
+			return GetColor2(popchange(feature.properties.POP2010, feature.properties.POP2000));
+		}
 		if (currentMap == 'census2000'){
 			return GetColor2(popchange(feature.properties.POP2000, feature.properties.POP1990));
 		}
