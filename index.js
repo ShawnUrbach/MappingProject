@@ -76,6 +76,20 @@ var ethnicGroup;
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
 
+var colorPicker = $('#highlightColor');
+var highlightColor = $('#highlightColor').val();
+
+$(colorPicker).change(function() {
+	highlightColor = $('#highlightColor').val();
+});
+
+var colorPicker2 = $('#selectionColor');
+var selectionColor = $('#selectionColor').val();
+
+$(colorPicker2).change(function() {
+	selectionColor = $('#selectionColor').val();
+});
+
 
 //Activate CSS tooltips
 $(document).ready(function(){
@@ -125,82 +139,82 @@ function defaultStyle(feature) {
 		
 	function findLayer(){
 		if (currentMap == 'election2016'){
-			return GetColor(elections(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016));
+			return GetColor(elections(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016),30,20,10,0,-10,-20,-30,-100);
 		}
 		if (currentMap == 'election2012'){
-			return GetColor(elections(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012));
+			return GetColor(elections(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012),30,20,10,0,-10,-20,-30,-100);
 		}
 		if (currentMap == 'election2008'){
-			return GetColor(elections(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008));
+			return GetColor(elections(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),30,20,10,0,-10,-20,-30,-100);
 		}
 		if (currentMap == 'thirdparty2016'){
-			return GetColorDemo(thirdparties(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016),8,7,6,5,4,3,2,1);
+			return GetColor2(thirdparties(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'thirdparty2012'){
-			return GetColorDemo(thirdparties(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012),8,7,6,5,4,3,2,1);
+			return GetColor2(thirdparties(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'thirdparty2008'){
-			return GetColorDemo(thirdparties(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),8,7,6,5,4,3,2,1);
+			return GetColor2(thirdparties(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'thirdparty2008'){
-			return GetColorDemo(thirdparties(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),8,7,6,5,4,3,2,1);
+			return GetColor2(thirdparties(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'diff2016'){
-			return GetColor3(electionsdiff(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016, feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012));
+			return GetColor(electionsdiff(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016, feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012),20,10,5,0,-5,-10,-20,-100);
 		}
 		if (currentMap == 'diff2012'){
-			return GetColor3(electionsdiff(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012, feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008));
+			return GetColor(electionsdiff(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012, feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),20,10,5,0,-5,-10,-20,-100);
 		}
 		if (currentMap == 'census2010'){
-			return GetColor2(popchange(feature.properties.POP2010, feature.properties.POP2000));
+			return GetColor2(popchange(feature.properties.POP2010, feature.properties.POP2000),30,25,20,15,10,5,0,-5);
 		}
 		if (currentMap == 'census2000'){
-			return GetColor2(popchange(feature.properties.POP2000, feature.properties.POP1990));
+			return GetColor2(popchange(feature.properties.POP2000, feature.properties.POP1990),30,25,20,15,10,5,0,-5);
 		}
 		if (currentMap == 'census1990'){
-			return GetColor2(popchange(feature.properties.POP1990, feature.properties.POP1980));
+			return GetColor2(popchange(feature.properties.POP1990, feature.properties.POP1980),30,25,20,15,10,5,0,-5);
 		}
 		if (currentMap == 'demo2010'){
-			return GetColorDemo(demos(feature.properties.POP2010, feature.properties.WHI2010),95,90,85,80,75,70,65,60);
+			return GetColor2(demos(feature.properties.POP2010, feature.properties.WHI2010),95,90,85,80,75,70,65,60);
 		}
 		if (currentMap == 'demo2000'){
-			return GetColorDemo(demos(feature.properties.POP2000, feature.properties.WHI2000),95,90,85,80,75,70,65,60);
+			return GetColor2(demos(feature.properties.POP2000, feature.properties.WHI2000),95,90,85,80,75,70,65,60);
 		}
 		if (currentMap == 'black2010'){
-			return GetColorDemo(demos(feature.properties.POP2010, feature.properties.BLA2010),20,18,16,14,12,10,8,6);
+			return GetColor2(demos(feature.properties.POP2010, feature.properties.BLA2010),20,18,16,14,12,10,8,6);
 		}
 		if (currentMap == 'black2000'){
-			return GetColorDemo(demos(feature.properties.POP2000, feature.properties.BLA2000),20,18,16,14,12,10,8,6);
+			return GetColor2(demos(feature.properties.POP2000, feature.properties.BLA2000),20,18,16,14,12,10,8,6);
 		}
 		if (currentMap == 'hispanic2010'){
-			return GetColorDemo(demos(feature.properties.POP2010, feature.properties.LAT2010),30,27,24,21,18,15,12,9);
+			return GetColor2(demos(feature.properties.POP2010, feature.properties.LAT2010),30,27,24,21,18,15,12,9);
 		}
 		if (currentMap == 'hispanic2000'){
-			return GetColorDemo(demos(feature.properties.POP2000, feature.properties.LAT2000),30,27,24,21,18,15,12,9);
+			return GetColor2(demos(feature.properties.POP2000, feature.properties.LAT2000),30,27,24,21,18,15,12,9);
 		}
 		if (currentMap == 'asian2010'){
-			return GetColorDemo(demos(feature.properties.POP2010, feature.properties.ASI2010),8,7,6,5,4,3,2,1);
+			return GetColor2(demos(feature.properties.POP2010, feature.properties.ASI2010),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'asian2000'){
-			return GetColorDemo(demos(feature.properties.POP2000, feature.properties.ASI2000),8,7,6,5,4,3,2,1);
+			return GetColor2(demos(feature.properties.POP2000, feature.properties.ASI2000),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'multiracial2010'){
-			return GetColorDemo(demos(feature.properties.POP2010, feature.properties.MUL2010),8,7,6,5,4,3,2,1);
+			return GetColor2(demos(feature.properties.POP2010, feature.properties.MUL2010),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'multiracial2000'){
-			return GetColorDemo(demos(feature.properties.POP2000, feature.properties.MUL2000),8,7,6,5,4,3,2,1);
+			return GetColor2(demos(feature.properties.POP2000, feature.properties.MUL2000),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'native2010'){
-			return GetColorDemo(demos(feature.properties.POP2000, feature.properties.NAT2010),4,3.5,3,2.5,2,1.5,1,0.5);
+			return GetColor2(demos(feature.properties.POP2000, feature.properties.NAT2010),4,3.5,3,2.5,2,1.5,1,0.5);
 		}
 		if (currentMap == 'native2000'){
-			return GetColorDemo(demos(feature.properties.POP2000, feature.properties.NAT2000),4,3.5,3,2.5,2,1.5,1,0.5);
+			return GetColor2(demos(feature.properties.POP2000, feature.properties.NAT2000),4,3.5,3,2.5,2,1.5,1,0.5);
 		}
 		if (currentMap == 'pacific2010'){
-			return GetColorDemo(demos(feature.properties.POP2000, feature.properties.HAW2010),1.6,1.4,1.2,1.0,0.8,0.6,0.4,0.2);
+			return GetColor2(demos(feature.properties.POP2000, feature.properties.HAW2010),1.6,1.4,1.2,1.0,0.8,0.6,0.4,0.2);
 		}
 		if (currentMap == 'pacific2000'){
-			return GetColorDemo(demos(feature.properties.POP2000, feature.properties.HAW2000),1.6,1.4,1.2,1.0,0.8,0.6,0.4,0.2);
+			return GetColor2(demos(feature.properties.POP2000, feature.properties.HAW2000),1.6,1.4,1.2,1.0,0.8,0.6,0.4,0.2);
 		}
 	}
 	
@@ -214,43 +228,20 @@ function defaultStyle(feature) {
 	};
 }
 
-//Get colors for election layers
-function GetColor(w) {
-	return w > 30 ? '#104896' :
-		w > 20  ? '#2d67b7' :
-		w > 10  ? '#4880ce' :
-		w > 0  ? '#87b9ff' :
-		w > -10   ? '#f7d4d4' :
-		w > -20   ? '#ff9696' :
-		w > -30   ? '#ff6d6d' :
-		w > -100   ? '#ff2b2b' : '#01347c';	
+//Get colors (two variables, light blue/red color scheme)
+function GetColor(w,no1,no2,no3,no4,no5,no6,no7,no8) {
+	return w > no1 ? '#104896' :
+		w > no2  ? '#2d67b7' :
+		w > no3  ? '#4880ce' :
+		w > no4  ? '#87b9ff' :
+		w > no5   ? '#f7d4d4' :
+		w > no6   ? '#ff9696' :
+		w > no7   ? '#ff6d6d' :
+		w > no8   ? '#ff2b2b' : '#01347c';	
 }
 
-function GetColor3(w) {
-	return w > 20 ? '#104896' :
-		w > 10  ? '#2d67b7' :
-		w > 5  ? '#4880ce' :
-		w > 0  ? '#87b9ff' :
-		w > -5   ? '#f7d4d4' :
-		w > -10  ? '#ff9696' :
-		w > -20   ? '#ff6d6d' :
-		w > -100   ? '#ff2b2b' : '#01347c';	
-}
-
-//Get colors for pop change layers
-function GetColor2(w) {
-	return w > 30 ? '#b30000' :
-		w > 25  ? '#e60000' :
-		w > 20  ? '#ff1a1a' :
-		w > 15  ? '#ff4d4d' :
-		w > 10   ? '#ff8080' :
-		w > 5   ? '#ffb3b3' :
-		w > 0   ? '#ffe6e6' :
-		w > -5   ? '#9999ff' : '#00008B';
-}
-
-//Get colors for demographics layers
-function GetColorDemo(w,no1,no2,no3,no4,no5,no6,no7,no8) {
+//Get colors (one variable, dark blue/red color scheme)
+function GetColor2(w,no1,no2,no3,no4,no5,no6,no7,no8) {
 	return w > no1 ? '#b30000' :
 		w > no2  ? '#e60000' :
 		w > no3  ? '#ff1a1a' :
@@ -278,7 +269,7 @@ function highlightFeature(e) {
 		var layer = e.target;
 		layer.setStyle({
 			weight: 4,
-			color: 'black',
+			color: highlightColor,
 			dashArray: '',
 			fillOpacity: 0.7,
 		});
@@ -321,7 +312,7 @@ function zoomToFeature(e) {
 	}
 	layer.setStyle({
 		weight: 4,
-		color: 'black',
+		color: selectionColor,
 		dashArray: '',
 		fillOpacity: 0.7,
 	});
@@ -1241,46 +1232,45 @@ L.control.scale().addTo(map);
 new L.Control.Zoom({ position: 'topright' }).addTo(map);
 
 //Adds legend to map - Election Layers
+function createLegend9(color1,color2,color3,color4,color5,color6,color7,color8,color9){
+	return '<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="colorlegend1"></td><td>'+color9+'%+</td>' +
+		'</tr><tr><td class="color" id="colorlegend2"></td><td>'+color8+'%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend3"></td><td>'+color7+'%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend4"></td><td>'+color6+'%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend5"></td><td>'+color5+'%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend6"></td><td>'+color4+'%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend7"></td><td>'+color3+'%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend8"></td><td>'+color2+'%</td></tr>' +
+		'</tr><tr><td class="color" id="colorlegend9"></td><td>'+color1+'%</td></tr>'
+}
+
+function createLegend8(color1,color2,color3,color4,color5,color6,color7,color8){
+	return '<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="electionlegend1"></td><td>'+color8+'%+ D</td>' +
+		'</tr><tr><td class="color" id="electionlegend2"></td><td>'+color7+'% D</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend3"></td><td>'+color6+'% D</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend4"></td><td>'+color5+'% D</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend5"></td><td>'+color4+'% R</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend6"></td><td>'+color3+'% R</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend7"></td><td>'+color2+'% R</td></tr>' +
+		'</tr><tr><td class="color" id="electionlegend8"></td><td>'+color1+'% R</td></tr>'
+}
+
 electionLegend = L.control({position: 'bottomright'});
 electionLegend.onAdd = function (map) {
 	var div = L.DomUtil.create('div', 'legend');
-		if (currentMap == 'thirdparty2016' || currentMap == 'thirdparty2012' || currentMap == 'thirdparty2008'){
-		div.innerHTML +=
-		'<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="colorlegend1"></td><td>8%+</td>' +
-		'</tr><tr><td class="color" id="colorlegend2"></td><td>7-8%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend3"></td><td>6-7%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend4"></td><td>5-6%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend5"></td><td>4-5%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend6"></td><td>3-4%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend7"></td><td>2-3%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend8"></td><td>1-2%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend9"></td><td>0-1%</td></tr>'
+	
+	if (currentMap == 'thirdparty2016' || currentMap == 'thirdparty2012' || currentMap == 'thirdparty2008'){
+		div.innerHTML += createLegend9('0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8');		
 	return div;
 	}
 	
 	if (currentMap == 'diff2016' || currentMap == 'diff2012'){
-		div.innerHTML +=
-		'<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="electionlegend1"></td><td>20%+ D</td>' +
-		'</tr><tr><td class="color" id="electionlegend2"></td><td>10-20% D</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend3"></td><td>5-10% D</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend4"></td><td>0-5% D</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend5"></td><td>0-5% R</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend6"></td><td>5-10% R</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend7"></td><td>10-20% R</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend8"></td><td>20%+ R</td></tr>'
+		div.innerHTML += createLegend8('20','10-20','5-10','0-5','0-5','5-10','10-20','20');
 	return div;
 	}
 	
 	else {
-	div.innerHTML +=
-		'<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="electionlegend1"></td><td>30%+ D</td>' +
-		'</tr><tr><td class="color" id="electionlegend2"></td><td>20-30% D</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend3"></td><td>10-20% D</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend4"></td><td>0-10% D</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend5"></td><td>0-10% R</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend6"></td><td>10-20% R</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend7"></td><td>20-30% R</td></tr>' +
-		'</tr><tr><td class="color" id="electionlegend8"></td><td>30%+ R</td></tr>'
+		div.innerHTML += createLegend8('30','20-30','10-20','0-10','0-10','10-20','20-30','30');
 	return div;
 	}
 };
@@ -1289,112 +1279,44 @@ electionLegend.onAdd = function (map) {
 censusLegend = L.control({position: 'bottomright'});
 censusLegend.onAdd = function (map) {
 	var div = L.DomUtil.create('div', 'legend');
-	div.innerHTML +=
-		'<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="colorlegend1"></td><td>30%+</td>' +
-		'</tr><tr><td class="color" id="colorlegend2"></td><td>25-30%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend3"></td><td>20-25%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend4"></td><td>15-20%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend5"></td><td>10-15%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend6"></td><td>5-10%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend7"></td><td>0-5%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend8"></td><td>-5-0%</td></tr>' +
-		'</tr><tr><td class="color" id="colorlegend9"></td><td><-5%</td></tr>'
+	
+	div.innerHTML += createLegend9('-5','-5-0','0-5','5-10','10-15','15-20','20-25','25-30','30');	
 	return div;
-	
-	
 };
 
 //Adds legend to map - Demographics Layers
 demoLegend = L.control({position: 'bottomright'});
 demoLegend.onAdd = function (map) {
+	var div = L.DomUtil.create('div', 'legend');
 	
+
 	if (currentMap == 'demo2010' || currentMap == 'demo2000'){
-
-	var div = L.DomUtil.create('div', 'legend'),
-		grades = [0, 60, 65, 70, 75, 80, 85, 90, 95],
-		labels = [];
-
-	//Loops through density intervals and generate a label with a colored square for each interval
-	for (var i = 0; i < grades.length; i++) {
-		div.innerHTML +=
-			'<i style="background:' + GetColorDemo(grades[i] + 0.01,95,90,85,80,75,70,65,60) + '"></i> ' +
-			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
-	}
+		div.innerHTML += createLegend9('0-60','60-65','65-70','70-75','75-80','80-85','85-90','90-95','95');
 	return div;
 	}
-	
+
 	if (currentMap == 'black2010' || currentMap == 'black2000'){
-
-	var div = L.DomUtil.create('div', 'legend'),
-		grades = [0, 6, 8, 10, 12, 14, 16, 18, 20],
-		labels = [];
-
-	//Loops through density intervals and generate a label with a colored square for each interval
-	for (var i = 0; i < grades.length; i++) {
-		div.innerHTML +=
-			'<i style="background:' + GetColorDemo(grades[i] + 0.01,20,18,16,14,12,10,8,6) + '"></i> ' +
-			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
-	}
+		div.innerHTML += createLegend9('0-6','6-8','8-10','10-12','12-14','14-16','16-18','18-20','20');
 	return div;
 	}
 	
 	if (currentMap == 'hispanic2010'|| currentMap == 'hispanic2000'){
-
-	var div = L.DomUtil.create('div', 'legend'),
-		grades = [0,9,12,15,18,21,24,27,30],
-		labels = [];
-
-	//Loops through density intervals and generate a label with a colored square for each interval
-	for (var i = 0; i < grades.length; i++) {
-		div.innerHTML +=
-			'<i style="background:' + GetColorDemo(grades[i] + 0.01,30,27,24,21,18,15,12,9) + '"></i> ' +
-			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
-	}
+		div.innerHTML += createLegend9('0-9','9-12','12-15','15-18','18-21','21-24','24-27','27-30','30');
 	return div;
 	}
 	
 	if (currentMap == 'asian2010'|| currentMap == 'asian2000' || currentMap == 'multiracial2010' || currentMap == 'multiracial2000'){
-
-	var div = L.DomUtil.create('div', 'legend'),
-		grades = [0,1,2,3,4,5,6,7,8],
-		labels = [];
-
-	//Loops through density intervals and generate a label with a colored square for each interval
-	for (var i = 0; i < grades.length; i++) {
-		div.innerHTML +=
-			'<i style="background:' + GetColorDemo(grades[i] + 0.01,8,7,6,5,4,3,2,1) + '"></i> ' +
-			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
-	}
+		div.innerHTML += createLegend9('0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8');
 	return div;
 	}
 	
 	if (currentMap == 'native2010'|| currentMap == 'native2000'){
-
-	var div = L.DomUtil.create('div', 'legend'),
-		grades = [0,0.5,1,1.5,2,2.5,3,3.5,4],
-		labels = [];
-
-	//Loops through density intervals and generate a label with a colored square for each interval
-	for (var i = 0; i < grades.length; i++) {
-		div.innerHTML +=
-			'<i style="background:' + GetColorDemo(grades[i] + 0.01,4,3.5,3,2.5,2,1.5,1,0.5) + '"></i> ' +
-			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
-	}
+		div.innerHTML += createLegend9('0-.5','.5-1','1-1.5','1.5-2','2-2.5','2.5-3','3-3.5','3.5-4','4');
 	return div;
 	}
 	
 	if (currentMap == 'pacific2010'|| currentMap == 'pacific2000'){
-
-	var div = L.DomUtil.create('div', 'legend'),
-		grades = [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6],
-		labels = [];
-
-	//Loops through density intervals and generate a label with a colored square for each interval
-	for (var i = 0; i < grades.length; i++) {
-		div.innerHTML +=
-			'<i style="background:' + GetColorDemo(grades[i] + 0.01,1.6,1.4,1.2,1.0,0.8,0.6,0.4,0.2) + '"></i> ' +
-			(grades[i]) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]) + '%<br>' : '%+');
-	}
+		div.innerHTML += createLegend9('0-0.2','0.2-0.4','0.4-0.6','0.6-0.8','0.8-1.0','1.0-1.2','1.2-1.4','1.4-1.6','1.6');
 	return div;
 	}
 };
@@ -1458,445 +1380,123 @@ currentMap = 'election2016';
 currentTable = document.getElementById("election_table");
 document.getElementById('mapTitleText').innerHTML = '<center>2016: PRESIDENTIAL ELECTION RESULTS</center>';
 
-$('#election_08, #election_08s').click(function(){
+function layerControls(curMap, maptitle, curLegend, ethnic){
 	clearStuff();
 	
 	//Change layer
-	currentMap = 'election2008';
+	currentMap = curMap;
+	ethnicGroup = ethnic;
 	counties2010.setStyle(defaultStyle);
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2008: PRESIDENTIAL ELECTION RESULTS</center>';
+	document.getElementById('mapTitleText').innerHTML = '<center>'+maptitle+'</center>';
 	
 	//Change legend
 	map.removeControl(currentLegend);
-    currentLegend = electionLegend;
-    electionLegend.addTo(map);
+    currentLegend = curLegend;
+    curLegend.addTo(map);	
+}
+
+$('#election_08').click(function(){
+	layerControls('election2008','2008: PRESIDENTIAL ELECTION RESULTS',electionLegend,'');
 });
 
-$('#election_12, #election_12s').click(function(){
-	clearStuff();
-	
-	//Change layer
-	currentMap = 'election2012';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2012: PRESIDENTIAL ELECTION RESULTS</center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = electionLegend;
-    electionLegend.addTo(map);	
+$('#election_12').click(function(){
+	layerControls('election2012','2012: PRESIDENTIAL ELECTION RESULTS',electionLegend,'');
 });
 
-$('#election_16, #election_16s').click(function(){
-	clearStuff();
-	
-	//Change layer
-	currentMap = 'election2016';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2016: PRESIDENTIAL ELECTION RESULTS</center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = electionLegend;
-    electionLegend.addTo(map);	
+$('#election_16').click(function(){
+	layerControls('election2016','2016: PRESIDENTIAL ELECTION RESULTS',electionLegend,'');
 });
 
-$('#census_90, #census_90s').click(function(){
-	clearStuff();
-	
-	//Change layer
-	currentMap = 'census1990';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>1990: POPULATION GROWTH SINCE 1980 </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = censusLegend;
-    censusLegend.addTo(map);	
+$('#census_90').click(function(){
+	layerControls('census1990','1990: POPULATION GROWTH SINCE 1980',censusLegend,'');
 });
 
-$('#census_00, #census_00s').click(function(){
-	clearStuff();
-	
-	//Change layer
-	currentMap = 'census2000';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2000: POPULATION GROWTH SINCE 1990 </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = censusLegend;
-    censusLegend.addTo(map);	
+$('#census_00').click(function(){
+	layerControls('census2000','2000: POPULATION GROWTH SINCE 1990',censusLegend,'');
 });
 
-$('#census_10, #census_10s').click(function(){
-	clearStuff();
-	
-	//Change layer
-	currentMap = 'census2010';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2010: POPULATION GROWTH SINCE 2000 </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = censusLegend;
-    censusLegend.addTo(map);	
+$('#census_10').click(function(){
+	layerControls('census2010','2010: POPULATION GROWTH SINCE 2000',censusLegend,'');
 });
 
-$('#demo_00, #demo_00s').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'White';
-	currentMap = 'demo2000';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT WHITE </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+$('#demo_00').click(function(){
+	layerControls('demo2000','2000: PERCENT WHITE',demoLegend,'White');
 });
 
-$('#demo_10, #demo_10s').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'White';
-	currentMap = 'demo2010';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT WHITE </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+$('#demo_10').click(function(){
+	layerControls('demo2010','2010: PERCENT WHITE',demoLegend,'White');
 });
 
 $('#black_10').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'Black';
-	currentMap = 'black2010';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT BLACK </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('black2010','2010: PERCENT BLACK',demoLegend,'Black');
 });
 
 $('#black_00').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'Black';
-	currentMap = 'black2000';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT BLACK </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('black2000','2000: PERCENT BLACK',demoLegend,'Black');
 });
 
 $('#hispanic_10').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'Latino/Hispanic';
-	currentMap = 'hispanic2010';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT LATINO/HISPANIC </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('hispanic2010','2010: PERCENT LATINO/HISPANIC',demoLegend,'Latino/Hispanic');
 });
 
 $('#hispanic_00').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'Latino/Hispanic';
-	currentMap = 'hispanic2000';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT LATINO/HISPANIC </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('hispanic2000','2000: PERCENT LATINO/HISPANIC',demoLegend,'Latino/Hispanic');
 });
 
 $('#asian_10').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'Asian';
-	currentMap = 'asian2010';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT ASIAN </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('asian2010','2010: PERCENT ASIAN',demoLegend,'Asian');
 });
 
 $('#asian_00').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'Asian';
-	currentMap = 'asian2000';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT ASIAN </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('asian2000','2000: PERCENT ASIAN',demoLegend,'Asian');
 });
 
 $('#multiracial_10').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'Multiracial';
-	currentMap = 'multiracial2010';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT MULTIRACIAL </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('multiracial2010','2010: PERCENT MULTIRACIAL',demoLegend,'Multiracial');
 });
 
 $('#multiracial_00').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'Multiracial';
-	currentMap = 'multiracial2000';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT MULTIRACIAL </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('multiracial2000','2000: PERCENT MULTIRACIAL',demoLegend,'Multiracial');
 });
 
 $('#native_10').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'N.American/Alaskan';
-	currentMap = 'native2010';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT NATIVE AMERICAN/ALASKAN </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('native2010','2010: PERCENT NATIVE AMERICAN/ALASKAN',demoLegend,'N.American/Alaskan');
 });
 
 $('#native_00').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'N.Aamerican/Alaskan';
-	currentMap = 'native2000';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT NATIVE AMERICAN/ALASKAN </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('native2000','2000: PERCENT NATIVE AMERICAN/ALASKAN',demoLegend,'N.American/Alaskan');
 });
 
 $('#pacific_10').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'Hawaiian/Pac.Isl.';
-	currentMap = 'pacific2010';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2010: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('pacific2010','2010: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER',demoLegend,'Hawaiian/Pac.Isl.');
 });
 
 $('#pacific_00').click(function(){
-	clearStuff();
-	
-	//Change layer
-	ethnicGroup = 'Hawaiian/Pac.Isl.';
-	currentMap = 'pacific2000';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2000: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = demoLegend;
-    demoLegend.addTo(map);
+	layerControls('pacific2000','2000: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER',demoLegend,'Hawaiian/Pac.Isl.');
 });
 
 $('#third_16').click(function(){
-	clearStuff();
-	
-	//Change layer
-	currentMap = 'thirdparty2016';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2016: PERCENT THIRD PARTY </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = electionLegend;
-    electionLegend.addTo(map);
+	layerControls('thirdparty2016','2016: PERCENT THIRD PARTY',electionLegend,'');
 });
 
 $('#third_12').click(function(){
-	clearStuff();
-	
-	//Change layer
-	currentMap = 'thirdparty2012';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2012: PERCENT THIRD PARTY </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = electionLegend;
-    electionLegend.addTo(map);
+	layerControls('thirdparty2012','2012: PERCENT THIRD PARTY',electionLegend,'');
 });
 
 $('#third_08').click(function(){
-	clearStuff();
-	
-	//Change layer
-	currentMap = 'thirdparty2008';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2008: PERCENT THIRD PARTY </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = electionLegend;
-    electionLegend.addTo(map);
+	layerControls('thirdparty2008','2008: PERCENT THIRD PARTY',electionLegend,'');
 });
 
 $('#diff_16').click(function(){
-	clearStuff();
-	
-	//Change layer
-	currentMap = 'diff2016';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2016: VOTE CHANGE FROM 2012 </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = electionLegend;
-    electionLegend.addTo(map);
+	layerControls('diff2016','2016: VOTE SWING FROM 2012',electionLegend,'');
 });
 
 $('#diff_12').click(function(){
-	clearStuff();
-	
-	//Change layer
-	currentMap = 'diff2012';
-	counties2010.setStyle(defaultStyle);
-	
-	//Change title
-	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>2012: VOTE CHANGE FROM 2008 </center>';
-	
-	//Change legend
-	map.removeControl(currentLegend);
-    currentLegend = electionLegend;
-    electionLegend.addTo(map);
+	layerControls('diff2012','2012: VOTE SWING FROM 2008',electionLegend,'');
 });
-
 
 
 //State outline toggle
@@ -1992,4 +1592,8 @@ $(document).ready(function(){
     e.preventDefault();
   });
 });
+
+
+
+
 
