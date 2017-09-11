@@ -648,3 +648,29 @@ td {
 a:focus {
 	outline: 0px;
 }
+
+
+
+.slider.slider-vertical {
+  height: 100px;
+  margin-top: 10px;
+}
+
+.slider-tick.in-selection {
+  background-image: linear-gradient(rgb(249, 249, 249) 0px, rgb(245, 245, 245) 100%);
+}
+
+.slider-selection.tick-slider-selection {
+  background-image: linear-gradient(rgb(249, 249, 249) 0px, rgb(245, 245, 245) 100%);
+}
+
+.slider-tick-label {
+	margin-left: -175% !important;
+	color: white;
+	font-weight: bold;
+	text-shadow: 1px 1px grey;
+}
+
+.slider3 {
+	display: none;
+}

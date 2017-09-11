@@ -72,7 +72,7 @@ var selectList = [];
 var selected = false;
 
 var ethnicGroup;
-
+var timeslideDiv;
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
 
@@ -89,6 +89,9 @@ var selectionColor = $('#selectionColor').val();
 $(colorPicker2).change(function() {
 	selectionColor = $('#selectionColor').val();
 });
+
+
+
 
 
 //Activate CSS tooltips
@@ -1046,7 +1049,92 @@ function onEachFeature(feature, layer) {
 			
 		//Binds Labels
 		displayElectionLables(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+		
+		$('#ex21').slider().on('change', function(ev){	
+			var newVal2 = $('#ex21').data('slider').getValue();
+			if (newVal2 == 2016 && ethnicGroup == 'president'){
+				displayElectionLables(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+			}
+			if (newVal2 == 2012 && ethnicGroup == 'president'){
+				displayElectionLables(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+			}
+			if (newVal2 == 2008 && ethnicGroup == 'president'){
+				displayElectionLables(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+			}
+			if (newVal2 == 2016 && ethnicGroup == 'thirdparty'){
+				displayElectionLables(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+			}
+			if (newVal2 == 2012 && ethnicGroup == 'thirdparty'){
+				displayElectionLables(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+			}
+			if (newVal2 == 2008 && ethnicGroup == 'thirdparty'){
+				displayElectionLables(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+			}
+			if (newVal2 == 2016 && ethnicGroup == 'votechange'){
+				displayElectionLables2(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016, feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+			}
+			if (newVal2 == 2012 && ethnicGroup == 'votechange'){
+				displayElectionLables2(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012, feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+			}
 
+		});
+		
+		$('#ex22').slider().on('change', function(ev){	
+			var newVal2 = $('#ex22').data('slider').getValue();
+			if (newVal2 == 2010 && ethnicGroup == 'White'){
+				displayDemoLables(feature.properties.POP2010, feature.properties.WHI2010);
+			}
+			if (newVal2 == 2010 && ethnicGroup == 'Black'){
+				displayDemoLables(feature.properties.POP2010, feature.properties.BLA2010);
+			}
+			if (newVal2 == 2010 && ethnicGroup == 'Latino/Hispanic'){
+				displayDemoLables(feature.properties.POP2010, feature.properties.LAT2010);
+			}
+			if (newVal2 == 2010 && ethnicGroup == 'Asian'){
+				displayDemoLables(feature.properties.POP2010, feature.properties.ASI2010);
+			}
+			if (newVal2 == 2010 && ethnicGroup == 'Multiracial'){
+				displayDemoLables(feature.properties.POP2010, feature.properties.MUL2010);
+			}
+			if (newVal2 == 2010 && ethnicGroup == 'N.American/Alaskan'){
+				displayDemoLables(feature.properties.POP2010, feature.properties.NAT2010);
+			}
+			if (newVal2 == 2010 && ethnicGroup == 'Hawaiian/Pac.Isl.'){
+				displayDemoLables(feature.properties.POP2010, feature.properties.HAW2010);
+			}
+			if (newVal2 == 2000 && ethnicGroup == 'White'){
+				displayDemoLables(feature.properties.POP2000, feature.properties.WHI2000);
+			}
+			if (newVal2 == 2000 && ethnicGroup == 'Black'){
+				displayDemoLables(feature.properties.POP2000, feature.properties.BLA2000);
+			}
+			if (newVal2 == 2000 && ethnicGroup == 'Latino/Hispanic'){
+				displayDemoLables(feature.properties.POP2000, feature.properties.LAT2000);
+			}
+			if (newVal2 == 2000 && ethnicGroup == 'Asian'){
+				displayDemoLables(feature.properties.POP2000, feature.properties.ASI2000);
+			}
+			if (newVal2 == 2000 && ethnicGroup == 'Multiracial'){
+				displayDemoLables(feature.properties.POP2000, feature.properties.MUL2000);
+			}
+			if (newVal2 == 2000 && ethnicGroup == 'N.American/Alaskan'){
+				displayDemoLables(feature.properties.POP2000, feature.properties.NAT2000);
+			}
+			if (newVal2 == 2000 && ethnicGroup == 'Hawaiian/Pac.Isl.'){
+				displayDemoLables(feature.properties.POP2000, feature.properties.HAW2000);
+			}
+			if (newVal2 == 2010 && ethnicGroup == 'popgrowth'){
+				displayCensusLables(feature.properties.POP2010, feature.properties.POP2000);
+			}
+			if (newVal2 == 2000 && ethnicGroup == 'popgrowth'){
+				displayCensusLables(feature.properties.POP2000, feature.properties.POP1990);
+			}
+			if (newVal2 == 1990 && ethnicGroup == 'popgrowth'){
+				displayCensusLables(feature.properties.POP1990, feature.properties.POP1980);
+			}
+
+		});
+		
 		$('#election_16, #election_16s').click(function(){
 			displayElectionLables(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
 		});
@@ -1146,6 +1234,7 @@ function onEachFeature(feature, layer) {
 		$('#pacific_00').click(function(){
 			displayDemoLables(feature.properties.POP2000, feature.properties.HAW2000);
 		});
+		
 	}
 }
 
@@ -1218,13 +1307,16 @@ document.getElementById('bigMapMode').addEventListener("click", function(){
 });
 
 //Draggable sidebar
-$('#sidebar')
-	.draggable();
+//$('#sidebar')
+	//.draggable();
 	
-$( "#sidebar" ).draggable( "option", "handle", "h1, #info_chart, #table, #settings, #sbar-tabs" );
+//$( "#sidebar" ).draggable( "option", "handle", "h1, #info_chart, #table, #settings, #sbar-tabs" );
 
 
 //-------------------------------------------------MAP ELEMENTS--------------------------------------------------//
+
+
+
 
 
 //Adds scale to map
@@ -1274,6 +1366,10 @@ electionLegend.onAdd = function (map) {
 	return div;
 	}
 };
+
+
+
+
 
 //Adds legend to map - Census Layers
 censusLegend = L.control({position: 'bottomright'});
@@ -1375,8 +1471,13 @@ $("#county_search").easyAutocomplete(options);
 //-------------------------------------------------LAYER CONTROLS--------------------------------------------------//
 
 
+
+
+
+
 //Layer controls via drop down menu, dynamically change map title, legend, and table type
 currentMap = 'election2016';
+ethnicGroup = 'president';
 currentTable = document.getElementById("election_table");
 document.getElementById('mapTitleText').innerHTML = '<center>2016: PRESIDENTIAL ELECTION RESULTS</center>';
 
@@ -1399,27 +1500,32 @@ function layerControls(curMap, maptitle, curLegend, ethnic){
 }
 
 $('#election_08').click(function(){
-	layerControls('election2008','2008: PRESIDENTIAL ELECTION RESULTS',electionLegend,'');
+	layerControls('election2008','2008: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+	
 });
 
 $('#election_12').click(function(){
-	layerControls('election2012','2012: PRESIDENTIAL ELECTION RESULTS',electionLegend,'');
+	layerControls('election2012','2012: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+	
 });
 
 $('#election_16').click(function(){
-	layerControls('election2016','2016: PRESIDENTIAL ELECTION RESULTS',electionLegend,'');
+	layerControls('election2016','2016: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+	
 });
 
 $('#census_90').click(function(){
-	layerControls('census1990','1990: POPULATION GROWTH SINCE 1980',censusLegend,'');
+	layerControls('census1990','1990: POPULATION GROWTH SINCE 1980',censusLegend,'popgrowth');
+	
 });
 
 $('#census_00').click(function(){
-	layerControls('census2000','2000: POPULATION GROWTH SINCE 1990',censusLegend,'');
+	layerControls('census2000','2000: POPULATION GROWTH SINCE 1990',censusLegend,'popgrowth');
+
 });
 
 $('#census_10').click(function(){
-	layerControls('census2010','2010: POPULATION GROWTH SINCE 2000',censusLegend,'');
+	layerControls('census2010','2010: POPULATION GROWTH SINCE 2000',censusLegend,'popgrowth');
 });
 
 $('#demo_00').click(function(){
@@ -1428,6 +1534,7 @@ $('#demo_00').click(function(){
 
 $('#demo_10').click(function(){
 	layerControls('demo2010','2010: PERCENT WHITE',demoLegend,'White');
+	
 });
 
 $('#black_10').click(function(){
@@ -1479,23 +1586,23 @@ $('#pacific_00').click(function(){
 });
 
 $('#third_16').click(function(){
-	layerControls('thirdparty2016','2016: PERCENT THIRD PARTY',electionLegend,'');
+	layerControls('thirdparty2016','2016: PERCENT THIRD PARTY',electionLegend,'thirdparty');
 });
 
 $('#third_12').click(function(){
-	layerControls('thirdparty2012','2012: PERCENT THIRD PARTY',electionLegend,'');
+	layerControls('thirdparty2012','2012: PERCENT THIRD PARTY',electionLegend,'thirdparty');
 });
 
 $('#third_08').click(function(){
-	layerControls('thirdparty2008','2008: PERCENT THIRD PARTY',electionLegend,'');
+	layerControls('thirdparty2008','2008: PERCENT THIRD PARTY',electionLegend,'thirdparty');
 });
 
 $('#diff_16').click(function(){
-	layerControls('diff2016','2016: VOTE SWING FROM 2012',electionLegend,'');
+	layerControls('diff2016','2016: VOTE SWING FROM 2012',electionLegend,'votechange');
 });
 
 $('#diff_12').click(function(){
-	layerControls('diff2012','2012: VOTE SWING FROM 2008',electionLegend,'');
+	layerControls('diff2012','2012: VOTE SWING FROM 2008',electionLegend,'votechange');
 });
 
 
@@ -1595,5 +1702,271 @@ $(document).ready(function(){
 
 
 
+if ($(window).width() > 500){
+var timeslider = L.control({position: 'topright'});
+var timeslider2 = L.control({position: 'topright'});
+}
+else {
+	var timeslider = L.control({position: 'topleft'});
+	var timeslider2 = L.control({position: 'topleft'});
+}
 
+timeslider.onAdd = function (map) {	
+	timeslideDiv = L.DomUtil.create('div', 'slider2');
+	timeslideDiv.innerHTML = '<input id="ex21" type="text" data-provide="slider" data-slider-ticks="[2008,2012,2016]" data-slider-ticks-labels=\'["2008", "2012", "2016"]\' data-slider-min="2008" data-slider-max="2016" data-slider-step="4" data-slider-value="2016" data-slider-tooltip="always" data-slider-orientation="vertical" />';	
+	L.DomEvent.disableClickPropagation(timeslideDiv);
+	return timeslideDiv;
+};
+map.addControl(timeslider);
+
+timeslider2.onAdd = function (map) {	
+	timeslideDiv2 = L.DomUtil.create('div', 'slider3');
+	timeslideDiv2.innerHTML = '<input id="ex22" type="text" data-provide="slider" data-slider-ticks="[1990,2000,2010]" data-slider-ticks-labels=\'["1990", "2000", "2010"]\' data-slider-min="1990" data-slider-max="2010" data-slider-step="10" data-slider-value="2010" data-slider-tooltip="always"data-slider-orientation="vertical" />';	
+	L.DomEvent.disableClickPropagation(timeslideDiv2);
+	return timeslideDiv2;
+};
+map.addControl(timeslider2);
+
+var tooltipPosition;
+function mobileSlider(){
+	if ($(window).width() > 500){
+		tooltipPosition = "left";
+		return tooltipPosition;
+	}
+	if ($(window).width() < 500){
+		tooltipPosition = "right";
+		return tooltipPosition;
+	}
+}
+mobileSlider();
+$("#ex21").slider({
+	tooltip_position: tooltipPosition,
+	ticks_labels: ["", "", ""],
+	value: 2016,
+	reversed : true,
+});
+
+$("#ex22").slider({
+	tooltip_position: tooltipPosition,
+	ticks_labels: ["", "", ""],
+	value: 2010,
+	reversed : true,
+});
+
+
+
+$('#diff_16').click(function(){
+			$("#ex21").slider({
+				tooltip_position: tooltipPosition,
+				ticks: [2012,2016],
+				ticks_labels: ["", "", ""],
+				value: 2016,
+				reversed : true,
+			});
+		});
+$('#election_16, #third_16').click(function(){
+			$("#ex21").slider({
+				tooltip_position: tooltipPosition,
+				ticks: [2008,2012,2016],
+				ticks_labels: ["", "", ""],
+				value: 2016,
+				reversed : true,
+			});
+		});
+$('#census_10').click(function(){
+			$("#ex22").slider({
+				tooltip_position: tooltipPosition,
+				ticks: [1990,2000,2010],
+				ticks_labels: ["", "", ""],
+				value: 2010,
+				reversed : true,
+			});
+		});
+$('#demo_10, #black_10, #hispanic_10, #asian_10, #multiracial_10, #native_10, #pacific_10').click(function(){
+			$("#ex22").slider({
+				tooltip_position: tooltipPosition,
+				ticks: [2000,2010],
+				ticks_labels: ["", "", ""],
+				value: 2010,
+				reversed : true,
+			});
+		});
+
+
+$('#ex21').slider().on('change', function(ev){
+    
+
+	
+	var newVal = $('#ex21').data('slider').getValue();
+	
+	if (newVal == 2016){
+		if (ethnicGroup == 'thirdparty'){
+			layerControls('thirdparty2016','2016: PERCENT THIRD PARTY',electionLegend,'thirdparty');
+		}
+		if (ethnicGroup == 'president'){
+			layerControls('election2016','2016: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+		}
+		if (ethnicGroup == 'votechange'){
+			layerControls('diff2016','2016: VOTE SWING FROM 2012',electionLegend,'votechange');
+		}
+	}
+	
+	if (newVal == 2012){
+		if (ethnicGroup == 'thirdparty'){
+			layerControls('thirdparty2012','2012: PERCENT THIRD PARTY',electionLegend,'thirdparty');
+		}
+		if (ethnicGroup == 'president'){
+			layerControls('election2012','2012: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+		}
+		if (ethnicGroup == 'votechange'){
+			layerControls('diff2012','2012: VOTE SWING FROM 2008',electionLegend,'votechange');
+		}
+	}
+	
+	if (newVal == 2008){
+		if (ethnicGroup == 'thirdparty'){
+			layerControls('thirdparty2008','2008: PERCENT THIRD PARTY',electionLegend,'thirdparty');
+		}
+		if (ethnicGroup == 'president'){
+			layerControls('election2008','2008: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+		}
+	}
+
+
+
+});
+
+
+	
+$('.layercontrol').on('click', function(){
+		if (currentLegend == electionLegend){
+			$(".slider3").css("display", "none");
+			$(".slider2").css("display", "inline");
+			$("#ex21").slider('refresh');
+		}
+		else{
+			$(".slider2").css("display", "none");
+			$(".slider3").css("display", "inline");
+			$("#ex22").slider('refresh');
+			
+		}
+		
+		
+		$('#ex21').slider().on('change', function(ev){
+    
+
+	
+	var newVal = $('#ex21').data('slider').getValue();
+	
+	if (newVal == 2016){
+		if (ethnicGroup == 'thirdparty'){
+			layerControls('thirdparty2016','2016: PERCENT THIRD PARTY',electionLegend,'thirdparty');
+		}
+		if (ethnicGroup == 'president'){
+			layerControls('election2016','2016: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+		}
+		if (ethnicGroup == 'votechange'){
+			layerControls('diff2016','2016: VOTE SWING FROM 2012',electionLegend,'votechange');
+		}
+	}
+	
+	if (newVal == 2012){
+		if (ethnicGroup == 'thirdparty'){
+			layerControls('thirdparty2012','2012: PERCENT THIRD PARTY',electionLegend,'thirdparty');
+		}
+		if (ethnicGroup == 'president'){
+			layerControls('election2012','2012: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+		}
+		if (ethnicGroup == 'votechange'){
+			layerControls('diff2012','2012: VOTE SWING FROM 2008',electionLegend,'votechange');
+		}
+	}
+	
+	if (newVal == 2008){
+		if (ethnicGroup == 'thirdparty'){
+			layerControls('thirdparty2008','2008: PERCENT THIRD PARTY',electionLegend,'thirdparty');
+		}
+		if (ethnicGroup == 'president'){
+			layerControls('election2008','2008: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+		}
+	}
+	
+
+
+
+});
+
+
+		$('#ex22').slider().on('change', function(ev){
+    
+
+
+	var newVal2 = $('#ex22').data('slider').getValue();
+	
+
+	
+	if (newVal2 == 2010){
+		if (ethnicGroup == 'popgrowth'){
+			layerControls('census2010','2010: POPULATION GROWTH SINCE 2000',censusLegend,'popgrowth');
+		}
+		if (ethnicGroup == 'White'){
+			layerControls('demo2010','2010: PERCENT WHITE',demoLegend,'White');
+		}
+		if (ethnicGroup == 'Black'){
+			layerControls('black2010','2010: PERCENT BLACK',demoLegend,'Black');
+		}
+		if (ethnicGroup == 'Latino/Hispanic'){
+			layerControls('hispanic2010','2010: PERCENT LATINO/HISPANIC',demoLegend,'Latino/Hispanic');
+		}
+		if (ethnicGroup == 'Asian'){
+			layerControls('asian2010','2010: PERCENT ASIAN',demoLegend,'Asian');
+		}
+		if (ethnicGroup == 'Multiracial'){
+			layerControls('multiracial2010','2010: PERCENT MULTIRACIAL',demoLegend,'Multiracial');
+		}
+		if (ethnicGroup == 'N.American/Alaskan'){
+			layerControls('native2010','2010: PERCENT NATIVE AMERICAN/ALASKAN',demoLegend,'N.American/Alaskan');
+		}
+		if (ethnicGroup == 'Hawaiian/Pac.Isl.'){
+			layerControls('pacific2010','2010: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER',demoLegend,'Hawaiian/Pac.Isl.');
+		}
+	}
+	if (newVal2 == 2000){
+		if (ethnicGroup == 'popgrowth'){
+			layerControls('census2000','2000: POPULATION GROWTH SINCE 1990',censusLegend,'popgrowth');
+		}
+		if (ethnicGroup == 'White'){
+			layerControls('demo2000','2000: PERCENT WHITE',demoLegend,'White');
+		}
+		if (ethnicGroup == 'Black'){
+			layerControls('black2000','2000: PERCENT BLACK',demoLegend,'Black');
+		}
+		if (ethnicGroup == 'Latino/Hispanic'){
+			layerControls('hispanic2000','2000: PERCENT LATINO/HISPANIC',demoLegend,'Latino/Hispanic');
+		}
+		if (ethnicGroup == 'Asian'){
+			layerControls('asian2000','2000: PERCENT ASIAN',demoLegend,'Asian');
+		}
+		if (ethnicGroup == 'Multiracial'){
+			layerControls('multiracial2000','2000: PERCENT MULTIRACIAL',demoLegend,'Multiracial');
+		}
+		if (ethnicGroup == 'N.American/Alaskan'){
+			layerControls('native2000','2000: PERCENT NATIVE AMERICAN/ALASKAN',demoLegend,'N.American/Alaskan');
+		}
+		if (ethnicGroup == 'Hawaiian/Pac.Isl.'){
+			layerControls('pacific2000','2000: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER',demoLegend,'Hawaiian/Pac.Isl.');
+		}
+	}
+	if (newVal2 == 1990){
+		if (ethnicGroup == 'popgrowth'){
+			layerControls('census1990','1990: POPULATION GROWTH SINCE 1980',censusLegend,'popgrowth');
+		}
+	}
+
+
+
+});
+
+
+	});
 
