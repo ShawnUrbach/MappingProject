@@ -76,6 +76,8 @@ var tooltipPosition;
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
 
+
+//Highlight and Selection Colors
 var colorPicker = $('#highlightColor');
 var highlightColor = $('#highlightColor').val();
 
@@ -90,9 +92,17 @@ $(colorPicker2).change(function() {
 	selectionColor = $('#selectionColor').val();
 });
 
+//Highlight and Selection Colors if IE/OperaMini/Safari
+var isIE = document.all && !window.atob;
+var isIE2 = window.navigator.msPointerEnabled;
+var isOperaMini = (navigator.userAgent.indexOf('Opera Mini') > -1);
+var isSafari = /constructor/i.test(window.HTMLElement);
 
-
-
+if (isIE || isIE2 || isOperaMini || isSafari){
+	$(".colorSelect").css("display", "none");
+	selectionColor = "black"; 
+	highlightColor = "black"; 
+}
 
 //Activate CSS tooltips
 $(document).ready(function(){

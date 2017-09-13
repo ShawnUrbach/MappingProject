@@ -93,14 +93,14 @@
 									 </li>
 							
 									<li role="separator" class="divider" id="divide"></li>
-									<li><a href="#"><div class = "checkbox"><input id ="state_outlines" class = "state_outlines" type="checkbox" checked>State Outlines</input></div></a></li>
-									<li><a href="#"><div class = "checkbox"><input id ="base_map" class = "base_map" type="checkbox" checked>Base Map</input></div></a></li>
+									<li><a href="#"><label><div class = "checkbox"><input id ="state_outlines" class = "state_outlines" type="checkbox" checked>State Outlines</input></div></label></a></li>
+									<li><a href="#"><label><div class = "checkbox"><input id ="base_map" class = "base_map" type="checkbox" checked>Base Map</input></div></label></a></li>
 								</ul>
 							</li>
 							<li class="dropdown2">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="Turn on to select multiple counties">Multi-Select <span class="caret"></span></a>
 								<ul class="dropdown-menu">
-									<li><a href="#"><div class = "checkbox"><input id ="selectMode" class = "selectMode" type="checkbox">On/Off</input></div></a></li>
+									<li><a href="#"><label><div class = "checkbox"><input id ="selectMode" class = "selectMode" type="checkbox">On/Off</input></div></label></a></li>
 									<li id = "clearSelection" class = "clearSelection"><a href="#">Clear Selection</a></li>
 								</ul>
 							</li>
@@ -361,8 +361,8 @@
 					<div class="checkbox" id="settings_list">
 						<p><label><input id="disable_legend" type="checkbox" value="">Remove legend from current layer</label></p>
 						<p><label><input id="bigMapMode" type="checkbox" value="">Enlarge map</label></p>
-						<p><input type="color" id="highlightColor"> Change highlight color</p>
-						<p><input type="color" id="selectionColor"> Change selection color</p>
+						<p class="colorSelect"><input type="color" id="highlightColor"> Change highlight color</p>
+						<p class="colorSelect"><input type="color" id="selectionColor"> Change selection color</p>
 						<div id = "iconMsg"><a href="https://icons8.com/">Icons by Icons8</a>
 						</div>
 						<div id = "License">

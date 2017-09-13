@@ -649,6 +649,10 @@ a:focus {
 	outline: 0px;
 }
 
+label {
+	font-weight: normal;
+}
+
 /*TIME SLIDER STYLES*/  
 .slider.slider-vertical {
   height: 100px;
