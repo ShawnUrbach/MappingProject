@@ -25,10 +25,7 @@
 		<script src="lib/sidebar-v2-master/js/leaflet-sidebar.min.js" type="text/javascript"></script>
 		<script src="lib/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js" type="text/javascript"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.1/bootstrap-slider.min.js" type="text/javascript"></script>
-
-		
-		
-		
+	
         <title>Maps - VizMapper</title>
     </head>
     <body>
@@ -58,7 +55,7 @@
 						<ul class="nav navbar-nav navbar-right" id = "selectDiv">
 						
 							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="Select a layer to display on the map">Change Map <span class="caret"></span></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" title="Select a new map to display">Change Map <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 								
 									<li class="dropdown-submenu">
@@ -124,7 +121,7 @@
         <div id="map"></div>
 		
         <!-- Sidebar -->
-		<div id="sidebar" class="sidebar collapsed" title ="Click and drag to move sidebar">
+		<div id="sidebar" class="sidebar collapsed">
 			<div class="sidebar-tabs" id="sbar-tabs">
 				<ul role="tablist">
 					<li id = "infotab"><a href="#info_chart" role="tab" title="Election Data"><img src="img/icons8-Elections-100.png"/></a></li>
@@ -359,7 +356,7 @@
 				<div class="sidebar-pane" id="settings">
 					<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
 					<div class="checkbox" id="settings_list">
-						<p><label><input id="disable_legend" type="checkbox" value="">Remove legend from current layer</label></p>
+						<p><label><input id="disable_legend" type="checkbox" value="">Remove legend from current map</label></p>
 						<p><label><input id="bigMapMode" type="checkbox" value="">Enlarge map</label></p>
 						<p class="colorSelect"><input type="color" id="highlightColor"> Change highlight color</p>
 						<p class="colorSelect"><input type="color" id="selectionColor"> Change selection color</p>

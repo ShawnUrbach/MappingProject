@@ -315,6 +315,7 @@ function resetHighlightContext(e) {
 //Zooms to feature on click if not selectMode, otherwise style on click.
 function zoomToFeature(e) {
 	if (selectMode == false){
+		clearStuff();
 		map.fitBounds(e.target.getBounds());
 	}
 	var layer = e.target;
@@ -1200,11 +1201,14 @@ function collapse_sidebar(id_name){
 //-------------------------------------------------MAP LAYERS--------------------------------------------------//
 
 
+
+
 //Loads Leaflet map object
 map = L.map('map', {
 	center: [39.1,-94.5],
 	zoom: 4.5,
-	zoomControl: false
+	zoomControl: false,
+	preferCanvas: true,
 });
 
 //Creates custom map pane for states outline
@@ -1746,6 +1750,7 @@ $('#demo_10, #black_10, #hispanic_10, #asian_10, #multiracial_10, #native_10, #p
 	});
 });
 
+//Original Slider - Change Layers/Legend/Title
 $('#ex21').slider().on('change', function(ev){
     
 	var newVal = $('#ex21').data('slider').getValue();
@@ -1783,7 +1788,8 @@ $('#ex21').slider().on('change', function(ev){
 		}
 	}
 });
-	
+
+
 $('.layercontrol').on('click', function(){
 	if (currentLegend == electionLegend){
 		$(".slider3").css("display", "none");
@@ -1834,6 +1840,7 @@ $('.layercontrol').on('click', function(){
 		}
 	});
 
+	//Replacement Slider - Change Layers/Legend/Title
 	$('#ex22').slider().on('change', function(ev){
     
 		var newVal2 = $('#ex22').data('slider').getValue();

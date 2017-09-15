@@ -653,17 +653,28 @@ label {
 	font-weight: normal;
 }
 
-/*TIME SLIDER STYLES*/  
+/*TIME SLIDER STYLES*/ 
+
+.slider-track {
+	box-shadow: 1px 1px #888888;
+}
+
 .slider.slider-vertical {
   height: 100px;
   margin-top: 10px;
 }
 
+.slider-tick.round {
+	box-shadow: 1px 1px 1px #888888;
+}
+
 .slider-tick.in-selection {
+  box-shadow: 1px 1px 1px #888888;
   background-image: linear-gradient(rgb(249, 249, 249) 0px, rgb(245, 245, 245) 100%);
 }
 
 .slider-selection.tick-slider-selection {
+  box-shadow: 1px 1px 1px #888888;
   background-image: linear-gradient(rgb(249, 249, 249) 0px, rgb(245, 245, 245) 100%);
 }
 
@@ -676,4 +687,18 @@ label {
 
 .slider3 {
 	display: none;
+}
+
+#sidebar {
+	box-shadow: 1px 1px 1px #888888;
+}
+
+@media (min-width: 768px){
+	.sidebar.leaflet-touch{
+		border-style: none;
+	}
+}
+
+.sidebar.leaflet-touch{
+	border-style: none;
 }
