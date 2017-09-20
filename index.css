@@ -395,6 +395,7 @@ td {
 	border-style: none;
 	background-color: white;
 	border-color: #C0C0C0;
+	text-align: center;
 }
 
 #mapTitleArea .h3, #mapTitleArea h3 {
@@ -407,6 +408,7 @@ td {
 	color: #777;
 	font-size: 18px;
 	padding-top: 10px;
+	display: inline-block;
 }
 
 #userMessage {
@@ -701,4 +703,26 @@ label {
 
 .sidebar.leaflet-touch{
 	border-style: none;
+}
+
+#linkShare {
+	background-color: #777;
+	display: inline;
+}
+
+#linkShareArea{
+	display: inline-block;
+	margin-right: 5px;
+}
+
+
+@media screen and (max-width: 500px) {
+	#shareLinkURL{
+		 margin-left: -20%;
+		 transform: scale(0.7);
+	}
+}
+
+.btn.btn-secondary{
+	background-color: #777;
 }
