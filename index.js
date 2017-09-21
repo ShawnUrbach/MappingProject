@@ -2174,7 +2174,14 @@ $('#linkShare').click(function(){
 	var url = String(window.location);
 	hashMatch = url.substring(url.lastIndexOf('&')+1);
 	var urlReplace = url.replace(hashMatch, currentMap);
-	$( ".modal-body" ).html(urlReplace);
+	$( "#shareLinkURL" ).html(urlReplace);
+	var fd = urlReplace.replace('#', '%23');
+	var fe = fd.replace('&', '%26');
+	$("#twitter").attr("href", "https://twitter.com/share?url=" + fe + "&amp;text=VizMapper&amp;hashtags=interactivemaps");	
+	$("#tumblr").attr("href", "http://www.tumblr.com/share/link?url=" + fe + "&amp;title=VizMapper&amp;");	
+	$("#fb").attr("href", "http://www.facebook.com/sharer.php?u=" + fe);
+	$("#linkedin").attr("href", "http://www.linkedin.com/shareArticle?mini=true&amp;url=" + fe);
+	$("#reddit").attr("href", "http://reddit.com/submit?url=" + fe + "&amp;title=VizMapper&amp;");		
 });
 
 

@@ -12,8 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.1/css/bootstrap-slider.min.css"/>
 		<link rel="stylesheet" type="text/css" href="index-min.css"/>
-
-		
+	
 		<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.min.js"></script>
@@ -370,41 +369,45 @@
 			</div>
 		</div>
 		
-		
-		
 		<!-- Map Title -->
 		<div id="mapTitleArea" class="navbar navbar-default">
-		
 			<div id="linkShareArea">
-					<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="linkShare" title="Generate URL link">
-  <i class="fa fa-share-alt" aria-hidden="true"></i>
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Share URL Link</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="shareLinkURL">
-        hello
-      </div>
-      <div class="modal-footer">
-		<button type="button" id = "copyLink" data-clipboard-target="#shareLinkURL" class="btn btn-secondary" data-dismiss="modal">Copy Link</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-		
+				
+				<!--Sharing Modal-->
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="linkShare" title="Generate URL link">
+				<i class="fa fa-share-alt" aria-hidden="true"></i>
+				</button>
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">URL Link</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+					  <div class="modal-body" id="shareLinkURL">
+					  </div>
+					  <div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Share on Social Media</h5>
+					  </div>
+					  <div class="modal-body" id="shareSocialMedia">
+						<a id="fb" href="#" target="_blank" class="fa fa-facebook social"></a>
+						<a id="twitter" href="" target="_blank" class="fa fa-twitter social"></a>
+						<a id="linkedin" href="#" target="_blank" class="fa fa-linkedin social"></a>
+						<a id="tumblr" href="#" target="_blank" class="fa fa-tumblr social"></a>
+						<a id="reddit" href="#" target="_blank" class="fa fa-reddit social"></a>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" id = "copyLink" data-clipboard-target="#shareLinkURL" class="btn btn-secondary" data-dismiss="modal">Copy Link</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			
 			</div>
-			<div id="mapTitleText">
-			</div>
+			<div id="mapTitleText"></div>
 			<div id = "userMessage">Click a county and open data charts/tables on left for more information. For "Multi-Select": left click to add to selection, right click to remove from selection. </div>
 		</div>
 		
