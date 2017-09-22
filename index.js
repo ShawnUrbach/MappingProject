@@ -74,14 +74,10 @@ var selected = false;
 var ethnicGroup;
 var tooltipPosition;
 var addHash;
-var hashMatch;
+var stringURL = window.location.hash;
+var hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
-
-var stringURL = window.location.hash;
-
-hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
-
 
 
 //Highlight and Selection Colors
@@ -1707,10 +1703,6 @@ $(document).ready(function(){
 //-------------------------------------------------TIME SLIDER--------------------------------------------------//
 
 
-
-
-
-
 if ($(window).width() > 500){
 	var timeslider = L.control({position: 'topright'});
 	var timeslider2 = L.control({position: 'topright'});
@@ -1962,213 +1954,218 @@ $('.layercontrol').on('click', function(){
 	});
 });
 
+
+//-------------------------------------------------URL MANIPULATION--------------------------------------------------//
+
+//Change URL hash depending on open map
 if (hashMatch == "census2010"){
-	jQuery(function(){
-   jQuery('#census_10').click();
-   $('#ex22').slider('setValue', 2010);
-   layerControls('census2010','2010: POPULATION GROWTH SINCE 2000',censusLegend,'popgrowth');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#census_10').click();
+		$('#ex22').slider('setValue', 2010);
+		layerControls('census2010','2010: POPULATION GROWTH SINCE 2000',censusLegend,'popgrowth');
+		addHash = "&" + currentMap;
+	});
 }
 
 if (hashMatch == "census2000"){
-	jQuery(function(){
-   jQuery('#census_10').click();
-   $('#ex22').slider('setValue', 2000);
-   layerControls('census1990','2000: POPULATION GROWTH SINCE 1990',censusLegend,'popgrowth');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#census_10').click();
+		$('#ex22').slider('setValue', 2000);
+		layerControls('census1990','2000: POPULATION GROWTH SINCE 1990',censusLegend,'popgrowth');
+		addHash = "&" + currentMap;
+	});
 }
 
 if (hashMatch == "census1990"){
-	jQuery(function(){
-   jQuery('#census_10').click();
-   $('#ex22').slider('setValue', 1990);
-   layerControls('census1990','1990: POPULATION GROWTH SINCE 1980',censusLegend,'popgrowth');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#census_10').click();
+		$('#ex22').slider('setValue', 1990);
+		layerControls('census1990','1990: POPULATION GROWTH SINCE 1980',censusLegend,'popgrowth');
+		addHash = "&" + currentMap;
+	});
 }
 
 if (hashMatch == "election2016"){
-	jQuery(function(){
-   jQuery('#election_16').click();
-   $('#ex22,#ex21').slider('setValue', 2016);
-   layerControls('election2016','2016: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#election_16').click();
+		$('#ex22,#ex21').slider('setValue', 2016);
+		layerControls('election2016','2016: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == "election2012"){
-	jQuery(function(){
-   jQuery('#election_16').click();
-   $('#ex22,#ex21').slider('setValue', 2012);
-   layerControls('election2012','2012: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#election_16').click();
+		$('#ex22,#ex21').slider('setValue', 2012);
+		layerControls('election2012','2012: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == "election2008"){
-	jQuery(function(){
-   jQuery('#election_06').click();
-   $('#ex22,#ex21').slider('setValue', 2008);
-   layerControls('election2008','2008: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#election_06').click();
+		$('#ex22,#ex21').slider('setValue', 2008);
+		layerControls('election2008','2008: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+		addHash = "&" + currentMap;
+	});
 }
 
 if (hashMatch == "thirdparty2016"){
-	jQuery(function(){
-   jQuery('#third_16').click();
-   $('#ex22').slider('setValue', 2016);
-   layerControls('thirdparty2016','2016: PERCENT THIRD PARTY',electionLegend,'thirdparty');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#third_16').click();
+		$('#ex22').slider('setValue', 2016);
+		layerControls('thirdparty2016','2016: PERCENT THIRD PARTY',electionLegend,'thirdparty');
+		addHash = "&" + currentMap;
+	});
 }
 
 if (hashMatch == "thirdparty2012"){
-	jQuery(function(){
-   jQuery('#third_16').click();
-   $('#ex22,#ex21').slider('setValue', 2012);
-   layerControls('thirdparty2012','2012: PERCENT THIRD PARTY',electionLegend,'thirdparty');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#third_16').click();
+		$('#ex22,#ex21').slider('setValue', 2012);
+		layerControls('thirdparty2012','2012: PERCENT THIRD PARTY',electionLegend,'thirdparty');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == "thirdparty2008"){
-	jQuery(function(){
-   jQuery('#third_16').click();
-   $('#ex22,#ex21').slider('setValue', 2008);
-   layerControls('thirdparty2008','2008: PERCENT THIRD PARTY',electionLegend,'thirdparty');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#third_16').click();
+		$('#ex22,#ex21').slider('setValue', 2008);
+		layerControls('thirdparty2008','2008: PERCENT THIRD PARTY',electionLegend,'thirdparty');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == "diff2016"){
-	jQuery(function(){
-   jQuery('#diff_16').click();
-   $('#ex22,#ex21').slider('setValue', 2016);
-   layerControls('diff2016','2016: VOTE SWING FROM 2012',electionLegend,'votechange');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#diff_16').click();
+		$('#ex22,#ex21').slider('setValue', 2016);
+		layerControls('diff2016','2016: VOTE SWING FROM 2012',electionLegend,'votechange');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == "diff2012"){
-	jQuery(function(){
-   jQuery('#diff_16').click();
-   $('#ex22,#ex21').slider('setValue', 2012);
-   layerControls('diff2012','2012: VOTE SWING FROM 2008',electionLegend,'votechange');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#diff_16').click();
+		$('#ex22,#ex21').slider('setValue', 2012);
+		layerControls('diff2012','2012: VOTE SWING FROM 2008',electionLegend,'votechange');
+		addHash = "&" + currentMap;
+	});
 }
 
 if (hashMatch == 'demo2010'){
-		jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2010);
-   layerControls('demo2010','2010: PERCENT WHITE',demoLegend,'White');
-   addHash = "&" + currentMap;
-});
+   $(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2010);
+		layerControls('demo2010','2010: PERCENT WHITE',demoLegend,'White');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'demo2000'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2000);
-   layerControls('demo2000','2000: PERCENT WHITE',demoLegend,'White');
-   addHash = "&" + currentMap;
-});
+   $(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2000);
+		layerControls('demo2000','2000: PERCENT WHITE',demoLegend,'White');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'black2010'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2010);
-   layerControls('black2010','2010: PERCENT BLACK',demoLegend,'Black');
-   addHash = "&" + currentMap;
-});
+   $(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2010);
+		layerControls('black2010','2010: PERCENT BLACK',demoLegend,'Black');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'black2000'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2000);
-   layerControls('black2000','2000: PERCENT BLACK',demoLegend,'Black');
-   addHash = "&" + currentMap;
-});
+   $(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2000);
+		layerControls('black2000','2000: PERCENT BLACK',demoLegend,'Black');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'hispanic2010'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2010);
-   layerControls('hispanic2010','2010: PERCENT LATINO/HISPANIC',demoLegend,'Latino/Hispanic');
-   addHash = "&" + currentMap;
-});
+   $(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2010);
+		layerControls('hispanic2010','2010: PERCENT LATINO/HISPANIC',demoLegend,'Latino/Hispanic');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'hispanic2000'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2000);
-   layerControls('hispanic2000','2000: PERCENT LATINO/HISPANIC',demoLegend,'Latino/Hispanic');
-   addHash = "&" + currentMap;
-});
+   $(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2000);
+		layerControls('hispanic2000','2000: PERCENT LATINO/HISPANIC',demoLegend,'Latino/Hispanic');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'asian2010'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2010);
-   layerControls('asian2010','2010: PERCENT ASIAN',demoLegend,'Asian');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2010);
+		layerControls('asian2010','2010: PERCENT ASIAN',demoLegend,'Asian');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'asian2000'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2000);
-   layerControls('asian2000','2000: PERCENT ASIAN',demoLegend,'Asian');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2000);
+		layerControls('asian2000','2000: PERCENT ASIAN',demoLegend,'Asian');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'multiracial2010'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2010);
-   layerControls('multiracial2010','2010: PERCENT MULTIRACIAL',demoLegend,'Multiracial');
-   addHash = "&" + currentMap;
-});
+   $(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2010);
+		layerControls('multiracial2010','2010: PERCENT MULTIRACIAL',demoLegend,'Multiracial');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'multiracial2000'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2000);
-   layerControls('multiracial2000','2000: PERCENT MULTIRACIAL',demoLegend,'Multiracial');
-   addHash = "&" + currentMap;
-});
+   $(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2000);
+		layerControls('multiracial2000','2000: PERCENT MULTIRACIAL',demoLegend,'Multiracial');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'native2010'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2010);
-   layerControls('native2010','2010: PERCENT NATIVE AMERICAN/ALASKAN',demoLegend,'N.American/Alaskan');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+	    $('#demo_10').click();
+	    $('#ex22').slider('setValue', 2010);
+	    layerControls('native2010','2010: PERCENT NATIVE AMERICAN/ALASKAN',demoLegend,'N.American/Alaskan');
+	    addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'native2000'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2000);
-   layerControls('native2000','2000: PERCENT NATIVE AMERICAN/ALASKAN',demoLegend,'N.American/Alaskan');
-   addHash = "&" + currentMap;
-});
+	$(function(){
+		$('#demo_10').click();
+		$('#ex22').slider('setValue', 2000);
+		layerControls('native2000','2000: PERCENT NATIVE AMERICAN/ALASKAN',demoLegend,'N.American/Alaskan');
+		addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'pacific2010'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2010);
-   layerControls('pacific2010','2010: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER',demoLegend,'Hawaiian/Pac.Isl.');
-   addHash = "&" + currentMap;
-});
+   $(function(){
+	    $('#demo_10').click();
+	    $('#ex22').slider('setValue', 2010);
+	    layerControls('pacific2010','2010: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER',demoLegend,'Hawaiian/Pac.Isl.');
+	    addHash = "&" + currentMap;
+	});
 }
 if (hashMatch == 'pacific2000'){
-			jQuery(function(){
-   jQuery('#demo_10').click();
-   $('#ex22').slider('setValue', 2000);
-   layerControls('pacific2000','2000: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER',demoLegend,'Hawaiian/Pac.Isl.');
-   addHash = "&" + currentMap;
-});
+   $(function(){
+	    $('#demo_10').click();
+	    $('#ex22').slider('setValue', 2000);
+	    layerControls('pacific2000','2000: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER',demoLegend,'Hawaiian/Pac.Isl.');
+	    addHash = "&" + currentMap;
+	});
 }
 
+//Copy URL link to clipboard on click
 new Clipboard('#copyLink');
 $('#linkShare').click(function(){
 	var url = String(window.location);
@@ -2184,7 +2181,7 @@ $('#linkShare').click(function(){
 	$("#reddit").attr("href", "http://reddit.com/submit?url=" + fe + "&amp;title=VizMapper&amp;");		
 });
 
-
+//Replace hash in URL according to geographic location and opened map
 addHash = "&" + currentMap;
 hash = new L.Hash(map);
 stringURL = window.location.hash;

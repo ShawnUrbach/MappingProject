@@ -230,6 +230,21 @@ td {
 
 /*SIDEBAR STYLES*/
 
+
+@media (min-width: 768px){
+	.sidebar.leaflet-touch{
+		border-style: none;
+	}
+}
+
+.sidebar.leaflet-touch{
+	border-style: none;
+}
+
+#sidebar {
+	box-shadow: 1px 1px 1px #888888;
+}
+
 .sidebar {
 	background-color: white;
 	height: 400px;
@@ -237,6 +252,7 @@ td {
 	position: fixed;
 	width: 28%;
 	z-index: 1029;
+	box-shadow: 1px 1px 1px #888888;
 }
 
 .sidebar-header {
@@ -328,8 +344,6 @@ td {
 		width: 85%;
 	}
 }
-
-
 
 #election_table{
 	display: inline;
@@ -691,19 +705,7 @@ label {
 	display: none;
 }
 
-#sidebar {
-	box-shadow: 1px 1px 1px #888888;
-}
-
-@media (min-width: 768px){
-	.sidebar.leaflet-touch{
-		border-style: none;
-	}
-}
-
-.sidebar.leaflet-touch{
-	border-style: none;
-}
+/*SHARE MODAL STYLES*/ 
 
 #linkShare {
 	background-color: #777;
@@ -714,7 +716,6 @@ label {
 	display: inline-block;
 	margin-right: 5px;
 }
-
 
 @media screen and (max-width: 500px) {
 	#shareLinkURL{
@@ -733,7 +734,6 @@ label {
 	display: inline;
 }
 
-/* Style all font awesome icons */
 .social {
     padding: 20px;
     font-size: 30px;
@@ -742,21 +742,16 @@ label {
     text-decoration: none;
 }
 
-/* Add a hover effect if you want */
 .social:hover {
     opacity: 0.7;
 	text-decoration: none;
 }
 
-/* Set a specific color for each brand */
-
-/* Facebook */
 .fa-facebook {
     background: #3B5998;
     color: white;
 }
 
-/* Twitter */
 .fa-twitter {
     background: #55ACEE;
     color: white;
