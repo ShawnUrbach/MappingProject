@@ -30,7 +30,6 @@ var currentLegend;
 
 //Variables: Other
 var currentMap = 'election2016';
-var currentTable;
 var options; //<--Variable for autocomplete search
 
 //Variables: Election Data
@@ -76,6 +75,48 @@ var tooltipPosition;
 var addHash;
 var stringURL = window.location.hash;
 var hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
+
+
+//-------------------------------------------------SELECTION TABLE--------------------------------------------------//
+
+
+var selectionTable;
+
+selectionTable = $('#tableTest').DataTable({
+	paging: false,
+	colReorder: {
+		realtime: false
+	},
+	dom: 'Bfrtip',
+	language: {
+		search: "" ,
+		searchPlaceholder: "Search",    
+	},
+	buttons: [
+		{
+			extend: 'colvis',
+			collectionLayout: 'fixed two-column',
+			text: 'Columns',
+		},
+		{
+			extend: 'columnVisibility',
+			text: 'Show all',
+			visibility: true
+		},
+		{
+			extend: 'columnVisibility',
+			text: 'Hide all',
+			visibility: false
+		}
+	]
+});
+
+selectionTable.on( 'mouseenter', 'td', function () {
+	var colIdx = selectionTable.cell(this).index().column;
+	$( selectionTable.cells().nodes() ).removeClass( 'highlight' );
+	$( selectionTable.column( colIdx ).nodes() ).addClass( 'highlight' );
+} );
+
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
 
@@ -484,6 +525,8 @@ function insertDemoChart(newChart,year){
 //Behavior for mousever and click
 function onEachFeature(feature, layer) {
 	
+	
+
 	//Behavior for Election Features
 	function Election_onEachFeature(){
 		
@@ -501,7 +544,7 @@ function onEachFeature(feature, layer) {
 		var percentDem3 = (feature.properties.DEM2008/total3)*100;
 		var percentRep3 = (feature.properties.REP2008/total3)*100;
 		var percentOth3 = (feature.properties.OTH2008/total3)*100;
-		
+			
 		var demPer;
 		var repPer;
 		var othPer;
@@ -610,7 +653,38 @@ function onEachFeature(feature, layer) {
 			//Behavior for left click events (selectMode ON)
 			if (selected == false && selectMode === true){
 				selectList.push(feature.properties.CO + ', ' + feature.properties.ST + '<br>');
-				$('#electionTest').html(selectList);
+				selectionTable.row.add( [
+					feature.properties.CO,
+					feature.properties.ST,
+					feature.properties.POP2010.toLocaleString(),
+					feature.properties.POP2000.toLocaleString(),
+					feature.properties.POP1990.toLocaleString(),
+					feature.properties.POP1980.toLocaleString(),
+					parseFloat(percentDem).toFixed(2) + "%",
+					parseFloat(percentRep).toFixed(2) + "%",
+					parseFloat(percentOth).toFixed(2) + "%",
+					parseFloat(percentDem2).toFixed(2) + "%",
+					parseFloat(percentRep2).toFixed(2) + "%",
+					parseFloat(percentOth2).toFixed(2) + "%",
+					parseFloat(percentDem3).toFixed(2) + "%",
+					parseFloat(percentRep3).toFixed(2) + "%",
+					parseFloat(percentOth3).toFixed(2) + "%",
+					parseFloat((feature.properties.WHI2010 / (feature.properties.POP2010))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.WHI2000 / (feature.properties.POP2000))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.BLA2010 / (feature.properties.POP2010))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.BLA2000 / (feature.properties.POP2000))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.NAT2010 / (feature.properties.POP2010))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.NAT2000 / (feature.properties.POP2000))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.ASI2010 / (feature.properties.POP2010))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.ASI2000 / (feature.properties.POP2000))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.HAW2010 / (feature.properties.POP2010))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.HAW2000 / (feature.properties.POP2000))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.MUL2010 / (feature.properties.POP2010))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.MUL2000 / (feature.properties.POP2000))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.LAT2010 / (feature.properties.POP2010))*100).toFixed(2) + "%",
+					parseFloat((feature.properties.LAT2000 / (feature.properties.POP2000))*100).toFixed(2) + "%",	
+				] ).draw( false );
+	
 
 				if (feature.properties.ST != 'AK'){
 					demTot += parseInt(feature.properties.DEM2016);	
@@ -648,8 +722,9 @@ function onEachFeature(feature, layer) {
 				var indextest = selectList.indexOf(feature.properties.CO + ', ' + feature.properties.ST + '<br>');
 				if (indextest > -1) {
 					selectList.splice(indextest, 1);
+					selectionTable.row( indextest ).remove().draw();
 				}
-				$('#electionTest').html(selectList);
+				
 				
 				if (feature.properties.ST != 'AK'){
 					demTot -= parseInt(feature.properties.DEM2016);
@@ -1013,6 +1088,10 @@ function onEachFeature(feature, layer) {
 			+ "<br> <b>Republican:&nbsp;</b>" + Number(percentRep).toFixed(2) + "%</div>"
 			, {permanent: false});
 			}
+			$('.slider').click(function(){
+				closeTooltip();
+		unbindTooltip();
+	});
 		}
 		
 		function displayElectionLables2(dem, rep, oth, dem2, rep2, oth2){
@@ -1514,7 +1593,6 @@ $("#county_search").easyAutocomplete(options);
 //Layer controls via drop down menu, dynamically change map title, legend, and table type
 currentMap = 'election2016';
 ethnicGroup = 'president';
-currentTable = document.getElementById("election_table");
 document.getElementById('mapTitleText').innerHTML = '<center>2016: PRESIDENTIAL ELECTION RESULTS</center>';
 
 function layerControls(curMap, maptitle, curLegend, ethnic){
@@ -1631,7 +1709,7 @@ $('.selectMode').click(function(){
 	else
 		selectMode = false;
 		selectList = [];
-		$('#electionTest').html(selectList);
+		selectionTable.clear().draw();
 		counties2010.setStyle({
 			weight: 1,
 			opacity: 1,
@@ -1644,7 +1722,7 @@ $('.selectMode').click(function(){
 //Clear selection
 function clearStuff(){
 	selectList = [];
-	$('#electionTest').html(selectList);
+	selectionTable.clear().draw();
 	demTot = 0;
 	repTot = 0;
 	othTot = 0;
@@ -1799,6 +1877,8 @@ $('#demo_10, #black_10, #hispanic_10, #asian_10, #multiracial_10, #native_10, #p
 
 //Original Slider - Change Layers/Legend/Title
 $('#ex21').slider().on('change', function(ev){
+	selectList = [];
+	selectionTable.clear().draw();
     
 	var newVal = $('#ex21').data('slider').getValue();
 	
@@ -1849,7 +1929,8 @@ $('.layercontrol').on('click', function(){
 	}
 	
 	$('#ex21').slider().on('change', function(ev){
-	
+		selectList = [];
+		selectionTable.clear().draw();
     
 		var newVal = $('#ex21').data('slider').getValue();
 	
@@ -1889,6 +1970,8 @@ $('.layercontrol').on('click', function(){
 
 	//Replacement Slider - Change Layers/Legend/Title
 	$('#ex22').slider().on('change', function(ev){
+		selectList = [];
+		selectionTable.clear().draw();
     
 		var newVal2 = $('#ex22').data('slider').getValue();
 	
@@ -2186,3 +2269,6 @@ addHash = "&" + currentMap;
 hash = new L.Hash(map);
 stringURL = window.location.hash;
 hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
+
+
+

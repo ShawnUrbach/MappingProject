@@ -230,7 +230,6 @@ td {
 
 /*SIDEBAR STYLES*/
 
-
 @media (min-width: 768px){
 	.sidebar.leaflet-touch{
 		border-style: none;
@@ -344,11 +343,6 @@ td {
 		width: 85%;
 	}
 }
-
-#election_table{
-	display: inline;
-}
-
 
 #info_chart {
 	min-height: 100%;
@@ -776,3 +770,33 @@ label {
   background: #ff5700;
   color: white;
 }
+
+/*SELECTION TABLE STYLES*/ 
+
+#selection_table{
+	display: inline;
+}
+
+#tableTest {
+    overflow-x: scroll;
+	overflow-y: scroll;
+	max-height: 240px;
+    max-width: 100%;
+    display: block;
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 500px) {
+	#tableTest{
+		max-height: 230px;
+	}
+}
+
+.sidebar-pane {
+	overflow: visible;
+}
+
+td.highlight {
+    background-color: whitesmoke !important;
+}
+
