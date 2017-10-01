@@ -12,7 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.1/css/bootstrap-slider.min.css"/>
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/b-1.4.2/b-colvis-1.4.2/cr-1.4.1/datatables.min.css"/>
-		<link rel="stylesheet" type="text/css" href="index-min.css"/>
+		<link rel="stylesheet" type="text/css" href="index.css"/>
 	
 		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.min.js"></script>
@@ -436,6 +436,69 @@
 					</div>
 				  </div>
 				</div>
+				
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2" id="linkShare" title="Generate URL/social media links">
+				<i class="fa fa-share-alt" aria-hidden="true"></i>
+				</button>
+				<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Create Map</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+					  <div class="modal-body" id="shareLinkURL">
+					  Choose variable #1:
+						  <select name="cars" id="cars">
+							<option value="Pop2010">Total Population 2010</option>
+							<option value="Pop2000">Total Population 2000</option>
+							<option value="Pop1990">Total Population 1990</option>
+						  </select>
+						Greater than/Less than:
+						  <select name="cars" id="cars2">
+							<option value="greater">Greater than</option>
+							<option value="less">Less than</option>
+						  </select>
+						Choose number:
+						  <input id="cars3" type="number">
+						  <br><br>
+				
+						  <div class="radio">
+							 Add second variable?
+							  <label><input type="radio" name="optradio" id="radioyes">Yes</label>
+							  <label><input type="radio" name="optradio" id="radiono" checked="checked">No</label>
+							</div>
+						  <br>
+						  <div class="radio">
+							 Logic:
+							  <label><input type="radio" name="optradio2" id="radioAnd" disabled checked="checked">And</label>
+							  <label><input type="radio" name="optradio2" id="radioOr" disabled>Or</label>
+							</div>
+						   Choose variable #2:
+						  <select name="cars" id="cars21" disabled>
+							<option value="Bla2010">Total Black Population 2010</option>
+							<option value="Whi2010">Total White Population 2010</option>
+							<option value="Lat2010">Total Hispanic Population 2010</option>
+						  </select>
+						Greater than/Less than:
+						  <select name="cars" id="cars22" disabled>
+							<option value="greater">Greater than</option>
+							<option value="less">Less than</option>
+						  </select>
+						Choose number:
+						  <input id="cars23" type="number" disabled>
+						  <br><br>
+						<button id="formTestSubmit">Submit</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				
+				
+				
+				
 			</div>
 			
 			<!-- Map Title -->
@@ -451,7 +514,7 @@
 
 	<!-- Javascript -->
 	<script src="geography/counties_latlong-min.js" type="text/javascript"></script>
-	<script src="index-min.js" type="text/javascript"></script>
+	<script src="index.js" type="text/javascript"></script>
     </body>
 </html>
 

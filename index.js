@@ -76,6 +76,8 @@ var addHash;
 var stringURL = window.location.hash;
 var hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
 
+var userVariable;
+var userVariable2;
 
 //-------------------------------------------------SELECTION TABLE--------------------------------------------------//
 
@@ -195,6 +197,10 @@ function defaultStyle(feature) {
 	}
 		
 	function findLayer(){
+		
+
+		
+		
 		if (currentMap == 'election2016'){
 			return GetColor(elections(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016),30,20,10,0,-10,-20,-30,-100);
 		}
@@ -273,8 +279,35 @@ function defaultStyle(feature) {
 		if (currentMap == 'pacific2000'){
 			return GetColor2(demos(feature.properties.POP2000, feature.properties.HAW2000),1.6,1.4,1.2,1.0,0.8,0.6,0.4,0.2);
 		}
-	}
+		
+
+		
+		
+		if ($('#cars').val() == 'Pop2010'){
+		userVariable = feature.properties.POP2010;
+		}
+		if ($('#cars').val() == 'Pop2000'){
+		userVariable = feature.properties.POP2000;
+		}
+		if ($('#cars21').val() == 'Bla2010'){
+		userVariable2 = feature.properties.BLA2010;
+		}
+		if ($('#cars21').val() == 'Whi2010'){
+		userVariable2 = feature.properties.WHI2010;
+		}
 	
+		
+		if (currentMap == 'userMap'){
+			if($('#radioyes').is(':checked')){
+				return GetUserColor2(userVariable,userVariable2,$('#cars3').val(),$('#cars23').val());
+			}
+			else {
+				return GetUserColor(userVariable,$('#cars3').val());
+			}
+		}
+			
+	}
+
 	return {
 		fillColor: findLayer(), 
 		weight: 1,
@@ -284,6 +317,116 @@ function defaultStyle(feature) {
 		fillOpacity: 0.7
 	};
 }
+
+function GetUserColor(w,no1) {
+	var comparison = $('#cars2').val();
+	if (comparison == 'greater'){
+		if (w > no1){
+			return 'orange';
+		}
+		else{
+			return 'green';
+		}	
+	}
+	if (comparison == 'less'){
+		if (w < no1){
+			return 'orange';
+		}
+		else{
+			return 'green';
+		}	
+	}	
+}
+
+function GetUserColor2(w,z,no1,no2) {
+	var comparison = $('#cars2').val();
+	var comparison2 = $('#cars22').val();
+	if ((comparison == 'greater') && (comparison2 == 'greater')){
+		
+		if($('#radioAnd').is(':checked')){
+		
+			if ((w > no1) && (z > no2)){
+				return 'orange';
+			}
+			else{
+				return 'green';
+			}
+		}
+
+		if($('#radioOr').is(':checked')){
+		
+			if ((w > no1) || (z > no2)){
+				return 'orange';
+			}
+			else{
+				return 'green';
+			}
+		}				
+	}
+	if ((comparison == 'less') && (comparison2 == 'less')){
+		
+		if($('#radioAnd').is(':checked')){
+		
+			if ((w < no1) && (z < no2)){
+				return 'orange';
+			}
+			else{
+				return 'green';
+			}
+		}
+
+		if($('#radioOr').is(':checked')){
+			if ((w < no1) || (z < no2)){
+				return 'orange';
+			}
+			else{
+				return 'green';
+			}
+		}
+	}
+	if ((comparison == 'greater') && (comparison2 == 'less')){
+		
+		if($('#radioAnd').is(':checked')){
+			if ((w > no1) && (z < no2)){
+				return 'orange';
+			}
+			else{
+				return 'green';
+			}
+		}
+		if($('#radioOr').is(':checked')){
+			if ((w > no1) || (z < no2)){
+				return 'orange';
+			}
+			else{
+				return 'green';
+			}
+		}
+	}
+	if ((comparison == 'less') && (comparison2 == 'greater')){
+		
+		if($('#radioAnd').is(':checked')){
+			if ((w < no1) && (z > no2)){
+				return 'orange';
+			}
+			else{
+				return 'green';
+			}	
+		}
+		
+		if($('#radioOr').is(':checked')){
+			if ((w < no1) || (z > no2)){
+				return 'orange';
+			}
+			else{
+				return 'green';
+			}
+		}	
+	}
+	
+	
+}
+
 
 //Get colors (two variables, light blue/red color scheme)
 function GetColor(w,no1,no2,no3,no4,no5,no6,no7,no8) {
@@ -1681,7 +1824,9 @@ $('#diff_16').click(function(){
 	addHash = "&" + currentMap;
 });
 
-
+$('#formTestSubmit').click(function(){
+	layerControls('userMap','2016: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+});
 
 //State outline toggle
 $('.state_outlines').click(function(){
@@ -2271,4 +2416,20 @@ stringURL = window.location.hash;
 hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
 
 
+
+
+	
+$('#radioyes').click(function(){
+	$("#cars21").prop('disabled', false);
+	$("#cars22").prop('disabled', false);
+	$("#cars23").prop('disabled', false);
+	$("input[name=optradio2]").prop('disabled', false);
+});
+
+$('#radiono').click(function(){
+	$("#cars21").prop('disabled', true).val('');
+	$("#cars22").prop('disabled', true).val('');
+	$("#cars23").prop('disabled', true).val('');
+	$("input[name=optradio2]").prop('disabled', true);
+});
 
