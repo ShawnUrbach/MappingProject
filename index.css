@@ -70,7 +70,7 @@ td {
 	opacity: 0.7;
 }
 
-#colorlegend1, #colorlegend2, #colorlegend3, #colorlegend4, #colorlegend5, #colorlegend6, #colorlegend7, #colorlegend8, #colorlegend9 {
+#colorlegend1, #colorlegend2, #colorlegend3, #colorlegend4, #colorlegend5, #colorlegend6, #colorlegend7, #colorlegend8, #colorlegend9, #userlegend1, #userlegend2 {
 	height: 18px;
 	width: 18px;
 }
@@ -798,5 +798,42 @@ label {
 
 td.highlight {
     background-color: whitesmoke !important;
+}
+
+
+
+
+
+
+#cars {
+	position: absolute;
+	z-index: 1000000;
+}
+
+#cars21 {
+	position: absolute;
+	z-index: 9999;
+}
+
+
+#cars option:hover, #cars21 option:hover {
+    color: white;
+	background-color: #008ef8;
+}
+
+#createMap {
+	text-align: left;
+}
+
+.sp-replacer:hover, .sp-replacer.sp-active, .sp-container {
+	border-color: blue;
+}
+
+.sp-cancel {
+	color: blue !important;
+}
+
+.sp-palette span:hover{
+	border-color: blue !important;
 }
 

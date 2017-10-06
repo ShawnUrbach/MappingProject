@@ -78,6 +78,7 @@ var hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
 
 var userVariable;
 var userVariable2;
+var seeifitworks;
 
 //-------------------------------------------------SELECTION TABLE--------------------------------------------------//
 
@@ -122,33 +123,33 @@ selectionTable.on( 'mouseenter', 'td', function () {
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
 
+$(".colorChoice").spectrum({
+    color: "black",
+	showPalette: true,
+    palette: [
+        ['black', 'white', 'gray'],
+        ['brown', 'blue', 'green'],
+		['orange', 'red', 'yellow'],
+		['purple', 'turquoise', 'pink'],
+    ]
+});
+
 
 //Highlight and Selection Colors
-var colorPicker = $('#highlightColor');
-var highlightColor = $('#highlightColor').val();
-
-$(colorPicker).change(function() {
-	highlightColor = $('#highlightColor').val();
+var highlightColor = $("#highlightColor").spectrum("get").toHexString();
+$("#highlightColor").on('change.spectrum', function(){
+	highlightColor = $("#highlightColor").spectrum("get").toHexString();
 });
 
-var colorPicker2 = $('#selectionColor');
-var selectionColor = $('#selectionColor').val();
-
-$(colorPicker2).change(function() {
-	selectionColor = $('#selectionColor').val();
+var selectionColor = $("#selectionColor").spectrum("get").toHexString();
+$("#selectionColor").on('change.spectrum', function(){
+	selectionColor = $("#selectionColor").spectrum("get").toHexString();
 });
 
-//Highlight and Selection Colors if IE/OperaMini/Safari
-var isIE = document.all && !window.atob;
-var isIE2 = window.navigator.msPointerEnabled;
-var isOperaMini = (navigator.userAgent.indexOf('Opera Mini') > -1);
-var isSafari = /constructor/i.test(window.HTMLElement);
 
-if (isIE || isIE2 || isOperaMini || isSafari){
-	$(".colorSelect").css("display", "none");
-	selectionColor = "black"; 
-	highlightColor = "black"; 
-}
+
+
+
 
 //Activate CSS tooltips
 $(document).ready(function(){
@@ -165,6 +166,13 @@ function defaultStyle(feature) {
 		return percentDem-percentRep;	
 	}
 	
+	function elections2(dem, rep, oth){
+		var total = dem+rep+oth;
+		var percentDem = (dem/total)*100;
+		var percentRep = (rep/total)*100;
+		return percentRep-percentDem;	
+	}
+	
 	function electionsdiff(dem, rep, oth, dem2, rep2, oth2){
 		var total = dem+rep+oth;
 		var percentDem = (dem/total)*100;
@@ -179,10 +187,24 @@ function defaultStyle(feature) {
 		return diff-diff2;
 	}
 	
-	function thirdparties(dem, rep, oth){
+	function electionsdiff2(dem, rep, oth, dem2, rep2, oth2){
 		var total = dem+rep+oth;
-		var percentOth = (oth/total)*100;
-		return percentOth	
+		var percentDem = (dem/total)*100;
+		var percentRep = (rep/total)*100;
+		var diff = percentRep-percentDem;
+		
+		var total2 = dem2+rep2+oth2;
+		var percentDem2 = (dem2/total2)*100;
+		var percentRep2 = (rep2/total2)*100;
+		var diff2 = percentRep2-percentDem2;
+		
+		return diff-diff2;
+	}
+	
+	function percentParty(party1, party2, party3){
+		var total = party1+party2+party3;
+		var percentParty = (party3/total)*100;
+		return percentParty	
 	}
 
 	function popchange(year2, year1){
@@ -211,16 +233,16 @@ function defaultStyle(feature) {
 			return GetColor(elections(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),30,20,10,0,-10,-20,-30,-100);
 		}
 		if (currentMap == 'thirdparty2016'){
-			return GetColor2(thirdparties(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016),8,7,6,5,4,3,2,1);
+			return GetColor2(percentParty(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'thirdparty2012'){
-			return GetColor2(thirdparties(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012),8,7,6,5,4,3,2,1);
+			return GetColor2(percentParty(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'thirdparty2008'){
-			return GetColor2(thirdparties(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),8,7,6,5,4,3,2,1);
+			return GetColor2(percentParty(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'thirdparty2008'){
-			return GetColor2(thirdparties(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),8,7,6,5,4,3,2,1);
+			return GetColor2(percentParty(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008),8,7,6,5,4,3,2,1);
 		}
 		if (currentMap == 'diff2016'){
 			return GetColor(electionsdiff(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016, feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012),20,10,5,0,-5,-10,-20,-100);
@@ -280,22 +302,338 @@ function defaultStyle(feature) {
 			return GetColor2(demos(feature.properties.POP2000, feature.properties.HAW2000),1.6,1.4,1.2,1.0,0.8,0.6,0.4,0.2);
 		}
 		
-
 		
 		
-		if ($('#cars').val() == 'Pop2010'){
-		userVariable = feature.properties.POP2010;
+		switch ($('#cars').val()){
+			case 'Pop2010':
+				userVariable = feature.properties.POP2010;
+				break; 
+			case 'Pop2000':
+				userVariable = feature.properties.POP2000;
+				break; 
+			case 'Pop1990':
+				userVariable = feature.properties.POP1990;
+				break; 
+			case 'Pop1980':
+				userVariable = feature.properties.POP1980;
+				break;
+			case 'Growth2010':
+				userVariable = popchange(feature.properties.POP2010, feature.properties.POP2000);
+				break; 
+			case 'Growth2000':
+				userVariable = popchange(feature.properties.POP2000, feature.properties.POP1990);
+				break; 
+			case 'Growth1990':
+				userVariable = popchange(feature.properties.POP1990, feature.properties.POP1980);
+				break;
+			case 'Whi2010':
+				userVariable = feature.properties.WHI2010;
+				break; 
+			case 'Whi2000':
+				userVariable = feature.properties.WHI2000;
+				break;
+			case 'Bla2010':
+				userVariable = feature.properties.BLA2010;
+				break; 
+			case 'Bla2000':
+				userVariable = feature.properties.BLA2000;
+				break; 
+			case 'Nat2010':
+				userVariable = feature.properties.NAT2010;
+				break; 
+			case 'Nat2000':
+				userVariable = feature.properties.NAT2000;
+				break;
+			case 'Asi2010':
+				userVariable = feature.properties.ASI2010;
+				break; 
+			case 'Asi2000':
+				userVariable = feature.properties.ASI2000;
+				break; 				
+			case 'Haw2010':
+				userVariable = feature.properties.HAW2010;
+				break; 
+			case 'Haw2000':
+				userVariable = feature.properties.HAW2000;
+				break;
+			case 'Mul2010':
+				userVariable = feature.properties.MUL2010;
+				break; 
+			case 'Mul2000':
+				userVariable = feature.properties.MUL2000;
+				break;  
+			case 'Lat2010':
+				userVariable = feature.properties.LAT2010;
+				break; 
+			case 'Lat2000':
+				userVariable = feature.properties.LAT2000;
+				break;
+			case 'WhiPer2010':
+				userVariable = demos(feature.properties.POP2010, feature.properties.WHI2010);
+				break; 
+			case 'WhiPer2000':
+				userVariable = demos(feature.properties.POP2000, feature.properties.WHI2000);	
+				break;
+			case 'BlaPer2010':
+				userVariable = demos(feature.properties.POP2010, feature.properties.BLA2010);
+				break; 
+			case 'BlaPer2000':
+				userVariable = demos(feature.properties.POP2000, feature.properties.BLA2000);
+				break; 
+			case 'NatPer2010':
+				userVariable = demos(feature.properties.POP2010, feature.properties.NAT2010);
+				break; 
+			case 'NatPer2000':
+				userVariable = demos(feature.properties.POP2000, feature.properties.NAT2000);
+				break;
+			case 'AsiPer2010':
+				userVariable = demos(feature.properties.POP2010, feature.properties.ASI2010);
+				break; 
+			case 'AsiPer2000':
+				userVariable = demos(feature.properties.POP2000, feature.properties.ASI2000);
+				break; 				
+			case 'HawPer2010':
+				userVariable = demos(feature.properties.POP2010, feature.properties.HAW2010);
+				break; 
+			case 'HawPer2000':
+				userVariable = demos(feature.properties.POP2000, feature.properties.HAW2000);
+				break;
+			case 'MulPer2010':
+				userVariable = demos(feature.properties.POP2010, feature.properties.MUL2010);
+				break; 
+			case 'MulPer2000':
+				userVariable = demos(feature.properties.POP2000, feature.properties.MUL2000);
+				break;  
+			case 'LatPer2010':
+				userVariable = demos(feature.properties.POP2010, feature.properties.LAT2010);
+				break; 
+			case 'LatPer2000':
+				userVariable = demos(feature.properties.POP2000, feature.properties.LAT2000);
+				break;	
+			case 'DemDiff16':
+				userVariable = elections(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+				break;
+			case 'RepDiff16':
+				userVariable = elections2(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+				break;
+			case 'DemDiff12':
+				userVariable = elections(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+				break;
+			case 'RepDiff12':
+				userVariable = elections2(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+				break;
+			case 'DemDiff08':
+				userVariable = elections(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+				break;
+			case 'RepDiff08':
+				userVariable = elections2(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+				break;
+			case 'DemPer16':
+				userVariable = percentParty(feature.properties.OTH2016, feature.properties.REP2016, feature.properties.DEM2016);
+				break;
+			case 'RepPer16':
+				userVariable = percentParty(feature.properties.OTH2016, feature.properties.DEM2016, feature.properties.REP2016);
+				break;
+			case 'OthPer16':
+				userVariable = percentParty(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+				break;
+			case 'DemPer12':
+				userVariable = percentParty(feature.properties.OTH2012, feature.properties.REP2012, feature.properties.DEM2012);
+				break;
+			case 'RepPer12':
+				userVariable = percentParty(feature.properties.OTH2012, feature.properties.DEM2012, feature.properties.REP2012);
+				break;
+			case 'OthPer12':
+				userVariable = percentParty(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+				break;
+			case 'DemPer08':
+				userVariable = percentParty(feature.properties.OTH2008, feature.properties.REP2008, feature.properties.DEM2008);
+				break;
+			case 'RepPer08':
+				userVariable = percentParty(feature.properties.OTH2008, feature.properties.DEM2008, feature.properties.REP2008);
+				break;
+			case 'OthPer08':
+				userVariable = percentParty(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+				break;
+			case 'electionDiffDem16':
+				userVariable = electionsdiff(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016, feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+				break;
+			case 'electionDiffRep16':
+				userVariable = electionsdiff2(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016, feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+				break;
+			case 'electionDiffDem12':
+				userVariable = electionsdiff(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012, feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+				break;
+			case 'electionDiffRep12':
+				userVariable = electionsdiff2(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012, feature.properties.DEM2012, feature.properties.REP2008, feature.properties.OTH2008);
+				break;	
 		}
-		if ($('#cars').val() == 'Pop2000'){
-		userVariable = feature.properties.POP2000;
+		
+		switch ($('#cars21').val()){
+			case 'Pop2010':
+				userVariable2 = feature.properties.POP2010;
+				break; 
+			case 'Pop2000':
+				userVariable2 = feature.properties.POP2000;
+				break; 
+			case 'Pop1990':
+				userVariable2 = feature.properties.POP1990;
+				break; 
+			case 'Pop1980':
+				userVariable2 = feature.properties.POP1980;
+				break;
+			case 'Growth2010':
+				userVariable2 = popchange(feature.properties.POP2010, feature.properties.POP2000);
+				break; 
+			case 'Growth2000':
+				userVariable2 = popchange(feature.properties.POP2000, feature.properties.POP1990);
+				break; 
+			case 'Growth1990':
+				userVariable2 = popchange(feature.properties.POP1990, feature.properties.POP1980);
+				break;
+			case 'Whi2010':
+				userVariable2 = feature.properties.WHI2010;
+				break; 
+			case 'Whi2000':
+				userVariable2 = feature.properties.WHI2000;
+				break;
+			case 'Bla2010':
+				userVariable2 = feature.properties.BLA2010;
+				break; 
+			case 'Bla2000':
+				userVariable2 = feature.properties.BLA2000;
+				break; 
+			case 'Nat2010':
+				userVariable2 = feature.properties.NAT2010;
+				break; 
+			case 'Nat2000':
+				userVariable2 = feature.properties.NAT2000;
+				break;
+			case 'Asi2010':
+				userVariable2 = feature.properties.ASI2010;
+				break; 
+			case 'Asi2000':
+				userVariable2 = feature.properties.ASI2000;
+				break; 				
+			case 'Haw2010':
+				userVariable2 = feature.properties.HAW2010;
+				break; 
+			case 'Haw2000':
+				userVariable2 = feature.properties.HAW2000;
+				break;
+			case 'Mul2010':
+				userVariable2 = feature.properties.MUL2010;
+				break; 
+			case 'Mul2000':
+				userVariable2 = feature.properties.MUL2000;
+				break;  
+			case 'Lat2010':
+				userVariable2 = feature.properties.LAT2010;
+				break; 
+			case 'Lat2000':
+				userVariable2 = feature.properties.LAT2000;
+				break;
+			case 'WhiPer2010':
+				userVariable2 = demos(feature.properties.POP2010, feature.properties.WHI2010);
+				break; 
+			case 'WhiPer2000':
+				userVariable2 = demos(feature.properties.POP2000, feature.properties.WHI2000);	
+				break;
+			case 'BlaPer2010':
+				userVariable2 = demos(feature.properties.POP2010, feature.properties.BLA2010);
+				break; 
+			case 'BlaPer2000':
+				userVariable2 = demos(feature.properties.POP2000, feature.properties.BLA2000);
+				break; 
+			case 'NatPer2010':
+				userVariable2 = demos(feature.properties.POP2010, feature.properties.NAT2010);
+				break; 
+			case 'NatPer2000':
+				userVariable2 = demos(feature.properties.POP2000, feature.properties.NAT2000);
+				break;
+			case 'AsiPer2010':
+				userVariable2 = demos(feature.properties.POP2010, feature.properties.ASI2010);
+				break; 
+			case 'AsiPer2000':
+				userVariable2 = demos(feature.properties.POP2000, feature.properties.ASI2000);
+				break; 				
+			case 'HawPer2010':
+				userVariable2 = demos(feature.properties.POP2010, feature.properties.HAW2010);
+				break; 
+			case 'HawPer2000':
+				userVariable2 = demos(feature.properties.POP2000, feature.properties.HAW2000);
+				break;
+			case 'MulPer2010':
+				userVariable2 = demos(feature.properties.POP2010, feature.properties.MUL2010);
+				break; 
+			case 'MulPer2000':
+				userVariable2 = demos(feature.properties.POP2000, feature.properties.MUL2000);
+				break;  
+			case 'LatPer2010':
+				userVariable2 = demos(feature.properties.POP2010, feature.properties.LAT2010);
+				break; 
+			case 'LatPer2000':
+				userVariable2 = demos(feature.properties.POP2000, feature.properties.LAT2000);
+				break;	
+			case 'DemDiff16':
+				userVariable2 = elections(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+				break;
+			case 'RepDiff16':
+				userVariable2 = elections2(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+				break;
+			case 'DemDiff12':
+				userVariable2 = elections(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+				break;
+			case 'RepDiff12':
+				userVariable2 = elections2(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+				break;
+			case 'DemDiff08':
+				userVariable2 = elections(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+				break;
+			case 'RepDiff08':
+				userVariable2 = elections2(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+				break;
+			case 'DemPer16':
+				userVariable2 = percentParty(feature.properties.OTH2016, feature.properties.REP2016, feature.properties.DEM2016);
+				break;
+			case 'RepPer16':
+				userVariable2 = percentParty(feature.properties.OTH2016, feature.properties.DEM2016, feature.properties.REP2016);
+				break;
+			case 'OthPer16':
+				userVariable2 = percentParty(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
+				break;
+			case 'DemPer12':
+				userVariable2 = percentParty(feature.properties.OTH2012, feature.properties.REP2012, feature.properties.DEM2012);
+				break;
+			case 'RepPer12':
+				userVariable2 = percentParty(feature.properties.OTH2012, feature.properties.DEM2012, feature.properties.REP2012);
+				break;
+			case 'OthPer12':
+				userVariable2 = percentParty(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+				break;
+			case 'DemPer08':
+				userVariable2 = percentParty(feature.properties.OTH2008, feature.properties.REP2008, feature.properties.DEM2008);
+				break;
+			case 'RepPer08':
+				userVariable2 = percentParty(feature.properties.OTH2008, feature.properties.DEM2008, feature.properties.REP2008);
+				break;
+			case 'OthPer08':
+				userVariable2 = percentParty(feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+				break;
+			case 'electionDiffDem16':
+				userVariable2 = electionsdiff(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016, feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+				break;
+			case 'electionDiffRep16':
+				userVariable2 = electionsdiff2(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016, feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012);
+				break;
+			case 'electionDiffDem12':
+				userVariable2 = electionsdiff(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012, feature.properties.DEM2008, feature.properties.REP2008, feature.properties.OTH2008);
+				break;
+			case 'electionDiffRep12':
+				userVariable2 = electionsdiff2(feature.properties.DEM2012, feature.properties.REP2012, feature.properties.OTH2012, feature.properties.DEM2012, feature.properties.REP2008, feature.properties.OTH2008);
+				break;	
 		}
-		if ($('#cars21').val() == 'Bla2010'){
-		userVariable2 = feature.properties.BLA2010;
-		}
-		if ($('#cars21').val() == 'Whi2010'){
-		userVariable2 = feature.properties.WHI2010;
-		}
-	
+			
 		
 		if (currentMap == 'userMap'){
 			if($('#radioyes').is(':checked')){
@@ -318,22 +656,45 @@ function defaultStyle(feature) {
 	};
 }
 
+
+
+var userColor1 = $('#userColor11').spectrum("get").toHexString();;
+$('#userColor11').on('change.spectrum', function(){
+	userColor1 = $('#userColor11').spectrum("get").toHexString();
+});
+
+var userColor2 = $('#userColor22').spectrum("get").toHexString();;
+$('#userColor22').on('change.spectrum', function(){
+	userColor2 = $('#userColor22').spectrum("get").toHexString();
+});
+
+
+var customTitle = $('#customTitle');
+var customTitleVal = $('#customTitle').val();
+$(customTitle).change(function() {
+	customTitleVal = $('#customTitle').val();
+});
+
+
 function GetUserColor(w,no1) {
 	var comparison = $('#cars2').val();
+	var comparison3 = $('#cars3').val();
 	if (comparison == 'greater'){
+		seeifitworks = '>'+ comparison3;
 		if (w > no1){
-			return 'orange';
+			return userColor1;
 		}
 		else{
-			return 'green';
+			return userColor2;
 		}	
 	}
 	if (comparison == 'less'){
+		seeifitworks = '<'+ comparison3;
 		if (w < no1){
-			return 'orange';
+			return userColor1;
 		}
 		else{
-			return 'green';
+			return userColor2;
 		}	
 	}	
 }
@@ -341,85 +702,90 @@ function GetUserColor(w,no1) {
 function GetUserColor2(w,z,no1,no2) {
 	var comparison = $('#cars2').val();
 	var comparison2 = $('#cars22').val();
+	var comparison3 = $('#cars3').val();
+	var comparison4 = $('#cars23').val();
 	if ((comparison == 'greater') && (comparison2 == 'greater')){
 		
 		if($('#radioAnd').is(':checked')){
-		
+			seeifitworks = '>'+ comparison3 + '(var1) & >' + comparison4+'(var2)';
 			if ((w > no1) && (z > no2)){
-				return 'orange';
+				return userColor1;
 			}
 			else{
-				return 'green';
+				return userColor2;
 			}
 		}
 
 		if($('#radioOr').is(':checked')){
-		
+			seeifitworks = '>'+ comparison3 + '(var1) or >' + comparison4+'(var2)';
 			if ((w > no1) || (z > no2)){
-				return 'orange';
+				return userColor1;
 			}
 			else{
-				return 'green';
+				return userColor2;
 			}
 		}				
 	}
 	if ((comparison == 'less') && (comparison2 == 'less')){
 		
 		if($('#radioAnd').is(':checked')){
-		
+			seeifitworks = '<'+ comparison3 + '(var1) & <' + comparison4+'(var2)';
 			if ((w < no1) && (z < no2)){
-				return 'orange';
+				return userColor1;
 			}
 			else{
-				return 'green';
+				return userColor2;
 			}
 		}
 
 		if($('#radioOr').is(':checked')){
+			seeifitworks = '<'+ comparison3 + '(var1) or <' + comparison4+'(var2)';
 			if ((w < no1) || (z < no2)){
-				return 'orange';
+				return userColor1;
 			}
 			else{
-				return 'green';
+				return userColor2;
 			}
 		}
 	}
 	if ((comparison == 'greater') && (comparison2 == 'less')){
-		
 		if($('#radioAnd').is(':checked')){
+			seeifitworks = '>'+ comparison3 + '(var1) & <' + comparison4+'(var2)';
 			if ((w > no1) && (z < no2)){
-				return 'orange';
+				return userColor1;
 			}
 			else{
-				return 'green';
+				return userColor2;
 			}
 		}
 		if($('#radioOr').is(':checked')){
+			seeifitworks = '>'+ comparison3 + '(var1) or <' + comparison4+'(var2)';
 			if ((w > no1) || (z < no2)){
-				return 'orange';
+				return userColor1;
 			}
 			else{
-				return 'green';
+				return userColor2;
 			}
 		}
 	}
 	if ((comparison == 'less') && (comparison2 == 'greater')){
-		
 		if($('#radioAnd').is(':checked')){
+			seeifitworks = '<'+ comparison3 + '(var1) & >' + comparison4+'(var2)';
 			if ((w < no1) && (z > no2)){
-				return 'orange';
+				return userColor1;
 			}
 			else{
-				return 'green';
+				return userColor2;
 			}	
 		}
 		
 		if($('#radioOr').is(':checked')){
+			seeifitworks = '<'+ comparison3 + '(var1) or >' + comparison4+'(var2)';
 			if ((w < no1) || (z > no2)){
-				return 'orange';
+				return userColor1;
 			}
 			else{
-				return 'green';
+				return userColor2;
 			}
 		}	
 	}
@@ -1231,11 +1597,14 @@ function onEachFeature(feature, layer) {
 			+ "<br> <b>Republican:&nbsp;</b>" + Number(percentRep).toFixed(2) + "%</div>"
 			, {permanent: false});
 			}
-			$('.slider').click(function(){
-				closeTooltip();
-		unbindTooltip();
-	});
 		}
+		
+		function displayUserLables(){
+			layer.bindTooltip("<b><u class = 'popup_title'><big>" + feature.properties.CO 
+			+ ", " + feature.properties.ST
+			+ "</b></u></big>");
+		}
+		
 		
 		function displayElectionLables2(dem, rep, oth, dem2, rep2, oth2){
 			
@@ -1489,6 +1858,10 @@ function onEachFeature(feature, layer) {
 		$('#pacific_10').click(function(){
 			displayDemoLables(feature.properties.POP2010, feature.properties.HAW2010);
 		});	
+		
+		$('#formTestSubmit').click(function(){
+			displayUserLables();
+		});
 	}
 }
 
@@ -1608,6 +1981,21 @@ function createLegend8(color1,color2,color3,color4,color5,color6,color7,color8){
 		'</tr><tr><td class="color" id="electionlegend7"></td><td>'+color2+'% R</td></tr>' +
 		'</tr><tr><td class="color" id="electionlegend8"></td><td>'+color1+'% R</td></tr>'
 }
+
+function createUserLegend(){
+	return '<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="userlegend1"></td><td>'+seeifitworks+'</td>' +
+		'</tr><tr><td class="color" id="userlegend2"></td><td>Everything else</td></tr>';
+	
+}
+
+userLegend = L.control({position: 'bottomright'});
+userLegend.onAdd = function (map) {
+	var div = L.DomUtil.create('div', 'legend');	
+	div.innerHTML += createUserLegend();		
+	return div;
+};
+
+
 
 electionLegend = L.control({position: 'bottomright'});
 electionLegend.onAdd = function (map) {
@@ -1736,7 +2124,7 @@ $("#county_search").easyAutocomplete(options);
 //Layer controls via drop down menu, dynamically change map title, legend, and table type
 currentMap = 'election2016';
 ethnicGroup = 'president';
-document.getElementById('mapTitleText').innerHTML = '<center>2016: PRESIDENTIAL ELECTION RESULTS</center>';
+document.getElementById('mapTitleText').innerHTML = '<center contenteditable="true">2016: PRESIDENTIAL ELECTION RESULTS</center>';
 
 function layerControls(curMap, maptitle, curLegend, ethnic){
 	clearStuff();
@@ -1748,7 +2136,7 @@ function layerControls(curMap, maptitle, curLegend, ethnic){
 	
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
-	document.getElementById('mapTitleText').innerHTML = '<center>'+maptitle+'</center>';
+	document.getElementById('mapTitleText').innerHTML = '<center contenteditable="true">'+maptitle+'</center>';
 	
 	//Change legend
 	map.removeControl(currentLegend);
@@ -1825,7 +2213,13 @@ $('#diff_16').click(function(){
 });
 
 $('#formTestSubmit').click(function(){
-	layerControls('userMap','2016: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
+	layerControls('userMap',customTitleVal,userLegend,'');
+	$('#userlegend1').css("background-color", userColor1);
+	$('#userlegend2').css("background-color", userColor2);
+	$("#ex21").slider('disable');
+	$("#ex22").slider('disable');
+	$('.tooltip-inner,.slider-tick-label,.tooltip-arrow' ).css("display", "none");
+	$('#linkShare').prop('disabled', true);
 });
 
 //State outline toggle
@@ -1906,6 +2300,8 @@ function clearStuff(){
 
 //Clear selection on layer change
 $('.layercontrol').click(function(){
+	$('.tooltip-inner,.slider-tick-label,.tooltip-arrow').css("display", "inline");
+	$('#linkShare').prop('disabled', false);
 	clearStuff();
 });
 
@@ -2432,4 +2828,3 @@ $('#radiono').click(function(){
 	$("#cars23").prop('disabled', true).val('');
 	$("input[name=optradio2]").prop('disabled', true);
 });
-
