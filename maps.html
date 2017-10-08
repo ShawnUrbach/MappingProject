@@ -13,7 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.1/css/bootstrap-slider.min.css"/>
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/b-1.4.2/b-colvis-1.4.2/cr-1.4.1/datatables.min.css"/>
 		<link rel="stylesheet" type="text/css" href="lib/spectrum/spectrum.css"/>
-		<link rel="stylesheet" type="text/css" href="index.css"/>
+		<link rel="stylesheet" type="text/css" href="index-min.css"/>
 	
 		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.min.js"></script>
@@ -90,8 +90,9 @@
 										  </li>
 										</ul>
 									 </li>
-							
 									<li role="separator" class="divider" id="divide"></li>
+									<li data-toggle="modal" data-target="#exampleModal2" id="linkShare2"><a href="#" id="mapHref">Create Custom Map</a></li>
+									<li role="separator" class="divider" id="divide2"></li>
 									<li><a href="#"><label><div class = "checkbox"><input id ="state_outlines" class = "state_outlines" type="checkbox" checked>State Outlines</input></div></label></a></li>
 									<li><a href="#"><label><div class = "checkbox"><input id ="base_map" class = "base_map" type="checkbox" checked>Base Map</input></div></label></a></li>
 								</ul>
@@ -130,7 +131,6 @@
 					<li><a href="#table" role="tab" title="Population Growth Data"><img src="img/icons8-Line Chart-100.png"/></a></li>
 					<li><a href="#demographicsTab" role="tab" title="Demographics Data"><img src="img/icons8-Global Citizen Filled-100.png"/></a></li>
 					<li><a href="#selections" role="tab" title="Selected Counties"><i class="fa fa-object-group"></i></a></li>
-					<li><a href="#settings" role="tab" title="Map options"><i class="fa fa-gear"></i></a></li>
 				</ul>
 			</div>
 			<div class="sidebar-content">
@@ -384,22 +384,7 @@
 					</div>
 				</div>
 				
-				<!-- Settings Tab -->
-				<div class="sidebar-pane" id="settings">
-					<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left" title="Click to collapse sidebar"></i></span></h1>
-					<div class="checkbox" id="settings_list">
-						<p><label><input id="disable_legend" type="checkbox" value="">Remove legend from current map</label></p>
-						<p><label><input id="bigMapMode" type="checkbox" value="">Enlarge map</label></p>
-						<p class="colorSelect"><input type="text" id="highlightColor" class="colorChoice"> Change highlight color</p>
-						<p class="colorSelect"><input type="color" id="selectionColor" class="colorChoice"> Change selection color</p>
-						<div id = "iconMsg"><a href="https://icons8.com/">Icons by Icons8</a>
-						</div>
-						<div id = "License">
-							This work, excluding the visual design, logo, and blog content, is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
-							<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>
-						</div>
-					</div>
-				</div>
+				
 			</div>
 		</div>
 		
@@ -407,9 +392,14 @@
 		
 			<!--Modal Sharing Window-->
 			<div id="linkShareArea">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="linkShare" title="Generate URL/social media links">
+				<div class="btn-group">
+				<button type="button" class="btn btn-primary buttons" data-toggle="modal" data-target="#exampleModal" id="linkShare" title="Generate URL/social media links">
 				<i class="fa fa-share-alt" aria-hidden="true"></i>
 				</button>
+				<button type="button" class="btn btn-primary buttons" data-toggle="modal" data-target="#exampleModal3" id="linkShare" title="Map options">
+				<i class="fa fa-cog" aria-hidden="true"></i>
+				</button>
+				</div>
 				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -439,203 +429,239 @@
 				  </div>
 				</div>
 				
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2" id="linkShare2" title="Generate URL/social media links">
-				<i class="fa fa-share-alt" aria-hidden="true"></i>
-				</button>
-				
-				<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 					<div class="modal-content">
 					  <div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Create Custom Map</h5>
+						<h5 class="modal-title" id="exampleModalLabel">Map Options</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						  <span aria-hidden="true">&times;</span>
 						</button>
 					  </div>
-					  <div class="modal-body" id="createMap">
-					  Choose variable #1:
-						  <select name="cars" id="cars" onmousedown="if(this.options.length>15){this.size=15;}" onchange="this.blur()"  onblur="this.size=0;">
-							<optgroup label="Population - Total">
-							<option value="Pop2010">Total 2010</option>
-							<option value="Pop2000">Total 2000</option>
-							<option value="Pop1990">Total 1990</option>
-							<option value="Pop1980">Total 1980</option>
-							<optgroup label="Population - % Growth Over Decade">
-							<option value="Growth2010">% Growth 2010</option>
-							<option value="Growth2000">% Growth 2000</option>
-							<option value="Growth1990">% Growth 1990</option>
-							<optgroup label="Demographics - Total">
-							<option value="Whi2010">White 2010</option>
-							<option value="Whi2000">White 2000</option>
-							<option value="Bla2010">Black 2010</option>
-							<option value="Bla2000">Black 2000</option>
-							<option value="Nat2010">N.American/Alaskan 2010</option>
-							<option value="Nat2000">N.American/Alaskan 2000</option>
-							<option value="Asi2010">Asian 2010</option>
-							<option value="Asi2000">Asian 2000</option>
-							<option value="Haw2010">Hawaiian/Pacific-Isl. 2010</option>
-							<option value="Haw2000">Hawaiian/Pacific-Isl. 2000</option>
-							<option value="Mul2010">Multiracial 2010</option>
-							<option value="Mul2000">Multiracial 2000</option>
-							<option value="Lat2010">Hispanic/Latino 2010</option>
-							<option value="Lat2000">Hispanic/Latino 2000</option>
-							<optgroup label="Demographics - Percent">
-							<option value="WhiPer2010">% White 2010</option>
-							<option value="WhiPer2000">% White 2000</option>
-							<option value="BlaPer2010">% Black 2010</option>
-							<option value="BlaPer2000">% Black 2000</option>
-							<option value="NatPer2010">% N.American/Alaskan 2010</option>
-							<option value="NatPer2000">% N.American/Alaskan 2000</option>
-							<option value="AsiPer2010">% Asian 2010</option>
-							<option value="AsiPer2000">% Asian 2000</option>
-							<option value="HawPer2010">% Hawaiian/Pacific-Isl. 2010</option>
-							<option value="HawPer2000">% Hawaiian/Pacific-Isl. 2000</option>
-							<option value="MulPer2010">% Multiracial 2010</option>
-							<option value="MulPer2000">% Multiracial 2000</option>
-							<option value="LatPer2010">% Hispanic/Latino 2010</option>
-							<option value="LatPer2000">% Hispanic/Latino 2000</option>
-							<optgroup label="Presidential Elections - Dem./Rep. Difference">
-							<option value="DemDiff16">% Democrat over Republican 2016</option>
-							<option value="RepDiff16">% Republican over Democrat 2016</option>
-							<option value="DemDiff12">% Democrat over Republican 2012</option>
-							<option value="RepDiff12">% Republican over Democrat 2012</option>
-							<option value="DemDiff08">% Democrat over Republican 2008</option>
-							<option value="RepDiff08">% Republican over Democrat 2008</option>
-							<optgroup label="Presidential Elections - % of Vote">
-							<option value="DemPer16">% Democrat 2016</option>
-							<option value="RepPer16">% Republican 2016</option>
-							<option value="OthPer16">% Third Party 2016</option>
-							<option value="DemPer12">% Democrat 2012</option>
-							<option value="RepPer12">% Republican 2012</option>
-							<option value="OthPer12">% Third Party 2012</option>
-							<option value="DemPer08">% Democrat 2008</option>
-							<option value="RepPer08">% Republican 2008</option>
-							<option value="OthPer08">% Third Party 2008</option>
-							<optgroup label="Presidential Elections - % Vote Swing">
-							<option value="electionDiffDem16">% Swing To Democrat 2016</option>
-							<option value="electionDiffRep16">% Swing To Republican 2016</option>
-							<option value="electionDiffDem12">% Swing To Democrat 2012</option>
-							<option value="electionDiffRep12">% Swing To Republican 2012</option>
-						  </select>
-						  <br>
-						Greater than/Less than:
-						  <select name="cars" id="cars2">
-							<option value="greater">Greater than</option>
-							<option value="less">Less than</option>
-						  </select>
-						  <br>
-						Choose number:
-						  <input id="cars3" type="number">
-
-				
-						  <div class="radio">
-							 Add second variable?
-							  <label><input type="radio" name="optradio" id="radioyes">Yes</label>
-							  <label><input type="radio" name="optradio" id="radiono" checked="checked">No</label>
-							</div>
-						  <br>
-						  <div class="radio">
-							 Logic:
-							  <label><input type="radio" name="optradio2" id="radioAnd" disabled checked="checked">And</label>
-							  <label><input type="radio" name="optradio2" id="radioOr" disabled>Or</label>
-							</div>
-						   Choose variable #2:
-						   <select name="cars" id="cars21" onmousedown="if(this.options.length>15){this.size=15;}" onchange="this.blur()"  onblur="this.size=0;" disabled>
-							<optgroup label="Population - Total">
-							<option value="Pop2010">Total 2010</option>
-							<option value="Pop2000">Total 2000</option>
-							<option value="Pop1990">Total 1990</option>
-							<option value="Pop1980">Total 1980</option>
-							<optgroup label="Population - % Growth Over Decade">
-							<option value="Growth2010">% Growth 2010</option>
-							<option value="Growth2000">% Growth 2000</option>
-							<option value="Growth1990">% Growth 1990</option>
-							<optgroup label="Demographics - Total">
-							<option value="Whi2010">White 2010</option>
-							<option value="Whi2000">White 2000</option>
-							<option value="Bla2010">Black 2010</option>
-							<option value="Bla2000">Black 2000</option>
-							<option value="Nat2010">N.American/Alaskan 2010</option>
-							<option value="Nat2000">N.American/Alaskan 2000</option>
-							<option value="Asi2010">Asian 2010</option>
-							<option value="Asi2000">Asian 2000</option>
-							<option value="Haw2010">Hawaiian/Pacific-Isl. 2010</option>
-							<option value="Haw2000">Hawaiian/Pacific-Isl. 2000</option>
-							<option value="Mul2010">Multiracial 2010</option>
-							<option value="Mul2000">Multiracial 2000</option>
-							<option value="Lat2010">Hispanic/Latino 2010</option>
-							<option value="Lat2000">Hispanic/Latino 2000</option>
-							<optgroup label="Demographics - Percent">
-							<option value="WhiPer2010">% White 2010</option>
-							<option value="WhiPer2000">% White 2000</option>
-							<option value="BlaPer2010">% Black 2010</option>
-							<option value="BlaPer2000">% Black 2000</option>
-							<option value="NatPer2010">% N.American/Alaskan 2010</option>
-							<option value="NatPer2000">% N.American/Alaskan 2000</option>
-							<option value="AsiPer2010">% Asian 2010</option>
-							<option value="AsiPer2000">% Asian 2000</option>
-							<option value="HawPer2010">% Hawaiian/Pacific-Isl. 2010</option>
-							<option value="HawPer2000">% Hawaiian/Pacific-Isl. 2000</option>
-							<option value="MulPer2010">% Multiracial 2010</option>
-							<option value="MulPer2000">% Multiracial 2000</option>
-							<option value="LatPer2010">% Hispanic/Latino 2010</option>
-							<option value="LatPer2000">% Hispanic/Latino 2000</option>
-							<optgroup label="Presidential Elections - Dem./Rep. Difference">
-							<option value="DemDiff16">% Democrat over Republican 2016</option>
-							<option value="RepDiff16">% Republican over Democrat 2016</option>
-							<option value="DemDiff12">% Democrat over Republican 2012</option>
-							<option value="RepDiff12">% Republican over Democrat 2012</option>
-							<option value="DemDiff08">% Democrat over Republican 2008</option>
-							<option value="RepDiff08">% Republican over Democrat 2008</option>
-							<optgroup label="Presidential Elections - % of Vote">
-							<option value="DemPer16">% Democrat 2016</option>
-							<option value="RepPer16">% Republican 2016</option>
-							<option value="OthPer16">% Third Party 2016</option>
-							<option value="DemPer12">% Democrat 2012</option>
-							<option value="RepPer12">% Republican 2012</option>
-							<option value="OthPer12">% Third Party 2012</option>
-							<option value="DemPer08">% Democrat 2008</option>
-							<option value="RepPer08">% Republican 2008</option>
-							<option value="OthPer08">% Third Party 2008</option>
-							<optgroup label="Presidential Elections - % Vote Swing">
-							<option value="electionDiffDem16">% Swing To Democrat 2016</option>
-							<option value="electionDiffRep16">% Swing To Republican 2016</option>
-							<option value="electionDiffDem12">% Swing To Democrat 2012</option>
-							<option value="electionDiffRep12">% Swing To Republican 2012</option>
-						  </select>
-						  <br>
-						Greater than/Less than:
-						  <select name="cars" id="cars22" disabled>
-							<option value="greater">Greater than</option>
-							<option value="less">Less than</option>
-						  </select>
-						  <br>
-						Choose number:
-						  <input id="cars23" type="number" disabled>
-						  <br><br><br>
-						Color (criteria matched):
-						<input type="text" id="userColor11" class="colorChoice">
-						<br>
-						Color (all others):
-						<input type="text" id="userColor22" class="colorChoice">
-						<br>
-						Map title:
-						<input type="text" id="customTitle">
-						<br><br>
-						<button id="formTestSubmit">Submit</button>
+					  <div class="checkbox" id="settings_list">
+						<p><label><input id="disable_legend" type="checkbox" value="">Remove legend from current map</label></p>
+						<p><label><input id="bigMapMode" type="checkbox" value="">Enlarge map</label></p>
+						<p class="colorSelect"><input type="text" id="highlightColor" class="colorChoice"> Change highlight color</p>
+						<p class="colorSelect"><input type="color" id="selectionColor" class="colorChoice"> Change selection color</p>
+						<div id = "iconMsg"><a href="https://icons8.com/">Icons by Icons8</a>
+						</div>
+						<div id = "License">
+							This work, excluding the visual design, logo, and blog content, is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+							<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>
+						</div>
+					</div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 					  </div>
 					</div>
 				  </div>
 				</div>
 				
 				
-				
-				
+				<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Create Custom Map</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="form-group" id="createMap">
+								Choose variable #1:
+								<select name="cars" id="cars" onmousedown="if(this.options.length>15){this.size=15;}" onchange="this.blur()"  onblur="this.size=0;" class="form-control">
+									<optgroup label="Population - Total">
+									<option value="Pop2010">Total 2010</option>
+									<option value="Pop2000">Total 2000</option>
+									<option value="Pop1990">Total 1990</option>
+									<option value="Pop1980">Total 1980</option>
+									<optgroup label="Population - % Growth Over Decade">
+									<option value="Growth2010">% Growth 2010</option>
+									<option value="Growth2000">% Growth 2000</option>
+									<option value="Growth1990">% Growth 1990</option>
+									<optgroup label="Demographics - Total">
+									<option value="Whi2010">White 2010</option>
+									<option value="Whi2000">White 2000</option>
+									<option value="Bla2010">Black 2010</option>
+									<option value="Bla2000">Black 2000</option>
+									<option value="Nat2010">N.American/Alaskan 2010</option>
+									<option value="Nat2000">N.American/Alaskan 2000</option>
+									<option value="Asi2010">Asian 2010</option>
+									<option value="Asi2000">Asian 2000</option>
+									<option value="Haw2010">Hawaiian/Pacific-Isl. 2010</option>
+									<option value="Haw2000">Hawaiian/Pacific-Isl. 2000</option>
+									<option value="Mul2010">Multiracial 2010</option>
+									<option value="Mul2000">Multiracial 2000</option>
+									<option value="Lat2010">Hispanic/Latino 2010</option>
+									<option value="Lat2000">Hispanic/Latino 2000</option>
+									<optgroup label="Demographics - Percent">
+									<option value="WhiPer2010">% White 2010</option>
+									<option value="WhiPer2000">% White 2000</option>
+									<option value="BlaPer2010">% Black 2010</option>
+									<option value="BlaPer2000">% Black 2000</option>
+									<option value="NatPer2010">% N.American/Alaskan 2010</option>
+									<option value="NatPer2000">% N.American/Alaskan 2000</option>
+									<option value="AsiPer2010">% Asian 2010</option>
+									<option value="AsiPer2000">% Asian 2000</option>
+									<option value="HawPer2010">% Hawaiian/Pacific-Isl. 2010</option>
+									<option value="HawPer2000">% Hawaiian/Pacific-Isl. 2000</option>
+									<option value="MulPer2010">% Multiracial 2010</option>
+									<option value="MulPer2000">% Multiracial 2000</option>
+									<option value="LatPer2010">% Hispanic/Latino 2010</option>
+									<option value="LatPer2000">% Hispanic/Latino 2000</option>
+									<optgroup label="Pres. Elections - Dem./Rep. Difference">
+									<option value="DemDiff16">% Democrat over Republican 2016</option>
+									<option value="RepDiff16">% Republican over Democrat 2016</option>
+									<option value="DemDiff12">% Democrat over Republican 2012</option>
+									<option value="RepDiff12">% Republican over Democrat 2012</option>
+									<option value="DemDiff08">% Democrat over Republican 2008</option>
+									<option value="RepDiff08">% Republican over Democrat 2008</option>
+									<optgroup label="Presidential Elections - % of Vote">
+									<option value="DemPer16">% Democrat 2016</option>
+									<option value="RepPer16">% Republican 2016</option>
+									<option value="OthPer16">% Third Party 2016</option>
+									<option value="DemPer12">% Democrat 2012</option>
+									<option value="RepPer12">% Republican 2012</option>
+									<option value="OthPer12">% Third Party 2012</option>
+									<option value="DemPer08">% Democrat 2008</option>
+									<option value="RepPer08">% Republican 2008</option>
+									<option value="OthPer08">% Third Party 2008</option>
+									<optgroup label="Presidential Elections - % Vote Swing">
+									<option value="electionDiffDem16">% Swing To Democrat 2016</option>
+									<option value="electionDiffRep16">% Swing To Republican 2016</option>
+									<option value="electionDiffDem12">% Swing To Democrat 2012</option>
+									<option value="electionDiffRep12">% Swing To Republican 2012</option>
+								</select>
+								<br><br><br>
+								Greater than/Less than:
+									<select name="cars" id="cars2" class="form-control">
+										<option value="greater">Greater than</option>
+										<option value="less">Less than</option>
+									</select>
+								
+								Choose number:
+								<input id="cars3" type="number" class="form-control">
+
+								
+									<div class="radio">
+									    Add second variable?
+										<label><input type="radio" name="optradio" id="radioyes">Yes&nbsp;</label>
+										<label><input type="radio" name="optradio" id="radiono" checked="checked">No</label>
+									</div>
+							</div>
+							<hr>
+							<div class = "form-group" id="createMap2"> 	
+									<div class="radio">
+									    Logic:
+									    <label><input type="radio" name="optradio2" id="radioAnd" disabled checked="checked">And&nbsp;</label>
+									    <label><input type="radio" name="optradio2" id="radioOr" disabled>Or</label>
+									</div>
+						
+							    Choose variable #2:
+							    <select name="cars" id="cars21" onmousedown="if(this.options.length>15){this.size=15;}" onchange="this.blur()"  onblur="this.size=0;" disabled class="form-control">
+									<optgroup label="Population - Total">
+									<option value="Pop2010">Total 2010</option>
+									<option value="Pop2000">Total 2000</option>
+									<option value="Pop1990">Total 1990</option>
+									<option value="Pop1980">Total 1980</option>
+									<optgroup label="Population - % Growth Over Decade">
+									<option value="Growth2010">% Growth 2010</option>
+									<option value="Growth2000">% Growth 2000</option>
+									<option value="Growth1990">% Growth 1990</option>
+									<optgroup label="Demographics - Total">
+									<option value="Whi2010">White 2010</option>
+									<option value="Whi2000">White 2000</option>
+									<option value="Bla2010">Black 2010</option>
+									<option value="Bla2000">Black 2000</option>
+									<option value="Nat2010">N.American/Alaskan 2010</option>
+									<option value="Nat2000">N.American/Alaskan 2000</option>
+									<option value="Asi2010">Asian 2010</option>
+									<option value="Asi2000">Asian 2000</option>
+									<option value="Haw2010">Hawaiian/Pacific-Isl. 2010</option>
+									<option value="Haw2000">Hawaiian/Pacific-Isl. 2000</option>
+									<option value="Mul2010">Multiracial 2010</option>
+									<option value="Mul2000">Multiracial 2000</option>
+									<option value="Lat2010">Hispanic/Latino 2010</option>
+									<option value="Lat2000">Hispanic/Latino 2000</option>
+									<optgroup label="Demographics - Percent">
+									<option value="WhiPer2010">% White 2010</option>
+									<option value="WhiPer2000">% White 2000</option>
+									<option value="BlaPer2010">% Black 2010</option>
+									<option value="BlaPer2000">% Black 2000</option>
+									<option value="NatPer2010">% N.American/Alaskan 2010</option>
+									<option value="NatPer2000">% N.American/Alaskan 2000</option>
+									<option value="AsiPer2010">% Asian 2010</option>
+									<option value="AsiPer2000">% Asian 2000</option>
+									<option value="HawPer2010">% Hawaiian/Pacific-Isl. 2010</option>
+									<option value="HawPer2000">% Hawaiian/Pacific-Isl. 2000</option>
+									<option value="MulPer2010">% Multiracial 2010</option>
+									<option value="MulPer2000">% Multiracial 2000</option>
+									<option value="LatPer2010">% Hispanic/Latino 2010</option>
+									<option value="LatPer2000">% Hispanic/Latino 2000</option>
+									<optgroup label="Pres. Elections - Dem./Rep. Difference">
+									<option value="DemDiff16">% Democrat over Republican 2016</option>
+									<option value="RepDiff16">% Republican over Democrat 2016</option>
+									<option value="DemDiff12">% Democrat over Republican 2012</option>
+									<option value="RepDiff12">% Republican over Democrat 2012</option>
+									<option value="DemDiff08">% Democrat over Republican 2008</option>
+									<option value="RepDiff08">% Republican over Democrat 2008</option>
+									<optgroup label="Presidential Elections - % of Vote">
+									<option value="DemPer16">% Democrat 2016</option>
+									<option value="RepPer16">% Republican 2016</option>
+									<option value="OthPer16">% Third Party 2016</option>
+									<option value="DemPer12">% Democrat 2012</option>
+									<option value="RepPer12">% Republican 2012</option>
+									<option value="OthPer12">% Third Party 2012</option>
+									<option value="DemPer08">% Democrat 2008</option>
+									<option value="RepPer08">% Republican 2008</option>
+									<option value="OthPer08">% Third Party 2008</option>
+									<optgroup label="Presidential Elections - % Vote Swing">
+									<option value="electionDiffDem16">% Swing To Democrat 2016</option>
+									<option value="electionDiffRep16">% Swing To Republican 2016</option>
+									<option value="electionDiffDem12">% Swing To Democrat 2012</option>
+									<option value="electionDiffRep12">% Swing To Republican 2012</option>
+							    </select>
+							    <br><br><br>
+								Greater than/Less than:
+								<select name="cars" id="cars22" disabled class="form-control">
+									<option value="greater">Greater than</option>
+									<option value="less">Less than</option>
+								</select>
+								Choose number:
+								<input id="cars23" type="number" disabled class="form-control">
+							</div>
+							<hr>
+							
+							<div class = "form-group" id="createMap"> 
+								Color (criteria matched):
+								<br>
+								<input type="text" id="userColor11" class="colorChoice">
+								<br>
+								Color (all others):
+								<br>
+								<input type="text" id="userColor22" class="colorChoice">
+								<br>
+								Map title:
+								<input type="text" id="customTitle" class="form-control">
+								<br>
+							</div>
+							
+							<div class = "modal-footer">
+								<button id="formTestSubmit" class="btn btn-secondary" data-dismiss="modal">Submit</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
+			<br>
+				
+				
+				
+			
 			
 			<!-- Map Title -->
 			<div id="mapTitleText"></div>
-			<div id = "userMessage">Click a county and open data charts/tables on left for more information. For "Multi-Select": left click to add to selection, right click to remove from selection. </div>
+			<div id = "userMessage"></div>
 		</div>
 		
 		<!-- Footer -->
@@ -646,7 +672,7 @@
 
 	<!-- Javascript -->
 	<script src="geography/counties_latlong-min.js" type="text/javascript"></script>
-	<script src="index.js" type="text/javascript"></script>
+	<script src="index-min.js" type="text/javascript"></script>
     </body>
 </html>
 

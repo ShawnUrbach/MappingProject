@@ -1,7 +1,7 @@
 /*BASIC ELEMENT STYLES*/
 			
 html, body {
-	height: 94%;
+	height: 95%;
 }
 
 body {
@@ -153,7 +153,6 @@ td {
 	.legend {
 		line-height: 10px;
 		padding: 8px;
-		height: 100px;
 	}
 	
 	#colorlegend1,#colorlegend2,#colorlegend3,#colorlegend4,#colorlegend5,#colorlegend6,#colorlegend7,#colorlegend8,#colorlegend9,
@@ -203,12 +202,7 @@ td {
 }
 
 @media screen and (max-width: 425px) {
-	#countySearch {
-		width: 100%;
-		display: inline-block;
-		float: left;
-		margin-bottom: 5px;
-	}
+	
 	
 	#divide {
 		display: none;
@@ -365,6 +359,16 @@ td {
 		clear: both;
 		top: -100px;
 		font-size: 12px;
+	}
+}
+
+@media screen and (max-width: 370px) {
+	.sidebar {
+		margin: 210% 0 0 0;
+	}
+	
+	html, body {
+		height: 91%;
 	}
 }
 
@@ -701,10 +705,12 @@ label {
 
 /*SHARE MODAL STYLES*/ 
 
+/*
 #linkShare {
 	background-color: #777;
 	display: inline;
 }
+*/
 
 #linkShareArea{
 	display: inline-block;
@@ -825,6 +831,16 @@ td.highlight {
 	text-align: left;
 }
 
+#createMap2, #createMap3 {
+	padding-top: 0px;
+}
+
+.modal-content .form-group {
+	padding-left: 15px;
+	padding-top: 15px;
+	text-align: left;
+}
+
 .sp-replacer:hover, .sp-replacer.sp-active, .sp-container {
 	border-color: blue;
 }
@@ -837,3 +853,74 @@ td.highlight {
 	border-color: blue !important;
 }
 
+hr {
+	margin: 5px;
+	height: 5px;
+	border-color: #e5e5e5;
+}
+
+
+
+@media screen and (max-width: 500px) {
+	.form-control {
+		width: 250px;
+	}
+
+	input[type="number"] {
+		width: 100px;
+	}
+	
+	#county_search {
+		width: 100%;
+		margin-bottom: 5px;
+	}
+}
+
+@media screen and (min-width: 500px) {
+	.form-control {
+		width: 300px;
+	}
+
+	input[type="number"] {
+		width: 125px;
+	}
+}
+
+
+@media screen and (min-width: 500px) {
+	#mapHref{
+		padding: 5px;
+		padding-left: 20px;
+}
+}
+
+@media screen and (max-width: 500px) {
+	#mapHref{
+		padding-bottom: 0px;
+}
+}
+
+.buttons {
+	background-color: #808080;
+	border: 1px solid;
+}
+
+.buttons:hover {
+	background-color: #d3d3d3;
+	border-color: #d3d3d3;
+}
+
+
+
+
+*:active, *:focus { 
+	outline-color: blue !important;
+}
+
+
+#linkShareArea {
+		margin-top: -5px;
+	}
+	#mapTitleText{
+		margin-top: -10px;
+	}
