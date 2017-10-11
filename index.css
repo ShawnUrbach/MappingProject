@@ -5,7 +5,7 @@ html, body {
 }
 
 body {
-	padding: 70px 2% 0 2%;
+	padding: 70px 0% 0 0%;
 	margin: 0;
 }
 
@@ -241,7 +241,7 @@ td {
 .sidebar {
 	background-color: white;
 	height: 400px;
-	margin: 60px 50px 0 2%;
+	margin: 60px 50px 0 0%;
 	position: fixed;
 	width: 28%;
 	z-index: 1029;
@@ -728,7 +728,7 @@ label {
 	background-color: #777;
 }
 
-#exampleModalLabel {
+.modal-title {
 	font-weight: bold;
 	text-align: left;
 	display: inline;
@@ -811,27 +811,27 @@ td.highlight {
 
 
 
-#cars {
+#userVariable1 {
 	position: absolute;
 	z-index: 1000000;
 }
 
-#cars21 {
+#userVariable2 {
 	position: absolute;
 	z-index: 9999;
 }
 
 
-#cars option:hover, #cars21 option:hover {
+#userVariable1 option:hover, #userVariable2 option:hover {
     color: white;
 	background-color: #008ef8;
 }
 
-#createMap {
+#customMap {
 	text-align: left;
 }
 
-#createMap2, #createMap3 {
+#customMap2, #customMap3 {
 	padding-top: 0px;
 }
 

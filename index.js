@@ -1,6 +1,8 @@
 //-------------------------------------------------VARIABLE DECLARATIONS--------------------------------------------------//
 
 
+
+
 //Variables: GeoJsons
 var new2010;
 var election2012;
@@ -80,7 +82,9 @@ var userVariable;
 var userVariable2;
 var seeifitworks;
 
+
 //-------------------------------------------------SELECTION TABLE--------------------------------------------------//
+
 
 
 var selectionTable;
@@ -304,7 +308,7 @@ function defaultStyle(feature) {
 		
 		
 		
-		switch ($('#cars').val()){
+		switch ($('#userVariable1').val()){
 			case 'Pop2010':
 				userVariable = feature.properties.POP2010;
 				break; 
@@ -469,7 +473,7 @@ function defaultStyle(feature) {
 				break;	
 		}
 		
-		switch ($('#cars21').val()){
+		switch ($('#userVariable2').val()){
 			case 'Pop2010':
 				userVariable2 = feature.properties.POP2010;
 				break; 
@@ -637,10 +641,10 @@ function defaultStyle(feature) {
 		
 		if (currentMap == 'userMap'){
 			if($('#radioyes').is(':checked')){
-				return GetUserColor2(userVariable,userVariable2,$('#cars3').val(),$('#cars23').val());
+				return GetUserColor2(userVariable,userVariable2,$('#userNumber1').val(),$('#userNumber2').val());
 			}
 			else {
-				return GetUserColor(userVariable,$('#cars3').val());
+				return GetUserColor(userVariable,$('#userNumber1').val());
 			}
 		}
 			
@@ -658,14 +662,14 @@ function defaultStyle(feature) {
 
 
 
-var userColor1 = $('#userColor11').spectrum("get").toHexString();;
-$('#userColor11').on('change.spectrum', function(){
-	userColor1 = $('#userColor11').spectrum("get").toHexString();
+var userColor1 = $('#customMapColor1').spectrum("get").toHexString();;
+$('#customMapColor1').on('change.spectrum', function(){
+	userColor1 = $('#customMapColor1').spectrum("get").toHexString();
 });
 
-var userColor2 = $('#userColor22').spectrum("get").toHexString();;
-$('#userColor22').on('change.spectrum', function(){
-	userColor2 = $('#userColor22').spectrum("get").toHexString();
+var userColor2 = $('#customMapColor2').spectrum("get").toHexString();;
+$('#customMapColor2').on('change.spectrum', function(){
+	userColor2 = $('#customMapColor2').spectrum("get").toHexString();
 });
 
 
@@ -677,8 +681,8 @@ $(customTitle).change(function() {
 
 
 function GetUserColor(w,no1) {
-	var comparison = $('#cars2').val();
-	var comparison3 = $('#cars3').val();
+	var comparison = $('#userOperand1').val();
+	var comparison3 = $('#userNumber1').val();
 	if (comparison == 'greater'){
 		seeifitworks = '>'+ comparison3;
 		if (w > no1){
@@ -700,10 +704,10 @@ function GetUserColor(w,no1) {
 }
 
 function GetUserColor2(w,z,no1,no2) {
-	var comparison = $('#cars2').val();
-	var comparison2 = $('#cars22').val();
-	var comparison3 = $('#cars3').val();
-	var comparison4 = $('#cars23').val();
+	var comparison = $('#userOperand1').val();
+	var comparison2 = $('#userOperand2').val();
+	var comparison3 = $('#userNumber1').val();
+	var comparison4 = $('#userNumber2').val();
 	if ((comparison == 'greater') && (comparison2 == 'greater')){
 		
 		if($('#radioAnd').is(':checked')){
@@ -1031,10 +1035,12 @@ function insertDemoChart(newChart,year){
 		});	
 }
 
+
+
 //Behavior for mousever and click
 function onEachFeature(feature, layer) {
 	
-	
+
 
 	//Behavior for Election Features
 	function Election_onEachFeature(){
@@ -1576,6 +1582,8 @@ function onEachFeature(feature, layer) {
 	//Functions for Binding Labels
 	if (feature.properties) {
 		
+		
+		
 		function displayElectionLables(dem, rep, oth){
 			var total = dem + rep + oth
 			var percentDem = (dem/total)*100;
@@ -1732,6 +1740,7 @@ function onEachFeature(feature, layer) {
 		}
 		
 		$('#ex21').slider().on('change', function(ev){	
+		layer.closeTooltip();
 			var newVal2 = $('#ex21').data('slider').getValue();
 			if (newVal2 == 2016 && ethnicGroup == 'president'){
 				displayElectionLables(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
@@ -1761,6 +1770,7 @@ function onEachFeature(feature, layer) {
 		});
 		
 		$('#ex22').slider().on('change', function(ev){	
+		layer.closeTooltip();
 			var newVal2 = $('#ex22').data('slider').getValue();
 			if (newVal2 == 2010 && ethnicGroup == 'White'){
 				displayDemoLables(feature.properties.POP2010, feature.properties.WHI2010);
@@ -1815,6 +1825,11 @@ function onEachFeature(feature, layer) {
 			}
 		});
 		
+		$('.layercontrol').click(function(){
+			layer.closeTooltip();
+		});
+		
+		
 		$('#election_16').click(function(){
 			displayElectionLables(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
 		});
@@ -1859,10 +1874,15 @@ function onEachFeature(feature, layer) {
 			displayDemoLables(feature.properties.POP2010, feature.properties.HAW2010);
 		});	
 		
-		$('#formTestSubmit').click(function(){
+		$('#customMapSubmit').click(function(){
 			displayUserLables();
 		});
+		
+		
+		
 	}
+	
+
 }
 
 //Collapses sidebar when user clicks header
@@ -1914,32 +1934,16 @@ sidebar = L.control.sidebar('sidebar').addTo(map);
 //Map options - toggles legend
 document.getElementById('disable_legend').addEventListener("click", function(){
 	if (document.getElementById('disable_legend').checked) {
-        map.removeControl(currentLegend);
+        $('.legend').css("display", "none");
     } 
 	else {
-        map.addControl(currentLegend);
+        $('.legend').css("display", "inline");
     }
 });
 
-//Map options - toggles Big Map Mode (enlarge map)
-document.getElementById('bigMapMode').addEventListener("click", function(){
-	if (document.getElementById('bigMapMode').checked) {
-		var body = document.getElementsByTagName("body")[0];
-		var html = document.getElementsByTagName("html")[0];
-		body.style.padding = "0";
-		body.style.height = "100%";
-		html.style.height = "100%";
-		map.invalidateSize();
-    } 
-	else {
-		var body = document.getElementsByTagName("body")[0];
-		var html = document.getElementsByTagName("html")[0];
-        body.style.padding = "70px 2% 0 2%";
-		body.style.height = "94%";
-		html.style.height = "94%";
-		map.invalidateSize();
-    }
-});
+
+
+
 
 //Draggable sidebar
 //$('#sidebar')
@@ -2155,7 +2159,7 @@ $('#election_16').click(function(){
 
 $('#census_10').click(function(){
 	layerControls('census2010','2010: POPULATION GROWTH SINCE 2000',censusLegend,'popgrowth');
-	addHash = "&" + currentMap;
+	addHash = "&" + currentMap;	
 });
 
 
@@ -2212,7 +2216,7 @@ $('#diff_16').click(function(){
 	addHash = "&" + currentMap;
 });
 
-$('#formTestSubmit').click(function(){
+$('#customMapSubmit').click(function(){
 	layerControls('userMap',customTitleVal,userLegend,'');
 	$('#userlegend1').css("background-color", userColor1);
 	$('#userlegend2').css("background-color", userColor2);
@@ -2816,15 +2820,17 @@ hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
 
 	
 $('#radioyes').click(function(){
-	$("#cars21").prop('disabled', false);
-	$("#cars22").prop('disabled', false);
-	$("#cars23").prop('disabled', false);
+	$("#userVariable2").prop('disabled', false);
+	$("#userOperand2").prop('disabled', false);
+	$("#userNumber2").prop('disabled', false);
 	$("input[name=optradio2]").prop('disabled', false);
 });
 
 $('#radiono').click(function(){
-	$("#cars21").prop('disabled', true).val('');
-	$("#cars22").prop('disabled', true).val('');
-	$("#cars23").prop('disabled', true).val('');
+	$("#userVariable2").prop('disabled', true).val('');
+	$("#userOperand2").prop('disabled', true).val('');
+	$("#userNumber2").prop('disabled', true).val('');
 	$("input[name=optradio2]").prop('disabled', true);
 });
+
+
