@@ -1,8 +1,5 @@
 //-------------------------------------------------VARIABLE DECLARATIONS--------------------------------------------------//
 
-
-
-
 //Variables: GeoJsons
 var new2010;
 var election2012;
@@ -72,22 +69,22 @@ var selectMode = false;
 var selectList = [];
 var selected = false;
 
-var ethnicGroup;
-var tooltipPosition;
+//Variables: URL
 var addHash;
 var stringURL = window.location.hash;
 var hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
 
+//Variables: User Maps
 var userVariable;
 var userVariable2;
-var seeifitworks;
+var comparisonText;
 
+//Variables: Other
+var ethnicGroup;
+var tooltipPosition;
+var selectionTable;
 
 //-------------------------------------------------SELECTION TABLE--------------------------------------------------//
-
-
-
-var selectionTable;
 
 selectionTable = $('#tableTest').DataTable({
 	paging: false,
@@ -124,9 +121,9 @@ selectionTable.on( 'mouseenter', 'td', function () {
 	$( selectionTable.column( colIdx ).nodes() ).addClass( 'highlight' );
 } );
 
+//-------------------------------------------------COLOR INPUTS--------------------------------------------------//
 
-//-------------------------------------------------FUNCTIONS--------------------------------------------------//
-
+//Options for color inputs
 $(".colorChoice").spectrum({
     color: "black",
 	showPalette: true,
@@ -137,7 +134,6 @@ $(".colorChoice").spectrum({
 		['purple', 'turquoise', 'pink'],
     ]
 });
-
 
 //Highlight and Selection Colors
 var highlightColor = $("#highlightColor").spectrum("get").toHexString();
@@ -150,10 +146,42 @@ $("#selectionColor").on('change.spectrum', function(){
 	selectionColor = $("#selectionColor").spectrum("get").toHexString();
 });
 
+//-------------------------------------------------CUSTOM USER MAP--------------------------------------------------//
 
+//Get Custom Map colors
+var userColor1 = $('#customMapColor1').spectrum("get").toHexString();;
+$('#customMapColor1').on('change.spectrum', function(){
+	userColor1 = $('#customMapColor1').spectrum("get").toHexString();
+});
 
+var userColor2 = $('#customMapColor2').spectrum("get").toHexString();;
+$('#customMapColor2').on('change.spectrum', function(){
+	userColor2 = $('#customMapColor2').spectrum("get").toHexString();
+});
 
+//Get Custom Map title
+var customTitle = $('#customTitle');
+var customTitleVal = $('#customTitle').val();
+$(customTitle).change(function() {
+	customTitleVal = $('#customTitle').val();
+});
 
+//Disable variable #2 options if radio is checked
+$('#radioyes').click(function(){
+	$("#userVariable2").prop('disabled', false);
+	$("#userOperand2").prop('disabled', false);
+	$("#userNumber2").prop('disabled', false);
+	$("input[name=optradio2]").prop('disabled', false);
+});
+
+$('#radiono').click(function(){
+	$("#userVariable2").prop('disabled', true).val('');
+	$("#userOperand2").prop('disabled', true).val('');
+	$("#userNumber2").prop('disabled', true).val('');
+	$("input[name=optradio2]").prop('disabled', true);
+});
+
+//-------------------------------------------------FUNCTIONS--------------------------------------------------//
 
 //Activate CSS tooltips
 $(document).ready(function(){
@@ -186,8 +214,7 @@ function defaultStyle(feature) {
 		var total2 = dem2+rep2+oth2;
 		var percentDem2 = (dem2/total2)*100;
 		var percentRep2 = (rep2/total2)*100;
-		var diff2 = percentDem2-percentRep2;
-		
+		var diff2 = percentDem2-percentRep2;	
 		return diff-diff2;
 	}
 	
@@ -200,8 +227,7 @@ function defaultStyle(feature) {
 		var total2 = dem2+rep2+oth2;
 		var percentDem2 = (dem2/total2)*100;
 		var percentRep2 = (rep2/total2)*100;
-		var diff2 = percentRep2-percentDem2;
-		
+		var diff2 = percentRep2-percentDem2;		
 		return diff-diff2;
 	}
 	
@@ -223,9 +249,6 @@ function defaultStyle(feature) {
 	}
 		
 	function findLayer(){
-		
-
-		
 		
 		if (currentMap == 'election2016'){
 			return GetColor(elections(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016),30,20,10,0,-10,-20,-30,-100);
@@ -306,8 +329,7 @@ function defaultStyle(feature) {
 			return GetColor2(demos(feature.properties.POP2000, feature.properties.HAW2000),1.6,1.4,1.2,1.0,0.8,0.6,0.4,0.2);
 		}
 		
-		
-		
+		//Custom Map - get first user variable
 		switch ($('#userVariable1').val()){
 			case 'Pop2010':
 				userVariable = feature.properties.POP2010;
@@ -473,6 +495,7 @@ function defaultStyle(feature) {
 				break;	
 		}
 		
+		//Custom Map - get second user variable
 		switch ($('#userVariable2').val()){
 			case 'Pop2010':
 				userVariable2 = feature.properties.POP2010;
@@ -638,7 +661,7 @@ function defaultStyle(feature) {
 				break;	
 		}
 			
-		
+		//Change custom map colors
 		if (currentMap == 'userMap'){
 			if($('#radioyes').is(':checked')){
 				return GetUserColor2(userVariable,userVariable2,$('#userNumber1').val(),$('#userNumber2').val());
@@ -646,8 +669,7 @@ function defaultStyle(feature) {
 			else {
 				return GetUserColor(userVariable,$('#userNumber1').val());
 			}
-		}
-			
+		}		
 	}
 
 	return {
@@ -660,31 +682,12 @@ function defaultStyle(feature) {
 	};
 }
 
-
-
-var userColor1 = $('#customMapColor1').spectrum("get").toHexString();;
-$('#customMapColor1').on('change.spectrum', function(){
-	userColor1 = $('#customMapColor1').spectrum("get").toHexString();
-});
-
-var userColor2 = $('#customMapColor2').spectrum("get").toHexString();;
-$('#customMapColor2').on('change.spectrum', function(){
-	userColor2 = $('#customMapColor2').spectrum("get").toHexString();
-});
-
-
-var customTitle = $('#customTitle');
-var customTitleVal = $('#customTitle').val();
-$(customTitle).change(function() {
-	customTitleVal = $('#customTitle').val();
-});
-
-
+//Get custom map colors for one variable
 function GetUserColor(w,no1) {
-	var comparison = $('#userOperand1').val();
-	var comparison3 = $('#userNumber1').val();
-	if (comparison == 'greater'){
-		seeifitworks = '>'+ comparison3;
+	var userOperand1 = $('#userOperand1').val();
+	var userNumber1 = $('#userNumber1').val();
+	if (userOperand1 == 'greater'){
+		comparisonText = '>'+ userNumber1;
 		if (w > no1){
 			return userColor1;
 		}
@@ -692,8 +695,8 @@ function GetUserColor(w,no1) {
 			return userColor2;
 		}	
 	}
-	if (comparison == 'less'){
-		seeifitworks = '<'+ comparison3;
+	if (userOperand1 == 'less'){
+		comparisonText = '<'+ userNumber1;
 		if (w < no1){
 			return userColor1;
 		}
@@ -703,15 +706,16 @@ function GetUserColor(w,no1) {
 	}	
 }
 
+//Get custom map colors for multiple variables
 function GetUserColor2(w,z,no1,no2) {
-	var comparison = $('#userOperand1').val();
-	var comparison2 = $('#userOperand2').val();
-	var comparison3 = $('#userNumber1').val();
-	var comparison4 = $('#userNumber2').val();
-	if ((comparison == 'greater') && (comparison2 == 'greater')){
+	var userOperand1 = $('#userOperand1').val();
+	var userOperand2 = $('#userOperand2').val();
+	var userNumber1 = $('#userNumber1').val();
+	var userNumber2 = $('#userNumber2').val();
+	if ((userOperand1 == 'greater') && (userOperand2 == 'greater')){
 		
 		if($('#radioAnd').is(':checked')){
-			seeifitworks = '>'+ comparison3 + '(var1) & >' + comparison4+'(var2)';
+			comparisonText = '>'+ userNumber1 + '(var1) & >' + userNumber2+'(var2)';
 			if ((w > no1) && (z > no2)){
 				return userColor1;
 			}
@@ -721,7 +725,7 @@ function GetUserColor2(w,z,no1,no2) {
 		}
 
 		if($('#radioOr').is(':checked')){
-			seeifitworks = '>'+ comparison3 + '(var1) or >' + comparison4+'(var2)';
+			comparisonText = '>'+ userNumber1 + '(var1) or >' + userNumber2+'(var2)';
 			if ((w > no1) || (z > no2)){
 				return userColor1;
 			}
@@ -730,10 +734,10 @@ function GetUserColor2(w,z,no1,no2) {
 			}
 		}				
 	}
-	if ((comparison == 'less') && (comparison2 == 'less')){
+	if ((userOperand1 == 'less') && (userOperand2 == 'less')){
 		
 		if($('#radioAnd').is(':checked')){
-			seeifitworks = '<'+ comparison3 + '(var1) & <' + comparison4+'(var2)';
+			comparisonText = '<'+ userNumber1 + '(var1) & <' + userNumber2+'(var2)';
 			if ((w < no1) && (z < no2)){
 				return userColor1;
 			}
@@ -743,7 +747,7 @@ function GetUserColor2(w,z,no1,no2) {
 		}
 
 		if($('#radioOr').is(':checked')){
-			seeifitworks = '<'+ comparison3 + '(var1) or <' + comparison4+'(var2)';
+			comparisonText = '<'+ userNumber1 + '(var1) or <' + userNumber2+'(var2)';
 			if ((w < no1) || (z < no2)){
 				return userColor1;
 			}
@@ -752,9 +756,9 @@ function GetUserColor2(w,z,no1,no2) {
 			}
 		}
 	}
-	if ((comparison == 'greater') && (comparison2 == 'less')){
+	if ((userOperand1 == 'greater') && (userOperand2 == 'less')){
 		if($('#radioAnd').is(':checked')){
-			seeifitworks = '>'+ comparison3 + '(var1) & <' + comparison4+'(var2)';
+			comparisonText = '>'+ userNumber1 + '(var1) & <' + userNumber2+'(var2)';
 			if ((w > no1) && (z < no2)){
 				return userColor1;
 			}
@@ -763,7 +767,7 @@ function GetUserColor2(w,z,no1,no2) {
 			}
 		}
 		if($('#radioOr').is(':checked')){
-			seeifitworks = '>'+ comparison3 + '(var1) or <' + comparison4+'(var2)';
+			comparisonText = '>'+ userNumber1 + '(var1) or <' + userNumber2+'(var2)';
 			if ((w > no1) || (z < no2)){
 				return userColor1;
 			}
@@ -772,9 +776,9 @@ function GetUserColor2(w,z,no1,no2) {
 			}
 		}
 	}
-	if ((comparison == 'less') && (comparison2 == 'greater')){
+	if ((userOperand1 == 'less') && (userOperand2 == 'greater')){
 		if($('#radioAnd').is(':checked')){
-			seeifitworks = '<'+ comparison3 + '(var1) & >' + comparison4+'(var2)';
+			comparisonText = '<'+ userNumber1 + '(var1) & >' + userNumber2+'(var2)';
 			if ((w < no1) && (z > no2)){
 				return userColor1;
 			}
@@ -784,7 +788,7 @@ function GetUserColor2(w,z,no1,no2) {
 		}
 		
 		if($('#radioOr').is(':checked')){
-			seeifitworks = '<'+ comparison3 + '(var1) or >' + comparison4+'(var2)';
+			comparisonText = '<'+ userNumber1 + '(var1) or >' + userNumber2+'(var2)';
 			if ((w < no1) || (z > no2)){
 				return userColor1;
 			}
@@ -792,11 +796,8 @@ function GetUserColor2(w,z,no1,no2) {
 				return userColor2;
 			}
 		}	
-	}
-	
-	
+	}	
 }
-
 
 //Get colors (two variables, light blue/red color scheme)
 function GetColor(w,no1,no2,no3,no4,no5,no6,no7,no8) {
@@ -895,87 +896,85 @@ function zoomToFeature(e) {
 //Insert pie graph using Chart.js for Election 2008/2012
 function insertElectionChart(newChart, year){
 	var ctx = document.getElementById(newChart);
-		var chartE2016 = new Chart(ctx, {
-			type: 'pie',
-			data: {
-				labels: ['Democrat', 'Republican', 'Other'],  //X Axis
-				datasets: [{
-					data: election_data,  //Y Axis
-					borderWidth: 1,
-					backgroundColor: [
-						'blue',
-						'red',
-						'yellow'
-					],
-				}]
+	var chartE2016 = new Chart(ctx, {
+		type: 'pie',
+		data: {
+			labels: ['Democrat', 'Republican', 'Other'],  //X Axis
+			datasets: [{
+				data: election_data,  //Y Axis
+				borderWidth: 1,
+				backgroundColor: [
+					'blue',
+					'red',
+					'yellow'
+				],
+			}]
+		},
+		options: {
+			animation: {
+				duration: 500,
+				easing: 'easeInExpo',
 			},
-			options: {
-				animation: {
-					duration: 500,
-					easing: 'easeInExpo',
-				},
-				maintainAspectRatio: true,
-				tooltips: {
-					callbacks: {
-						label: function(tooltipItem, data) {
-							var value = data.datasets[0].data[tooltipItem.index];
-							var label = data.labels[tooltipItem.index];
-							var percentage = (value).toFixed(2);
-							return label + ' ' + percentage + '%';
-						}
+			maintainAspectRatio: true,
+			tooltips: {
+				callbacks: {
+					label: function(tooltipItem, data) {
+						var value = data.datasets[0].data[tooltipItem.index];
+						var label = data.labels[tooltipItem.index];
+						var percentage = (value).toFixed(2);
+						return label + ' ' + percentage + '%';
 					}
-				},
-				title: {
-					display: true,
-					text: year
 				}
+			},
+			title: {
+				display: true,
+				text: year
 			}
-		});	
-	
-
+		}
+	});	
 }
 
 //Insert line graph using Chart.js for Census 2000/2010
 function insertCensusChart(){
 	var ctx = document.getElementById("chartGrowth");
-		var chartE2016 = new Chart(ctx, {
-			type: 'line',
-			data: {
-				labels: ['1980', '1990', '2000', '2010'],  //X Axis
-				datasets: [{
-					label: "Population Growth",
-					data: census_data,  //Y Axis
-					borderWidth: 1,
-					backgroundColor: 'red',
-					borderColor: 'red',
-					lineTension: 0.1,
-					fill: false,
-				}]
+	var chartE2016 = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: ['1980', '1990', '2000', '2010'],  //X Axis
+			datasets: [{
+				label: "Population Growth",
+				data: census_data,  //Y Axis
+				borderWidth: 1,
+				backgroundColor: 'red',
+				borderColor: 'red',
+				lineTension: 0.1,
+				fill: false,
+			}]
+		},
+		options: {
+			animation: {
+				duration: 500,
+				easing: 'easeInExpo',
 			},
-			options: {
-				animation: {
-					duration: 500,
-					easing: 'easeInExpo',
-				},
-				maintainAspectRatio: true,
-				tooltips: {
-					callbacks: {
-						label: function(tooltipItem, data) {
-							var value = data.datasets[0].data[tooltipItem.index];
-							var label = data.labels[tooltipItem.index];
-							return 'Pop: '+ value.toLocaleString();
-						}
+			maintainAspectRatio: true,
+			tooltips: {
+				callbacks: {
+					label: function(tooltipItem, data) {
+						var value = data.datasets[0].data[tooltipItem.index];
+						var label = data.labels[tooltipItem.index];
+						return 'Pop: '+ value.toLocaleString();
 					}
-				},
-				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero:true
-						}
-					}]
 				}
+			},
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero:true
+					}
+				}]
 			}
-		});	
+		}
+	});	
 }
 
 //Changes Demographics 2000/2010 layer labels for smaller screen sizes
@@ -991,57 +990,53 @@ else {
 //Insert bar graph using Chart.js for Demographics 2000/2010
 function insertDemoChart(newChart,year){
 	var ctx = document.getElementById(newChart);
-		var chartE2016 = new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: demolabels,  //X Axis
-				datasets: [{
-					label: "Race by Percentage of Total",
-					data: demo_data,  //Y Axis
-					borderWidth: 1,
-					borderColor: 'red',
-					lineTension: 0.1,
-					fill: false,
-				}]
+	var chartE2016 = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: demolabels,  //X Axis
+			datasets: [{
+				label: "Race by Percentage of Total",
+				data: demo_data,  //Y Axis
+				borderWidth: 1,
+				borderColor: 'red',
+				lineTension: 0.1,
+				fill: false,
+			}]
+		},
+		options: {
+			animation: {
+				duration: 1000,
+				easing: 'easeInExpo',
 			},
-			options: {
-				animation: {
-					duration: 1000,
-					easing: 'easeInExpo',
-				},
-				maintainAspectRatio: true,
-				tooltips: {
-					callbacks: {
-						label: function(tooltipItem, data) {
-							var value = data.datasets[0].data[tooltipItem.index];
-							var label = data.labels[tooltipItem.index];
-							var percentage = (value).toFixed(2);
-							return percentage + '%';
-						}
+			maintainAspectRatio: true,
+			tooltips: {
+				callbacks: {
+					label: function(tooltipItem, data) {
+						var value = data.datasets[0].data[tooltipItem.index];
+						var label = data.labels[tooltipItem.index];
+						var percentage = (value).toFixed(2);
+						return percentage + '%';
 					}
-				},
-				title: {
-					display: true,
-					text: year
-				},
-				scales: {
-					xAxes: [{
-						ticks: {
-							autoSkip:false
-						}
-					}]
 				}
+			},
+			title: {
+				display: true,
+				text: year
+			},
+			scales: {
+				xAxes: [{
+					ticks: {
+						autoSkip:false
+					}
+				}]
 			}
-		});	
+		}
+	});	
 }
-
-
 
 //Behavior for mousever and click
 function onEachFeature(feature, layer) {
 	
-
-
 	//Behavior for Election Features
 	function Election_onEachFeature(){
 		
@@ -1239,8 +1234,7 @@ function onEachFeature(feature, layer) {
 					selectList.splice(indextest, 1);
 					selectionTable.row( indextest ).remove().draw();
 				}
-				
-				
+								
 				if (feature.properties.ST != 'AK'){
 					demTot -= parseInt(feature.properties.DEM2016);
 					repTot -= parseInt(feature.properties.REP2016);
@@ -1380,35 +1374,35 @@ function onEachFeature(feature, layer) {
 	//Behavior for Demographics Features
 	function Demo_onEachFeature(){
 	
-	var whitePer2010 = ((feature.properties.WHI2010 / (feature.properties.POP2010))*100);
-	var whitePer2000 = ((feature.properties.WHI2000 / (feature.properties.POP2000))*100);
-	var blackPer2010 = ((feature.properties.BLA2010 / (feature.properties.POP2010))*100);
-	var blackPer2000 = ((feature.properties.BLA2000 / (feature.properties.POP2000))*100);
-	var nativePer2010 = ((feature.properties.NAT2010 / (feature.properties.POP2010))*100);
-	var nativePer2000 = ((feature.properties.NAT2000 / (feature.properties.POP2000))*100);
-	var asianPer2010 = ((feature.properties.ASI2010 / (feature.properties.POP2010))*100);
-	var asianPer2000 = ((feature.properties.ASI2000 / (feature.properties.POP2000))*100);
-	var pacificPer2010 = ((feature.properties.HAW2010 / (feature.properties.POP2010))*100);
-	var pacificPer2000 = ((feature.properties.HAW2000 / (feature.properties.POP2000))*100);
-	var multiracialPer2010 = ((feature.properties.MUL2010 / (feature.properties.POP2010))*100);
-	var multiracialPer2000 = ((feature.properties.MUL2000 / (feature.properties.POP2000))*100);
-	var hispanicPer2010 = ((feature.properties.LAT2010 / (feature.properties.POP2010))*100);
-	var hispanicPer2000 = ((feature.properties.LAT2000 / (feature.properties.POP2000))*100);
-	
-	var perWhite2010;
-	var perWhite2000;
-	var perBlack2010;
-	var perBlack2000;
-	var perNative2010;
-	var perNative2000;
-	var perAsian2010;
-	var perAsian2000;
-	var perPacific2010;
-	var perPacific2000;
-	var perMultiracial2010;
-	var perMultiracial2000;
-	var perHispanic2010;
-	var perHispanic2000;
+		var whitePer2010 = ((feature.properties.WHI2010 / (feature.properties.POP2010))*100);
+		var whitePer2000 = ((feature.properties.WHI2000 / (feature.properties.POP2000))*100);
+		var blackPer2010 = ((feature.properties.BLA2010 / (feature.properties.POP2010))*100);
+		var blackPer2000 = ((feature.properties.BLA2000 / (feature.properties.POP2000))*100);
+		var nativePer2010 = ((feature.properties.NAT2010 / (feature.properties.POP2010))*100);
+		var nativePer2000 = ((feature.properties.NAT2000 / (feature.properties.POP2000))*100);
+		var asianPer2010 = ((feature.properties.ASI2010 / (feature.properties.POP2010))*100);
+		var asianPer2000 = ((feature.properties.ASI2000 / (feature.properties.POP2000))*100);
+		var pacificPer2010 = ((feature.properties.HAW2010 / (feature.properties.POP2010))*100);
+		var pacificPer2000 = ((feature.properties.HAW2000 / (feature.properties.POP2000))*100);
+		var multiracialPer2010 = ((feature.properties.MUL2010 / (feature.properties.POP2010))*100);
+		var multiracialPer2000 = ((feature.properties.MUL2000 / (feature.properties.POP2000))*100);
+		var hispanicPer2010 = ((feature.properties.LAT2010 / (feature.properties.POP2010))*100);
+		var hispanicPer2000 = ((feature.properties.LAT2000 / (feature.properties.POP2000))*100);
+		
+		var perWhite2010;
+		var perWhite2000;
+		var perBlack2010;
+		var perBlack2000;
+		var perNative2010;
+		var perNative2000;
+		var perAsian2010;
+		var perAsian2000;
+		var perPacific2010;
+		var perPacific2000;
+		var perMultiracial2010;
+		var perMultiracial2000;
+		var perHispanic2010;
+		var perHispanic2000;
 	
 		//Binds Table Data
 		function bindDemoTable(){
@@ -1581,9 +1575,7 @@ function onEachFeature(feature, layer) {
 	
 	//Functions for Binding Labels
 	if (feature.properties) {
-		
-		
-		
+				
 		function displayElectionLables(dem, rep, oth){
 			var total = dem + rep + oth
 			var percentDem = (dem/total)*100;
@@ -1612,8 +1604,7 @@ function onEachFeature(feature, layer) {
 			+ ", " + feature.properties.ST
 			+ "</b></u></big>");
 		}
-		
-		
+				
 		function displayElectionLables2(dem, rep, oth, dem2, rep2, oth2){
 			
 			var party;
@@ -1828,8 +1819,7 @@ function onEachFeature(feature, layer) {
 		$('.layercontrol').click(function(){
 			layer.closeTooltip();
 		});
-		
-		
+			
 		$('#election_16').click(function(){
 			displayElectionLables(feature.properties.DEM2016, feature.properties.REP2016, feature.properties.OTH2016);
 		});
@@ -1876,13 +1866,8 @@ function onEachFeature(feature, layer) {
 		
 		$('#customMapSubmit').click(function(){
 			displayUserLables();
-		});
-		
-		
-		
+		});		
 	}
-	
-
 }
 
 //Collapses sidebar when user clicks header
@@ -1893,9 +1878,6 @@ function collapse_sidebar(id_name){
 }
 
 //-------------------------------------------------MAP LAYERS--------------------------------------------------//
-
-
-
 
 //Loads Leaflet map object
 map = L.map('map', {
@@ -1919,14 +1901,7 @@ osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 counties2010 = new L.GeoJSON.AJAX("geography/2010.geojson", {style: defaultStyle, onEachFeature: onEachFeature}).addTo(map);
 states = new L.GeoJSON.AJAX("geography/states-min.geojson", {style: statesStyle, pane: 'labels'}).addTo(map);
 
-
-
-
-
-
-
 //-------------------------------------------------SIDEBAR--------------------------------------------------//
-
 
 //Adds sidebar
 sidebar = L.control.sidebar('sidebar').addTo(map);
@@ -1941,22 +1916,7 @@ document.getElementById('disable_legend').addEventListener("click", function(){
     }
 });
 
-
-
-
-
-//Draggable sidebar
-//$('#sidebar')
-	//.draggable();
-	
-//$( "#sidebar" ).draggable( "option", "handle", "h1, #info_chart, #table, #settings, #sbar-tabs" );
-
-
 //-------------------------------------------------MAP ELEMENTS--------------------------------------------------//
-
-
-
-
 
 //Adds scale to map
 L.control.scale().addTo(map);
@@ -1987,7 +1947,7 @@ function createLegend8(color1,color2,color3,color4,color5,color6,color7,color8){
 }
 
 function createUserLegend(){
-	return '<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="userlegend1"></td><td>'+seeifitworks+'</td>' +
+	return '<table id="legendTable" cellspacing="0" style="width:100%"><tr><td class="color" id="userlegend1"></td><td>'+comparisonText+'</td>' +
 		'</tr><tr><td class="color" id="userlegend2"></td><td>Everything else</td></tr>';
 	
 }
@@ -1998,8 +1958,6 @@ userLegend.onAdd = function (map) {
 	div.innerHTML += createUserLegend();		
 	return div;
 };
-
-
 
 electionLegend = L.control({position: 'bottomright'});
 electionLegend.onAdd = function (map) {
@@ -2021,10 +1979,6 @@ electionLegend.onAdd = function (map) {
 	}
 };
 
-
-
-
-
 //Adds legend to map - Census Layers
 censusLegend = L.control({position: 'bottomright'});
 censusLegend.onAdd = function (map) {
@@ -2039,7 +1993,6 @@ demoLegend = L.control({position: 'bottomright'});
 demoLegend.onAdd = function (map) {
 	var div = L.DomUtil.create('div', 'legend');
 	
-
 	if (currentMap == 'demo2010' || currentMap == 'demo2000'){
 		div.innerHTML += createLegend9('0-60','60-65','65-70','70-75','75-80','80-85','85-90','90-95','95');
 	return div;
@@ -2075,9 +2028,7 @@ demoLegend.onAdd = function (map) {
 electionLegend.addTo(map);
 currentLegend = electionLegend;
 
-
 //-------------------------------------------------OTHER--------------------------------------------------//
-
 
 //Loading GIF displays on page load
 counties2010.on('data:loaded', function() {
@@ -2094,9 +2045,7 @@ if ($(window).width() < 450) {
 	document.getElementById("searchDiv").innerHTML = '';
 } 
 
-
 //-------------------------------------------------SEARCH BAR--------------------------------------------------//
-
 
 //Behavior of autocomplete search form
 options = {
@@ -2121,9 +2070,7 @@ options = {
 //Inserts autocomplete search form
 $("#county_search").easyAutocomplete(options);
 
-
 //-------------------------------------------------LAYER CONTROLS--------------------------------------------------//
-
 
 //Layer controls via drop down menu, dynamically change map title, legend, and table type
 currentMap = 'election2016';
@@ -2148,20 +2095,15 @@ function layerControls(curMap, maptitle, curLegend, ethnic){
     curLegend.addTo(map);	
 }
 
-
-
 $('#election_16').click(function(){
 	layerControls('election2016','2016: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
 	addHash = "&" + currentMap;
 });
 
-
-
 $('#census_10').click(function(){
 	layerControls('census2010','2010: POPULATION GROWTH SINCE 2000',censusLegend,'popgrowth');
 	addHash = "&" + currentMap;	
 });
-
 
 $('#demo_10').click(function(){
 	layerControls('demo2010','2010: PERCENT WHITE',demoLegend,'White');
@@ -2173,43 +2115,35 @@ $('#black_10').click(function(){
 	addHash = "&" + currentMap;
 });
 
-
 $('#hispanic_10').click(function(){
 	layerControls('hispanic2010','2010: PERCENT LATINO/HISPANIC',demoLegend,'Latino/Hispanic');
 	addHash = "&" + currentMap;
 });
-
 
 $('#asian_10').click(function(){
 	layerControls('asian2010','2010: PERCENT ASIAN',demoLegend,'Asian');
 	addHash = "&" + currentMap;
 });
 
-
 $('#multiracial_10').click(function(){
 	layerControls('multiracial2010','2010: PERCENT MULTIRACIAL',demoLegend,'Multiracial');
 	addHash = "&" + currentMap;
 });
-
 
 $('#native_10').click(function(){
 	layerControls('native2010','2010: PERCENT NATIVE AMERICAN/ALASKAN',demoLegend,'N.American/Alaskan');
 	addHash = "&" + currentMap;
 });
 
-
 $('#pacific_10').click(function(){
 	layerControls('pacific2010','2010: PERCENT NATIVE HAWAIIAN/PACIFIC ISLANDER',demoLegend,'Hawaiian/Pac.Isl.');
 	addHash = "&" + currentMap;
 });
 
-
-
 $('#third_16').click(function(){
 	layerControls('thirdparty2016','2016: PERCENT THIRD PARTY',electionLegend,'thirdparty');
 	addHash = "&" + currentMap;
 });
-
 
 $('#diff_16').click(function(){
 	layerControls('diff2016','2016: VOTE SWING FROM 2012',electionLegend,'votechange');
@@ -2249,7 +2183,7 @@ $('.selectMode').click(function(){
 	if (selectMode === false) {
 		selectMode = true;
 	}
-	else
+	else{
 		selectMode = false;
 		selectList = [];
 		selectionTable.clear().draw();
@@ -2259,7 +2193,8 @@ $('.selectMode').click(function(){
 			color: 'white',
 			dashArray: '3',
 			fillOpacity: 0.7
-		});		
+		});	
+	}
 });
 
 //Clear selection
@@ -2316,15 +2251,13 @@ $('.clearSelection').click(function(){
 
 $(document).ready(function(){
   $('.dropdown-submenu a.test').on("click", function(e){
-    $(this).next('ul').toggle();
+	$(this).next('ul').toggle();
     e.stopPropagation();
     e.preventDefault();
   });
 });
 
-
 //-------------------------------------------------TIME SLIDER--------------------------------------------------//
-
 
 if ($(window).width() > 500){
 	var timeslider = L.control({position: 'topright'});
@@ -2582,7 +2515,6 @@ $('.layercontrol').on('click', function(){
 	});
 });
 
-
 //-------------------------------------------------URL MANIPULATION--------------------------------------------------//
 
 //Change URL hash depending on open map
@@ -2679,7 +2611,6 @@ if (hashMatch == "diff2012"){
 		addHash = "&" + currentMap;
 	});
 }
-
 if (hashMatch == 'demo2010'){
    $(function(){
 		$('#demo_10').click();
@@ -2818,19 +2749,6 @@ hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
 
 
 
-	
-$('#radioyes').click(function(){
-	$("#userVariable2").prop('disabled', false);
-	$("#userOperand2").prop('disabled', false);
-	$("#userNumber2").prop('disabled', false);
-	$("input[name=optradio2]").prop('disabled', false);
-});
 
-$('#radiono').click(function(){
-	$("#userVariable2").prop('disabled', true).val('');
-	$("#userOperand2").prop('disabled', true).val('');
-	$("#userNumber2").prop('disabled', true).val('');
-	$("input[name=optradio2]").prop('disabled', true);
-});
 
 

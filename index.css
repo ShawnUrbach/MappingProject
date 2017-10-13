@@ -38,15 +38,6 @@ td {
 	background: url('img/page-loader.gif') 50% 50% no-repeat rgb(249,249,249);
 }
 
-.legend {
-	line-height: 18px;
-	color: #555;
-	background-color: #f8f8f8;
-	padding: 10px;
-	border-radius: 2px;
-	box-shadow: 2px 2px 1px #888888;
-}
-
 .popup_title {
 	text-decoration: none;
 	background-color:  #777;
@@ -60,7 +51,26 @@ td {
 	padding-top: 5px;
 }
 
+hr {
+	margin: 5px;
+	height: 5px;
+	border-color: #e5e5e5;
+}
+
+*:active, *:focus { 
+	outline-color: blue !important;
+}
+
 /*LEGEND STYLES*/
+
+.legend {
+	line-height: 18px;
+	color: #555;
+	background-color: #f8f8f8;
+	padding: 10px;
+	border-radius: 2px;
+	box-shadow: 2px 2px 1px #888888;
+}
 
 .legend i {
 	width: 18px;
@@ -201,9 +211,7 @@ td {
 	box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
 
-@media screen and (max-width: 425px) {
-	
-	
+@media screen and (max-width: 425px) {	
 	#divide {
 		display: none;
 	}
@@ -219,6 +227,14 @@ td {
 		text-align: center;
 		padding: 5px 5px 8px 5px;
 		margin-bottom: 5px;
+	}
+}
+
+@media screen and (max-width: 500px) {
+	#county_search {
+		width: 99%;
+		margin-bottom: 5px;
+		margin-left: 1%;
 	}
 }
 
@@ -421,6 +437,7 @@ td {
 	font-size: 18px;
 	padding-top: 10px;
 	display: inline-block;
+	margin-top: -10px;
 }
 
 #userMessage {
@@ -428,6 +445,10 @@ td {
 	padding-bottom: 0px;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	color: #555;
+}
+
+#linkShareArea {
+	margin-top: -5px;
 }
 		
 /*ABOUT PAGE STYLES*/		
@@ -459,6 +480,7 @@ td {
 }
 
 /*LANDING PAGE STYLES*/  
+
 #jumboMain {
 	padding-left: 0px;
 	margin-left: 0px;
@@ -705,12 +727,6 @@ label {
 
 /*SHARE MODAL STYLES*/ 
 
-/*
-#linkShare {
-	background-color: #777;
-	display: inline;
-}
-*/
 
 #linkShareArea{
 	display: inline-block;
@@ -806,10 +822,40 @@ td.highlight {
     background-color: whitesmoke !important;
 }
 
+/*USER MAP MODAL STYLES*/ 
 
+@media screen and (min-width: 500px) {
+	#mapHref{
+		padding: 5px;
+		padding-left: 20px;
+	}
+}
 
+@media screen and (max-width: 500px) {
+	#mapHref{
+		padding-bottom: 0px;
+	}
+}
 
+@media screen and (max-width: 500px) {
+	.form-control {
+		width: 250px;
+	}
 
+	input[type="number"] {
+		width: 100px;
+	}
+}
+
+@media screen and (min-width: 500px) {
+	.form-control {
+		width: 300px;
+	}
+
+	input[type="number"] {
+		width: 125px;
+	}
+}
 
 #userVariable1 {
 	position: absolute;
@@ -820,7 +866,6 @@ td.highlight {
 	position: absolute;
 	z-index: 9999;
 }
-
 
 #userVariable1 option:hover, #userVariable2 option:hover {
     color: white;
@@ -841,6 +886,8 @@ td.highlight {
 	text-align: left;
 }
 
+/*COLOR CHOOSER STYLES*/ 
+
 .sp-replacer:hover, .sp-replacer.sp-active, .sp-container {
 	border-color: blue;
 }
@@ -853,52 +900,7 @@ td.highlight {
 	border-color: blue !important;
 }
 
-hr {
-	margin: 5px;
-	height: 5px;
-	border-color: #e5e5e5;
-}
-
-
-
-@media screen and (max-width: 500px) {
-	.form-control {
-		width: 250px;
-	}
-
-	input[type="number"] {
-		width: 100px;
-	}
-	
-	#county_search {
-		width: 100%;
-		margin-bottom: 5px;
-	}
-}
-
-@media screen and (min-width: 500px) {
-	.form-control {
-		width: 300px;
-	}
-
-	input[type="number"] {
-		width: 125px;
-	}
-}
-
-
-@media screen and (min-width: 500px) {
-	#mapHref{
-		padding: 5px;
-		padding-left: 20px;
-}
-}
-
-@media screen and (max-width: 500px) {
-	#mapHref{
-		padding-bottom: 0px;
-}
-}
+/*MAP BUTTON STYLES*/ 
 
 .buttons {
 	background-color: #808080;
@@ -913,14 +915,5 @@ hr {
 
 
 
-*:active, *:focus { 
-	outline-color: blue !important;
-}
 
 
-#linkShareArea {
-		margin-top: -5px;
-	}
-	#mapTitleText{
-		margin-top: -10px;
-	}
