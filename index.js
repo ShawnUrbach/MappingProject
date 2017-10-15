@@ -91,7 +91,7 @@ selectionTable = $('#tableTest').DataTable({
 	colReorder: {
 		realtime: false
 	},
-	dom: 'Bfrtip',
+	dom: 'frtipB',
 	language: {
 		search: "" ,
 		searchPlaceholder: "Search",    
@@ -111,6 +111,15 @@ selectionTable = $('#tableTest').DataTable({
 			extend: 'columnVisibility',
 			text: 'Hide all',
 			visibility: false
+		},
+		{
+			extend: 'excelHtml5',
+			text: 'Export',
+			exportOptions: {
+                columns: ':visible',
+            },
+			className: 'excelButton',
+			title: 'Vizmapper.com - Selected Counties'
 		}
 	]
 });

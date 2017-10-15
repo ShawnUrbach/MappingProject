@@ -822,6 +822,18 @@ td.highlight {
     background-color: whitesmoke !important;
 }
 
+div.dt-buttons {
+    position: relative;
+    float: initial;
+    clear: both;
+    text-align: center;
+}
+
+
+table.dataTable.no-footer {
+    border-bottom: 0px;
+}
+
 /*USER MAP MODAL STYLES*/ 
 
 @media screen and (min-width: 500px) {
@@ -911,9 +923,5 @@ td.highlight {
 	background-color: #d3d3d3;
 	border-color: #d3d3d3;
 }
-
-
-
-
 
 
