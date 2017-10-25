@@ -1,7 +1,6 @@
 //-------------------------------------------------VARIABLE DECLARATIONS--------------------------------------------------//
 
 //Variables: GeoJsons
-var new2010;
 var election2012;
 var election2008;
 var census2010;
@@ -83,6 +82,8 @@ var comparisonText;
 var ethnicGroup;
 var tooltipPosition;
 var selectionTable;
+
+var mapTitle = '2016: PRESIDENTIAL ELECTION RESULTS';
 
 //-------------------------------------------------SELECTION TABLE--------------------------------------------------//
 
@@ -2097,11 +2098,43 @@ function layerControls(curMap, maptitle, curLegend, ethnic){
 	//Change title
 	document.getElementById('chart_container').innerHTML = '<canvas id="chartE2016" height="90px" width="100px"></canvas>';
 	document.getElementById('mapTitleText').innerHTML = '<center contenteditable="true">'+maptitle+'</center>';
+	mapTitle = maptitle;
 	
 	//Change legend
 	map.removeControl(currentLegend);
     currentLegend = curLegend;
-    curLegend.addTo(map);	
+    curLegend.addTo(map);
+	
+	map.removeControl(printPlugin);
+	
+	//Add print button to map
+	printPlugin = L.easyPrint({
+		tileLayer: osm,
+		tileWait: 1000,
+		title: 'Print/export PDF',
+		position: 'bottomleft',
+		hideControlContainer: false,
+		sizeModes: ['A4Landscape'],
+		hidden: false,
+		hideClasses: ['leaflet-control-zoom-in', 'leaflet-control-zoom-out', 'slider2','slider3','slider', 'leaflet-control-easyPrint-button','leaflet-control-easyPrint-button-export'],
+		customWindowTitle: $('#mapTitleText').text(),
+	}).addTo(map);
+
+	map.removeControl(printPlugin2);
+
+	//Add download image button to map
+	printPlugin2 = L.easyPrint({
+		tileLayer: osm,
+		tileWait: 1000,
+		title: 'Download image',
+		position: 'bottomleft',
+		hideControlContainer: false,
+		exportOnly: true,
+		filename: $('#mapTitleText').text(),
+		sizeModes: ['A4Landscape'],
+		hidden: false,
+		hideClasses: ['leaflet-control-zoom-in', 'leaflet-control-zoom-out', 'slider2','slider3','slider', 'leaflet-control-easyPrint-button','leaflet-control-easyPrint-button-export'],
+	}).addTo(map);
 }
 
 $('#election_16').click(function(){
@@ -2364,6 +2397,9 @@ $('#demo_10, #black_10, #hispanic_10, #asian_10, #multiracial_10, #native_10, #p
 
 //Original Slider - Change Layers/Legend/Title
 $('#ex21').slider().on('change', function(ev){
+	
+	
+	
 	selectList = [];
 	selectionTable.clear().draw();
     
@@ -2401,6 +2437,8 @@ $('#ex21').slider().on('change', function(ev){
 			layerControls('election2008','2008: PRESIDENTIAL ELECTION RESULTS',electionLegend,'president');
 		}
 	}
+	
+	
 });
 
 $('.layercontrol').on('click', function(){
@@ -2755,9 +2793,47 @@ hash = new L.Hash(map);
 stringURL = window.location.hash;
 hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
 
+//-------------------------------------------------EXPORT BUTTONS--------------------------------------------------//
 
+//Add print button to map
+var printPlugin = L.easyPrint({
+	tileLayer: osm,
+	tileWait: 1000,
+	title: 'Print/export PDF',
+	position: 'bottomleft',
+	hideControlContainer: false,
+	sizeModes: ['A4Landscape'],
+	hidden: false,
+	hideClasses: ['leaflet-control-zoom-in', 'leaflet-control-zoom-out', 'slider2','slider3','slider', 'leaflet-control-easyPrint-button','leaflet-control-easyPrint-button-export'],
+	customWindowTitle: $('#mapTitleText').text(),
+}).addTo(map);
+	
+//Add download image button to map
+var printPlugin2 = L.easyPrint({
+	tileLayer: osm,
+	tileWait: 1000,
+	title: 'Download image',
+	position: 'bottomleft',
+	hideControlContainer: false,
+	exportOnly: true,
+	filename: $('#mapTitleText').text(),
+	sizeModes: ['A4Landscape'],
+	hidden: false,
+	hideClasses: ['leaflet-control-zoom-in', 'leaflet-control-zoom-out', 'slider2','slider3','slider', 'leaflet-control-easyPrint-button','leaflet-control-easyPrint-button-export'],
+}).addTo(map);
 
-
-
-
-
+//Fix slider duplication bug when export buttons used
+map.on('resize', function(){
+	setTimeout(
+	function() {
+	if (currentLegend == electionLegend){
+		$(".slider3").css("display", "none");
+		$(".slider2").css("display", "inline");
+	}
+	else{
+		$(".slider2").css("display", "none");
+		$(".slider3").css("display", "inline");	
+	}
+	$(".slider-vertical").css("margin-top", "20px");
+	}, 2000);
+});

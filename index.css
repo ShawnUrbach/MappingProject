@@ -158,7 +158,6 @@ hr {
 	background-color: #ff2b2b;
 }
 
-
 @media screen and (max-width: 425px) {
 	.legend {
 		line-height: 10px;
@@ -394,6 +393,12 @@ hr {
 	}
 }
 
+@media screen and (min-width: 500px) and (max-width: 1500px) {
+	.sidebar-tabs, .sidebar {
+		height: 50%;
+	}
+}
+
 /*MAP AREA STYLES*/
 
 #map {
@@ -413,6 +418,15 @@ hr {
 		border-color: #C0C0C0;
 		box-shadow: none;
 		z-index: 1;
+	}
+}
+
+@media screen and (max-width: 500px){
+	.leaflet-control-easyPrint-button{
+		display: none !important;
+	}
+	.leaflet-control-scale-line {
+		margin-top: -20px;
 	}
 }
 
@@ -727,7 +741,6 @@ label {
 
 /*SHARE MODAL STYLES*/ 
 
-
 #linkShareArea{
 	display: inline-block;
 	margin-right: 5px;
@@ -923,5 +936,14 @@ table.dataTable.no-footer {
 	background-color: #d3d3d3;
 	border-color: #d3d3d3;
 }
+
+
+
+
+
+
+
+
+
 
 
