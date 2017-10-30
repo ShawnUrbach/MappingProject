@@ -82,7 +82,6 @@ var comparisonText;
 var ethnicGroup;
 var tooltipPosition;
 var selectionTable;
-
 var mapTitle = '2016: PRESIDENTIAL ELECTION RESULTS';
 
 //-------------------------------------------------SELECTION TABLE--------------------------------------------------//
@@ -192,6 +191,15 @@ $('#radiono').click(function(){
 });
 
 //-------------------------------------------------FUNCTIONS--------------------------------------------------//
+
+//Detect IE (all versions)
+function isIE(userAgent) {
+  userAgent = userAgent || navigator.userAgent;
+  return userAgent.indexOf("MSIE ") > -1 || userAgent.indexOf("Trident/") > -1 || userAgent.indexOf("Edge/") > -1;
+}
+
+//Detect Firefox (all versions)
+var firefox = !!navigator.userAgent.match(/firefox/i);
 
 //Activate CSS tooltips
 $(document).ready(function(){
@@ -2397,9 +2405,6 @@ $('#demo_10, #black_10, #hispanic_10, #asian_10, #multiracial_10, #native_10, #p
 
 //Original Slider - Change Layers/Legend/Title
 $('#ex21').slider().on('change', function(ev){
-	
-	
-	
 	selectList = [];
 	selectionTable.clear().draw();
     
@@ -2796,31 +2801,35 @@ hashMatch = stringURL.substring(stringURL.lastIndexOf('&')+1);
 //-------------------------------------------------EXPORT BUTTONS--------------------------------------------------//
 
 //Add print button to map
-var printPlugin = L.easyPrint({
-	tileLayer: osm,
-	tileWait: 1000,
-	title: 'Print/export PDF',
-	position: 'bottomleft',
-	hideControlContainer: false,
-	sizeModes: ['A4Landscape'],
-	hidden: false,
-	hideClasses: ['leaflet-control-zoom-in', 'leaflet-control-zoom-out', 'slider2','slider3','slider', 'leaflet-control-easyPrint-button','leaflet-control-easyPrint-button-export'],
-	customWindowTitle: $('#mapTitleText').text(),
-}).addTo(map);
+if (firefox == false && isIE() == false){
+	var printPlugin = L.easyPrint({
+		tileLayer: osm,
+		tileWait: 1000,
+		title: 'Print/export PDF',
+		position: 'bottomleft',
+		hideControlContainer: false,
+		sizeModes: ['A4Landscape'],
+		hidden: false,
+		hideClasses: ['leaflet-control-zoom-in', 'leaflet-control-zoom-out', 'slider2','slider3','slider', 'leaflet-control-easyPrint-button','leaflet-control-easyPrint-button-export'],
+		customWindowTitle: $('#mapTitleText').text(),
+	}).addTo(map);	
+}
 	
 //Add download image button to map
-var printPlugin2 = L.easyPrint({
-	tileLayer: osm,
-	tileWait: 1000,
-	title: 'Download image',
-	position: 'bottomleft',
-	hideControlContainer: false,
-	exportOnly: true,
-	filename: $('#mapTitleText').text(),
-	sizeModes: ['A4Landscape'],
-	hidden: false,
-	hideClasses: ['leaflet-control-zoom-in', 'leaflet-control-zoom-out', 'slider2','slider3','slider', 'leaflet-control-easyPrint-button','leaflet-control-easyPrint-button-export'],
-}).addTo(map);
+if (!!navigator.userAgent.match(/firefox/i) == false && isIE() == false){
+	var printPlugin2 = L.easyPrint({
+		tileLayer: osm,
+		tileWait: 1000,
+		title: 'Download image',
+		position: 'bottomleft',
+		hideControlContainer: false,
+		exportOnly: true,
+		filename: $('#mapTitleText').text(),
+		sizeModes: ['A4Landscape'],
+		hidden: false,
+		hideClasses: ['leaflet-control-zoom-in', 'leaflet-control-zoom-out', 'slider2','slider3','slider', 'leaflet-control-easyPrint-button','leaflet-control-easyPrint-button-export'],
+	}).addTo(map);
+}
 
 //Fix slider duplication bug when export buttons used
 map.on('resize', function(){
@@ -2837,3 +2846,17 @@ map.on('resize', function(){
 	$(".slider-vertical").css("margin-top", "20px");
 	}, 2000);
 });
+
+//Fix sidebar button layout bug on Google Chrome version 62+
+var nVer = navigator.appVersion;
+var nAgt = navigator.userAgent;
+if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
+	browserName = "Chrome";
+	fullVersion = nAgt.substring(verOffset+7);
+}
+var browserhack = fullVersion.substring(0, 2);
+console.log(browserhack);
+if (browserhack >= 62){
+	$("li>a>img").css("margin-top", "-100%");
+	$("#selectionbutton").css("margin-top", "-50%");
+}
